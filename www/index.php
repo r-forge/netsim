@@ -33,6 +33,9 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 <!-- get project title  -->
 <!-- own website starts here, the following may be changed as you like -->
 
+<strong>NetSim</strong>:A tool to simulate social networks and individual behavior by combining different dynamic models.<br>
+This project is work-in-progress. More information will  follow.
+
 <?php if ($handle=fopen('http://'.$domain.'/export/projtitl.php?group_name='.$group_name,'r')){
 $contents = '';
 while (!feof($handle)) {
