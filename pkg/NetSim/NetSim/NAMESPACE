@@ -1,2 +1,0 @@
-useDynLib(NetSim)
-exportPattern("^[[:alpha:]]+")
