@@ -19,7 +19,7 @@ MultinomialChoiceNetworkChangeModel::MultinomialChoiceNetworkChangeModel(
 		int actorIndex, size_t dependentNetworkIndex,
 		std::set<std::pair<NetworkEffect*, double> *>* effectParameterPairs) {
 
-	std::vector<Updater*>* updaters = new std::vector<Updater*>(1, new NullUpdater());
+	std::vector<Updater*>* updaters = new std::vector<Updater*>();
 	init(actorIndex, dependentNetworkIndex, effectParameterPairs, updaters);
 }
 

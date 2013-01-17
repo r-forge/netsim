@@ -13,7 +13,7 @@
 #include "Updater.h"
 #include "ModelResult.h"
 #include "../utils/Random.h"
-
+\
 class MultinomialChoiceNetworkChangeModel : public ChangeModel{
 
 public:
