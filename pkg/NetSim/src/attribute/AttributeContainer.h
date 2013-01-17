@@ -8,7 +8,9 @@
 #ifndef ATTRIBUTECONTAINER_H_
 #define ATTRIBUTECONTAINER_H_
 
-#include <map>
+// #include <map>
+// #include <vector>
+// TODO this includes something I need for compilation. Remove.
 #include "boost/unordered_map.hpp"
 
 /**
@@ -19,7 +21,6 @@ class AttributeContainer{
 
 public:
 	AttributeContainer(int n, std::vector<double> values,
-			// bool ordinal = true, bool categorical = false,
 			double min = 0.0, double max = 1.0, double by = 1.0);
 	AttributeContainer(int n, double value,
 				double min = 0.0, double max = 1.0, double by = 1.0);
@@ -76,7 +77,9 @@ private:
 	double _min;
 	double _max;
 	double _by;
-	boost::unordered_map<int, double> _actorValueMap;
+	// TODO test additional utility of boost
+	// boost::unordered_map<int, double> _actorValueMap;
+	std::map<int, double> _actorValueMap;
 
 	void init(int n, std::vector<double> values,
 			double min = 0.0, double max = 1.0, double by = 1.0);

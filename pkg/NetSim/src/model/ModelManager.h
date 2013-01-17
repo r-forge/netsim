@@ -24,65 +24,37 @@ class ModelManager{
 
 public:
 
-	ModelManager(){
-		// TODO implement in separate file?
-	}
+	ModelManager();
 
-	/**
-	 * @Deprecated
-	 */
-	void addModelSequence(){
-	}
+	void addTimeUpdater(TimeUpdater * timeUpdater);
 
-	void addTimeUpdater(TimeUpdater * timeUpdater){
-		_timeUpdaters.push_back(timeUpdater);
-	}
+	void addTimeModel(TimeModel * timeModel);
 
-	void addTimeModel(TimeModel * timeModel){
-		_timeModels.push_back(timeModel);
-	}
+	void addChangeModel(TimeModel * timeModel, ChangeModel * changeModel);
 
-	void addChangeModel(TimeModel * timeModel, ChangeModel * changeModel){
-		_timeModelChangeModelMap[timeModel].push_back(changeModel);
-	}
+	void addUpdater(ChangeModel * changeModel, Updater * updater);
 
-	void addUpdater(ChangeModel * changeModel, Updater * updater){
-		_changeModelChangeUpdaterMap[changeModel].push_back(updater);
-	}
-
-
-	std::vector<TimeModel*> getTimeModels(){
-		return _timeModels;
-	}
+	std::vector<TimeModel*> getTimeModels();
 
 	/**
 	 * Get all TimeUpdater objects.
 	 * These are all time dependent network changes.
 	 */
-	std::vector<TimeUpdater*> getTimeUpdater(){
-		return _timeUpdaters;
-	}
+	std::vector<TimeUpdater*> getTimeUpdater();
 
 	/**
 	 * Get the change model based on the index determined
 	 * by a comparison of time models
 	 */
-	std::vector<ChangeModel*> getChangeModels(TimeModel* timeModel){
-		// returns default value if lookup is not successful
-		return _timeModelChangeModelMap[timeModel];
-	}
+	std::vector<ChangeModel*> getChangeModels(TimeModel* timeModel);
 
 	/**
 	 * Get the change updater based on the index determined
 	 * by a comparison of time models
 	 */
-	std::vector<Updater*> getUpaters(ChangeModel* changeModel){
-		return _changeModelChangeUpdaterMap[changeModel];
-	}
+	std::vector<Updater*> getUpdaters(ChangeModel* changeModel);
 
-	std::string getLatestMessage(){
-		return " ";
-	}
+	std::string getLatestMessage();
 
 private:
 

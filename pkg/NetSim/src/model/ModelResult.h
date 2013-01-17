@@ -27,12 +27,9 @@ public:
 class ActorModelResult : public ModelResult{
 
 public:
-	ActorModelResult(int actorIndex){
-		_actorIndex = actorIndex;
-	}
-	int getActorIndex(){
-		return _actorIndex;
-	}
+	ActorModelResult(int actorIndex);
+
+	int getActorIndex();
 
 private:
 	int _actorIndex;
@@ -42,18 +39,11 @@ private:
 
 class TieModelResult : public ModelResult{
 public:
-	TieModelResult(int actorIndex1, int actorIndex2){
-		// TODO: do this in separate file!
-		_actorIndex1 = actorIndex1;
-		_actorIndex2 = actorIndex2;
-	}
-	int getActorIndex1(){
-		return _actorIndex1;
-	}
+	TieModelResult(int actorIndex1, int actorIndex2);
 
-	int getActorIndex2(){
-		return _actorIndex2;
-	}
+	int getActorIndex1();
+
+	int getActorIndex2();
 
 private:
 	int _actorIndex1;
@@ -65,24 +55,17 @@ private:
 class TimeModelResult : public ModelResult{
 
 public:
-	TimeModelResult(double timeSpan){
-		_timeSpan = timeSpan;
-	}
+	TimeModelResult(double timeSpan);
 
-	double getDoubleResult(){
-		return _timeSpan;
-	}
+	double getDoubleResult();
 
-	std::string getResultString(){
-		return ""; //TODO implement
-	}
+	std::string getResultString();
 
 
 private:
 	double _timeSpan;
 };
 
-// TODO: implement DyadModelResult
 // TODO: implement ActorValueModelResult
 // TODO: implement ActorSetModelResult
 

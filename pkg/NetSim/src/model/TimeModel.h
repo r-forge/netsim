@@ -30,19 +30,11 @@ public:
 class PoissonTimeModel : public TimeModel{
 
 public:
-	PoissonTimeModel(double poissonParameter) {
-		_poissonParameter = poissonParameter;
-	}
+	PoissonTimeModel(double poissonParameter);
 
-	double getTimeSpan(ProcessState * processState){
-		double randomNumber = Random::getInstance().getRandom();
-		double timeSpan = -1 * log(1 - randomNumber) / _poissonParameter;
-		return timeSpan;
-	}
+	double getTimeSpan(ProcessState * processState);
 
-	double getParameter(){
-		return _poissonParameter;
-	}
+	double getParameter();
 
 private:
 	double _poissonParameter;

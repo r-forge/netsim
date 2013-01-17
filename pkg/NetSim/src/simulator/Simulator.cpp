@@ -107,7 +107,7 @@ void Simulator::simulate() {
 				std::vector<ChangeModel*>::iterator itChangeModels = changeModels.begin();
 				for (; itChangeModels != changeModels.end(); ++itChangeModels){
 					ModelResult * result =  (*itChangeModels)->getChange(_processState);
-					std::vector<Updater*> updaters = _modelManager->getUpaters(*itChangeModels);
+					std::vector<Updater*> updaters = _modelManager->getUpdaters(*itChangeModels);
 					// link all Updaters to results
 					std::vector<Updater*>::iterator itUpdaters = updaters.begin();
 					for (; itUpdaters != updaters.end(); ++itUpdaters){

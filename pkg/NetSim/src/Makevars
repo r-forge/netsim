@@ -1,8 +1,11 @@
 ## Use the R_HOME indirection to support installations of multiple R version
 
+## SOURCES=$(wildcard processstate/*.cpp )
 SOURCES=$(wildcard processstate/*.cpp )
 ## network/*.cpp utils/*.cpp model/*.cpp model/*/*.cpp model/*/*/*.cpp)
-PKG_LIBS = `$(R_HOME)/bin/Rscript -e "Rcpp:::LdFlags()"`
+PKG_LIBS = `$(R_HOME)/bin/Rscript -e "Rcpp:::LdFlags()"` $(wildcard utils/*.cpp)
+## attribute/*.cpp)
+##*/*.cpp */*/*.cpp)
 
 
 ## As an alternative, one can also add this code in a file 'configure'

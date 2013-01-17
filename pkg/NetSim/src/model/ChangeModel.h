@@ -21,13 +21,9 @@ public:
 class ActorNullChangeModel : public ChangeModel{
 
 public:
-	ActorNullChangeModel(int id){
-		_id = id;
-	}
+	ActorNullChangeModel(int id);
 
-	ModelResult * getChange(ProcessState * processState){
-		return new ActorModelResult(_id);
-	}
+	ModelResult * getChange(ProcessState * processState);
 
 private:
 	int _id;
