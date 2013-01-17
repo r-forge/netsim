@@ -3,9 +3,8 @@
 ## SOURCES=$(wildcard processstate/*.cpp )
 SOURCES=$(wildcard processstate/*.cpp )
 ## network/*.cpp utils/*.cpp model/*.cpp model/*/*.cpp model/*/*/*.cpp)
-PKG_LIBS = `$(R_HOME)/bin/Rscript -e "Rcpp:::LdFlags()"` $(wildcard utils/*.cpp)
-## attribute/*.cpp)
-##*/*.cpp */*/*.cpp)
+PKG_LIBS = `$(R_HOME)/bin/Rscript -e "Rcpp:::LdFlags()"` $(wildcard attribute/*.cpp model/*.cpp model/*/*.cpp network/*.cpp processstate/*.cpp utils/*.cpp )
+##  TO BE INCLUDEDE: simulator/*.cpp
 
 
 ## As an alternative, one can also add this code in a file 'configure'

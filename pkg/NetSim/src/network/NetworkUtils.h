@@ -9,6 +9,8 @@
 #define NETWORKUTILS_H_
 
 #include "OneModeNetwork.h"
+#include <iostream>
+#include <cstdio>
 
 class NetworkUtils{
 

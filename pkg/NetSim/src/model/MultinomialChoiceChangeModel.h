@@ -43,7 +43,7 @@ public:
 	/**
 	 * If set, extra debug messages will be sent to the console
 	 */
-	void setDebugMode(bool verbose = TRUE);
+	void setDebugMode(bool verbose = true);
 
 
 private:

@@ -8,10 +8,11 @@
 #ifndef ATTRIBUTECONTAINER_H_
 #define ATTRIBUTECONTAINER_H_
 
-// #include <map>
-// #include <vector>
-// TODO this includes something I need for compilation. Remove.
-#include "boost/unordered_map.hpp"
+#include <map>
+#include <vector>
+#include <stdexcept>
+#include <iostream>
+#include <math.h>
 
 /**
  * Represents a container for valued attributes,

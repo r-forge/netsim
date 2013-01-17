@@ -10,6 +10,9 @@
 
 #include "../processstate/ProcessState.h"
 #include "../model/ModelManager.h"
+#include "../model/Updater.h"
+#include <utility>  // pair
+#include <stdio.h>
 
 /**
  * Logs all changes in the simulation process
