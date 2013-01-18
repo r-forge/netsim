@@ -5,14 +5,7 @@
  *      Author: cws
  */
 
-#include <time.h>
-
 #include "Simulator.h"
-#include "../utils/Random.h"
-#include "../processstate/ProcessState.h"
-#include "../processstate/ProcessStateManager.h"
-#include "../model/Updater.h"
-#include "../model/ModelResult.h"
 
 Simulator::Simulator(ProcessState * processState, ModelManager * modelManager,
 		double periodLength) {

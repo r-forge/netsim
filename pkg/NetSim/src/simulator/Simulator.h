@@ -13,6 +13,7 @@
 #include "../model/Updater.h"
 #include <utility>  // pair
 #include <stdio.h>
+#include <list>
 
 /**
  * Logs all changes in the simulation process
