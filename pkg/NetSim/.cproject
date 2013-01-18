@@ -37,6 +37,14 @@
 									<listOptionValue builtIn="false" value="/home/cws/R/i686-pc-linux-gnu-library/2.15/RInside/include"/>
 									<listOptionValue builtIn="false" value="/home/cws/boost_1_52_0"/>
 									<listOptionValue builtIn="false" value="/home/cws/cute1_7_0/cute_lib"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/attribute}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/model}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/network}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/processstate}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/rwrapper}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/simulator}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/unittest}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/utils}&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.preprocessor.def.1507367350" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="INSIDE"/>

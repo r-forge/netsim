@@ -9,6 +9,8 @@
 #define CREATE_PROCESS_STATE_H_
 
 #include <Rcpp.h>
+#include "../processstate/ProcessState.h"
+#include "../processstate/ProcessStateManager.h"
 
 RcppExport SEXP create_process_state(SEXP name);
 
