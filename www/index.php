@@ -32,14 +32,8 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 
 <!-- get project title  -->
 <!-- own website starts here, the following may be changed as you like -->
-
-<?php if ($handle=fopen('http://'.$domain.'/export/projtitl.php?group_name='.$group_name,'r')){
-$contents = '';
-while (!feof($handle)) {
-	$contents .= fread($handle, 8192);
-}
-fclose($handle);
-echo $contents; } ?>
+<h1>NetSim: A social network simulation tool</h1>
+<p>NetSim is a tool to simulate social networks and individual behavior by combining different dynamic models.</p>
 
 <!-- end of project description -->
 
