@@ -1,5 +1,5 @@
 /*
- * create_process_state.h
+ * wrapper_process_state.h
  *
  *  Created on: Jan 11, 2013
  *      Author: cws

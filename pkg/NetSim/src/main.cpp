@@ -12,7 +12,8 @@
 #include <RInside.h>	// for the embedded R via RInside
 #include <iostream>
 #include "rwrapper/rcpp_hello_world.h"
-#include "rwrapper/process_state.h"
+#include "rwrapper/wrapper_process_state.h"
+#include "rwrapper/wrapper_network.h"
 #include "network/MemoryOneModeNetwork.h"
 #include "network/OneModeNetwork.h"
 #include "network/NetworkUtils.h"
