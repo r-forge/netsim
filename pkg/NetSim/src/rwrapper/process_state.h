@@ -11,8 +11,13 @@
 #include <Rcpp.h>
 #include "../processstate/ProcessState.h"
 #include "../processstate/ProcessStateManager.h"
+#include "../network/MemoryOneModeNetwork.h"
 
 RcppExport SEXP create_process_state(SEXP name);
+
+RcppExport SEXP get_process_state_name(SEXP pointer);
+
+RcppExport SEXP add_network(SEXP processStateManager, SEXP networkPointer, SEXP name);
 
 
 #endif /* CREATE_PROCESS_STATE_H_ */

@@ -12,23 +12,31 @@ ProcessStateManager::ProcessStateManager(std::string name) {
 	_name = name;
 }
 
-void ProcessStateManager::addNetwork(Network* network, std::string name) {
+size_t ProcessStateManager::addNetwork(Network* network, std::string name) {
+	// name has previously been used
+	if (_networkNameIndexMap.find(name) != _networkNameIndexMap.end()){
+		// TODO remove network from _processState \
+		// (needs to be implemented with safe index values)
+	}
 	size_t index = _processState->addNetwork(network);
 	_networkNameIndexMap.insert( std::pair<std::string, size_t>(name, index) );
+	return index;
 }
 
-void ProcessStateManager::addAttributeContainter(
+size_t ProcessStateManager::addAttributeContainter(
 		AttributeContainer* attributeContainer, std::string name) {
 	size_t index = _processState->addAttributeContainer(attributeContainer);
 	_attributeContainerNameIndexMap.insert(
 			std::pair<std::string, size_t>(name, index));
+	return index;
 }
 
-void ProcessStateManager::addGlobalAttribute(double* attribute,
+size_t ProcessStateManager::addGlobalAttribute(double* attribute,
 		std::string name) {
 	size_t index = _processState->addGlobalAttribute(attribute);
 	_globalAttributeNameIndexMap.insert(
 			std::pair<std::string, size_t>(name, index));
+	return index;
 }
 
 Network* ProcessStateManager::getNetwork(std::string name) {

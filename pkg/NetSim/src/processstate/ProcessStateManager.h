@@ -21,11 +21,11 @@ class ProcessStateManager{
 public:
 	ProcessStateManager(std::string name);
 
-	void addNetwork(Network* network,
+	size_t addNetwork(Network* network,
 			std::string name);
-	void addAttributeContainter(AttributeContainer* attributeContainer,
+	size_t addAttributeContainter(AttributeContainer* attributeContainer,
 			std::string name);
-	void addGlobalAttribute(double* attribute,
+	size_t addGlobalAttribute(double* attribute,
 			std::string name);
 
 	Network* getNetwork(std::string name);
