@@ -3,12 +3,12 @@
 # Author: cws
 ###############################################################################
 
-create_network <- function(matrix){
-	.Call( "create_network", matrix, PACKAGE = "NetSim" )
+network_as_matrix <- function(matrix){
+	.Call( "network_as_matrix", matrix, PACKAGE = "NetSim" )
 }
 
 
 create_network <- function(network, directed = TRUE, reflexive = FALSE){
-	.Call( "network_as_matrix", network, directed, reflexive, PACKAGE = "NetSim" )
+	.Call( "create_network", network, directed, reflexive, PACKAGE = "NetSim" )
 }
 

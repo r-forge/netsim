@@ -66,8 +66,14 @@ int OneModeNetwork::getSize(){
 }
 
 bool OneModeNetwork::setTie(int i, int j, double value) {
-	// check validity
+	// check validity of index
 	if (!isIndexesValid(i, j)) return false;
+
+	// no change at all
+	if (_graph[i][j] == value) return true;
+
+	// trying to set a reflexive tie in a non-reflexive network
+	if((!_reflexive) && (i == j)) return false;
 
 	// Sets tie value and updates lookup maps
 	double oldValue = _graph[i][j];

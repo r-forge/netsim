@@ -23,14 +23,18 @@ SEXP create_network(SEXP matrix_, SEXP directed_, SEXP reflexive_) {
 	}
 
 	MemoryOneModeNetwork * network = new MemoryOneModeNetwork(nCol, directed, reflexive);
-	network = new MemoryOneModeNetwork(10);
 
-
+	// check if there are problems when ties are set (setTie == false)
+	int problematicTies = 0;
 	for (int i = 0; i < nRow; i++){
 		for (int j = 0; j < nCol; j++){
-			network->setTie(i, j,  matrix(i, j) );
+			if(!network->setTie(i, j,  matrix(i, j) ))
+				++problematicTies;
 		}
 	}
+	if (problematicTies > 0)
+		Rcpp::Rcout << "Warning: " << problematicTies <<
+			" ties could not be set." <<std::endl;
 
 	Rcpp::XPtr<MemoryOneModeNetwork> pointer(network, true);
 	return pointer;
