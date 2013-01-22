@@ -55,6 +55,18 @@ double* ProcessStateManager::getGlobalAttribute(std::string name) {
 	return _processState->getGlobalAttribute(index);
 }
 
+size_t ProcessStateManager::getNetworkIndex(std::string name) {
+	return _networkNameIndexMap[name];
+}
+
+size_t ProcessStateManager::getAttributeContainerIndex(std::string name) {
+	return _attributeContainerNameIndexMap[name];
+}
+
+size_t ProcessStateManager::getGlobalAttributeIndex(std::string name) {
+	return _globalAttributeNameIndexMap[name];
+}
+
 std::string ProcessStateManager::getName() {
 	return _name;
 }

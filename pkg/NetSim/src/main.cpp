@@ -9,7 +9,7 @@
 
 
 #include <Rcpp.h>
-#include <RInside.h>	// for the embedded R via RInside
+// #include <RInside.h>	// for the embedded R via RInside
 #include <iostream>
 #include "rwrapper/rcpp_hello_world.h"
 #include "rwrapper/wrapper_process_state.h"

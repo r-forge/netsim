@@ -32,6 +32,10 @@ public:
 	AttributeContainer* getAttributeContainer(std::string name);
 	double* getGlobalAttribute(std::string name);
 
+	size_t getNetworkIndex(std::string name);
+	size_t getAttributeContainerIndex(std::string name);
+	size_t getGlobalAttributeIndex(std::string name);
+
 
 	std::string getName();
 
