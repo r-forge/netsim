@@ -1,0 +1,40 @@
+/*
+ * rwrapper_simulator.cpp
+ *
+ *  Created on: Jan 22, 2013
+ *      Author: cws
+ */
+
+#include "rwrapper_simulator.h"
+
+SEXP create_simulator(SEXP processStateManager_, SEXP modelManager_,
+		SEXP periodLength_, SEXP verbose_) {
+
+	ProcessStateManager * processStateManager =
+			Rcpp::XPtr<ProcessStateManager>(processStateManager_);
+	ProcessState * processState = processStateManager->getProcessState();
+	ModelManager * modelManager =
+			Rcpp::XPtr<ModelManager>(modelManager_);
+	double periodLength = Rcpp::as<double>(periodLength_);
+	bool verbose = Rcpp::as<bool>(verbose_);
+
+	Simulator * simulator = new Simulator(processState, modelManager, periodLength);
+	simulator->setVerbose(verbose);
+
+	return Rcpp::XPtr<Simulator>(simulator, true);
+
+
+}
+
+SEXP simulate(SEXP simulator_) {
+
+	Simulator * simulator = Rcpp::XPtr<Simulator>(simulator_);
+
+	// TODO print simulation progress to R
+	simulator->simulate();
+
+	SimulationResult result = simulator->getSimulationResult();
+
+	return Rcpp::XPtr<SimulationResult>(&result, true);
+
+}

@@ -36,6 +36,7 @@ public:
 	size_t getAttributeContainerIndex(std::string name);
 	size_t getGlobalAttributeIndex(std::string name);
 
+	ProcessState * getProcessState();
 
 	std::string getName();
 

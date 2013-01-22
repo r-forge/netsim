@@ -67,6 +67,10 @@ size_t ProcessStateManager::getGlobalAttributeIndex(std::string name) {
 	return _globalAttributeNameIndexMap[name];
 }
 
+ProcessState * ProcessStateManager::getProcessState() {
+	return _processState;
+}
+
 std::string ProcessStateManager::getName() {
 	return _name;
 }
