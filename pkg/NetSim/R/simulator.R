@@ -4,8 +4,8 @@
 ###############################################################################
 
 
-create_simulator <- function(processState, modelManager, periodLength){
-	.Call("create_simulator", processState, modelManager, periodLength,
+create_simulator <- function(processState, modelManager, periodLength, verbose = FALSE){
+	.Call("create_simulator", processState, modelManager, periodLength, verbose,
 			PACKAGE = "NetSim")
 }
 

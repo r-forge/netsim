@@ -52,3 +52,17 @@ SEXP add_network(SEXP processStateManager_, SEXP network_, SEXP name_) {
 
 	END_RCPP
 }
+
+SEXP get_network_index(SEXP processStateManager_, SEXP name_) {
+	BEGIN_RCPP
+
+	ProcessStateManager * processStateManager =
+			Rcpp::XPtr<ProcessStateManager>(processStateManager_);
+	std::string name = Rcpp::as<std::string>(name_);
+
+	size_t index = processStateManager->getNetworkIndex(name);
+
+	return Rcpp::wrap(index);
+
+	END_RCPP
+}

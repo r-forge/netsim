@@ -10,3 +10,7 @@ get_process_state_name <- function(processState){
 add_network <- function(processState, network, name = "default"){
 	.Call("add_network", processState, network, name, PACKAGE = "NetSim")
 }
+
+get_network_index <- function(processStateManager, name = "default"){
+	.Call("get_network_index", processState, name, PACKAGE = "NetSim")
+} 

@@ -21,9 +21,9 @@
 
 RcppExport SEXP create_model_manager();
 
-RcppExport SEXP add_time_model(SEXP modelManager, SEXP timeModel, SEXP name);
+RcppExport SEXP add_time_model(SEXP modelManager, SEXP timeModel);
 
-RcppExport SEXP add_change_model(SEXP modelManager, SEXP timeModel, SEXP changeModel, SEXP name);
+RcppExport SEXP add_change_model(SEXP modelManager, SEXP timeModel, SEXP changeModel);
 
 RcppExport SEXP add_updater(SEXP modelManager, SEXP changeModel, SEXP updater);
 

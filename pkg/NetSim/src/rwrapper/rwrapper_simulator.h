@@ -14,7 +14,7 @@
 #include "../model/ModelManager.h"
 
 RcppExport SEXP create_simulator(
-		SEXP processState, SEXP modelManager, SEXP periodLength);
+		SEXP processState, SEXP modelManager, SEXP periodLength, SEXP verbose);
 
 RcppExport SEXP simulate(
 		SEXP simulator);
