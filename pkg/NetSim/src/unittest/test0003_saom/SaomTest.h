@@ -87,8 +87,8 @@ void densityChoiceTest(){
 	expectedValues[4] = exp(densityParameter * 4) / denominator;
 
 
-	std::set<std::pair<NetworkEffect*, double> *> effects;
-	effects.insert(new std::pair<NetworkEffect*, double>(
+	std::set<std::pair<SaomEffect*, double> *> effects;
+	effects.insert(new std::pair<SaomEffect*, double>(
 			new DensityEffect(0), densityParameter));
 
 	MultinomialChoiceNetworkChangeModel saom(
@@ -157,11 +157,11 @@ void densityParameterSaomTest(){
 
 
 	// TODO: if this is moved within the loop, the test crashes.
-	std::set<std::pair<NetworkEffect*, double> *> effects1;
-	effects1.insert(new std::pair<NetworkEffect*, double>(
+	std::set<std::pair<SaomEffect*, double> *> effects1;
+	effects1.insert(new std::pair<SaomEffect*, double>(
 			new DensityEffect(networkIndex1), densityParameter1));
-	std::set<std::pair<NetworkEffect*, double> *> effects2;
-	effects2.insert(new std::pair<NetworkEffect*, double>(
+	std::set<std::pair<SaomEffect*, double> *> effects2;
+	effects2.insert(new std::pair<SaomEffect*, double>(
 			new DensityEffect(networkIndex2), densityParameter2));
 
 	for (int i = 0; i< nActors; i++){

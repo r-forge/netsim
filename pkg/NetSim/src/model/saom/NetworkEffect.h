@@ -11,21 +11,20 @@
 #include "../../processstate/ProcessState.h"
 #include "../../network/MemoryOneModeNetwork.h"
 
-
 /**
  * Abstract class of network effects to be used in
  * multinomial choice models
  */
-class NetworkEffect {
+class SaomEffect {
 
 public:
-	virtual ~NetworkEffect() { }
+	virtual ~SaomEffect() { }
 	virtual double getEffect(ProcessState * processState, int actorIndex) = 0;
 	virtual std::string getName() = 0;
 
 };
 
-class OneModeNetworkEffect : public NetworkEffect{
+class OneModeNetworkEffect : public SaomEffect{
 
 public:
 	OneModeNetworkEffect(size_t networkIndex);
@@ -62,6 +61,7 @@ public:
 
 class TransitivityEffect : public OneModeNetworkEffect{
 
+public:
 	TransitivityEffect(size_t networkIndex);
 
 	double getEffect(ProcessState * processState, int actorIndex);
@@ -70,9 +70,10 @@ class TransitivityEffect : public OneModeNetworkEffect{
 
 };
 
-class ThreeCircleEffect : public OneModeNetworkEffect{
+class ThreeCycleEffect : public OneModeNetworkEffect{
 
-	ThreeCircleEffect(size_t networkIndex);
+public:
+	ThreeCycleEffect(size_t networkIndex);
 
 	double getEffect(ProcessState * processState, int actorIndex);
 
@@ -83,6 +84,7 @@ class ThreeCircleEffect : public OneModeNetworkEffect{
 
 class TwoPathEffect : public OneModeNetworkEffect{
 
+public:
 	TwoPathEffect(size_t networkIndex);
 
 	double getEffect(ProcessState * processState, int actorIndex);
@@ -91,9 +93,10 @@ class TwoPathEffect : public OneModeNetworkEffect{
 
 };
 
-class InPopularity : public OneModeNetworkEffect{
+class InPopularityEffect : public OneModeNetworkEffect{
 
-	InPopularity(size_t networkIndex);
+public:
+	InPopularityEffect(size_t networkIndex);
 
 	double getEffect(ProcessState * processState, int actorIndex);
 
@@ -101,9 +104,10 @@ class InPopularity : public OneModeNetworkEffect{
 
 };
 
-class OutPopularity : public OneModeNetworkEffect{
+class OutPopularityEffect : public OneModeNetworkEffect{
 
-	OutPopularity(size_t networkIndex);
+public:
+	OutPopularityEffect(size_t networkIndex);
 
 	double getEffect(ProcessState * processState, int actorIndex);
 

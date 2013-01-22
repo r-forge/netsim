@@ -63,10 +63,10 @@ std::string TransitivityEffect::getName() {
 	return "Transitivity";
 }
 
-ThreeCircleEffect::ThreeCircleEffect(size_t networkIndex) : OneModeNetworkEffect(networkIndex){
+ThreeCycleEffect::ThreeCycleEffect(size_t networkIndex) : OneModeNetworkEffect(networkIndex){
 }
 
-double ThreeCircleEffect::getEffect(ProcessState* processState,
+double ThreeCycleEffect::getEffect(ProcessState* processState,
 		int actorIndex) {
 	double value = 0;
 	MemoryOneModeNetwork * net =
@@ -83,7 +83,7 @@ double ThreeCircleEffect::getEffect(ProcessState* processState,
 	return value;
 }
 
-std::string ThreeCircleEffect::getName() {
+std::string ThreeCycleEffect::getName() {
 	return "Three-circle";
 }
 
@@ -108,10 +108,10 @@ std::string TwoPathEffect::getName() {
 	return "Two Path";
 }
 
-InPopularity::InPopularity(size_t networkIndex)  : OneModeNetworkEffect(networkIndex){
+InPopularityEffect::InPopularityEffect(size_t networkIndex)  : OneModeNetworkEffect(networkIndex){
 }
 
-double InPopularity::getEffect(ProcessState* processState, int actorIndex) {
+double InPopularityEffect::getEffect(ProcessState* processState, int actorIndex) {
 	double value = 0;
 	MemoryOneModeNetwork * net =
 			dynamic_cast<MemoryOneModeNetwork *>(processState->getNetwork(_networkIndex));
@@ -119,14 +119,14 @@ double InPopularity::getEffect(ProcessState* processState, int actorIndex) {
 	return (double) net->getInDegree(actorIndex);
 }
 
-std::string InPopularity::getName() {
+std::string InPopularityEffect::getName() {
 	return "In-popularity";
 }
 
-OutPopularity::OutPopularity(size_t networkIndex)  : OneModeNetworkEffect(networkIndex){
+OutPopularityEffect::OutPopularityEffect(size_t networkIndex)  : OneModeNetworkEffect(networkIndex){
 }
 
-double OutPopularity::getEffect(ProcessState* processState, int actorIndex) {
+double OutPopularityEffect::getEffect(ProcessState* processState, int actorIndex) {
 	double value = 0;
 	MemoryOneModeNetwork * net =
 			dynamic_cast<MemoryOneModeNetwork *>(processState->getNetwork(_networkIndex));
@@ -134,6 +134,6 @@ double OutPopularity::getEffect(ProcessState* processState, int actorIndex) {
 	return (double) net->getOutDegree(actorIndex);
 }
 
-std::string OutPopularity::getName() {
+std::string OutPopularityEffect::getName() {
 	return "Out-popularity";
 }

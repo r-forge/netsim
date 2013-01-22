@@ -1,5 +1,5 @@
 /*
- * MultinomialChoiceChangeModel.cpp
+ * MultinomialChoiceNetworkChangeModel.cpp
  *
  *  Created on: Jan 17, 2013
  *      Author: cws
@@ -9,7 +9,7 @@
 
 MultinomialChoiceNetworkChangeModel::MultinomialChoiceNetworkChangeModel(
 		int actorIndex, size_t dependentNetworkIndex,
-		std::set<std::pair<NetworkEffect*, double> *>* effectParameterPairs,
+		std::set<std::pair<SaomEffect*, double> *>* effectParameterPairs,
 		std::vector<Updater*>* updaters) {
 
 	init(actorIndex, dependentNetworkIndex, effectParameterPairs, updaters);
@@ -17,7 +17,7 @@ MultinomialChoiceNetworkChangeModel::MultinomialChoiceNetworkChangeModel(
 
 MultinomialChoiceNetworkChangeModel::MultinomialChoiceNetworkChangeModel(
 		int actorIndex, size_t dependentNetworkIndex,
-		std::set<std::pair<NetworkEffect*, double> *>* effectParameterPairs) {
+		std::set<std::pair<SaomEffect*, double> *>* effectParameterPairs) {
 
 	std::vector<Updater*>* updaters = new std::vector<Updater*>();
 	init(actorIndex, dependentNetworkIndex, effectParameterPairs, updaters);
@@ -89,7 +89,7 @@ void MultinomialChoiceNetworkChangeModel::setDebugMode(bool verbose) {
 
 void MultinomialChoiceNetworkChangeModel::init(int actorIndex,
 		size_t dependentNetworkIndex,
-		std::set<std::pair<NetworkEffect*, double> *>* effectParameterPairs,
+		std::set<std::pair<SaomEffect*, double> *>* effectParameterPairs,
 		std::vector<Updater*>* updaters) {
 
 	_actorIndex = actorIndex;
@@ -105,7 +105,7 @@ double MultinomialChoiceNetworkChangeModel::getValueObjectiveFunction(
 
 	double valueObjectiveFunction = 0.0;
 
-	std::set<std::pair<NetworkEffect*, double> *>::iterator itEffects = _effectParameterPairs->begin();
+	std::set<std::pair<SaomEffect*, double> *>::iterator itEffects = _effectParameterPairs->begin();
 
 	for (; itEffects != _effectParameterPairs->end(); ++itEffects){
 		double effectValue = (*itEffects)->first->getEffect(processState, i);

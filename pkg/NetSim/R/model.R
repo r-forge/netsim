@@ -6,7 +6,7 @@
 ################################
 # Create and update ModelManager
 
-create_model_manager <- function(name = "model manager"){
+create_model_manager <- function(){
 	.Call("create_model_manager", name, PACKAGE = "NetSim")
 }
 
@@ -56,22 +56,25 @@ get_effect_type <- function(name){
 	.Call("get_effect_type", name, PACKAGE = "NetSim")
 }
 
-add_to_effect_container<- function(effect, paramValue){
-	.Call("add_to_effect_container", effect, paramValue, PACKAGE = "NetSim")
+add_to_effect_container<- function(effectContainer, effect, paramValue){
+	.Call("add_to_effect_container", effectContainer, effect, paramValue, PACKAGE = "NetSim")
 }
 
+# by default implemented as using the tie swap updater
 create_multinomial_choice_network_change_model <- function(
-		focalActor, networkName, effectContainer, updaters){
+		focalActor, networkIndex, effectContainer){
+	updater <- create_tie_swap_updater(networkName);
 	.Call("create_multinomial_choice_network_change_model",
-			focalActor, networkName, effectContainer, updaters,
+			focalActor, networkIndex, effectContainer, updater,
 			PACKAGE = "NetSim")		
 }
 
 
 # updaters
 
-create_tie_swap_updater <- function(networkName){
-	.Call("create_tie_swap_updater", networkName, PACKAGE = "NetSim")
+create_tie_swap_updater <- function(networkIndex){
+	.Call("create_tie_swap_updater", networkIndex, PACKAGE = "NetSim")
 }
+
 
 

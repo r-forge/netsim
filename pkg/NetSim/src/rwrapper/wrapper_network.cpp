@@ -8,7 +8,7 @@
 #include "wrapper_network.h"
 
 SEXP create_network(SEXP matrix_, SEXP directed_, SEXP reflexive_) {
-	//BEGIN_RCPP
+	BEGIN_RCPP
 
 	Rcpp::NumericMatrix matrix(matrix_);
 	int nCol = matrix.ncol();
@@ -40,7 +40,7 @@ SEXP create_network(SEXP matrix_, SEXP directed_, SEXP reflexive_) {
 	return pointer;
 
 
-	//END_RCPP
+	END_RCPP
 }
 
 SEXP network_as_matrix(SEXP networkPointer_) {

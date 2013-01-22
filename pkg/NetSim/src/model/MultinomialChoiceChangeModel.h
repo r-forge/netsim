@@ -8,6 +8,9 @@
 #ifndef MULTINOMIALCHOICECHANGEMODEL_H_
 #define MULTINOMIALCHOICECHANGEMODEL_H_
 
+#include <utility>
+#include <math.h>
+#include <iostream>
 #include "ChangeModel.h"
 #include "saom/NetworkEffect.h"
 #include "Updater.h"
@@ -23,7 +26,7 @@ public:
 	 */
 	MultinomialChoiceNetworkChangeModel(int actorIndex,
 			size_t dependentNetworkIndex,
-			std::set<std::pair<NetworkEffect*, double> *> * effectParameterPairs,
+			std::set<std::pair<SaomEffect*, double> *> * effectParameterPairs,
 			std::vector<Updater*>* updaters);
 
 	/**
@@ -32,7 +35,7 @@ public:
 	 */
 	MultinomialChoiceNetworkChangeModel(int actorIndex,
 			size_t dependentNetworkIndex,
-			std::set<std::pair<NetworkEffect*, double> *> * effectParameterPairs);
+			std::set<std::pair<SaomEffect*, double> *> * effectParameterPairs);
 
 
 	/**
@@ -49,7 +52,7 @@ public:
 private:
 	int _actorIndex;
 	size_t _dependentNetworkIndex;
-	std::set<std::pair<NetworkEffect*, double> *> * _effectParameterPairs;
+	std::set<std::pair<SaomEffect*, double> *> * _effectParameterPairs;
 	// std::vector<NetworkEffect*> * _effects; // Effect container
 	// std::vector<double> * _parameters;
 	std::vector<Updater*> * _updaters;
@@ -57,7 +60,7 @@ private:
 
 	void init(int actorIndex,
 			size_t dependentNetworkIndex,
-			std::set<std::pair<NetworkEffect*, double> *> * effectParameterPairs,
+			std::set<std::pair<SaomEffect*, double> *> * effectParameterPairs,
 			std::vector<Updater*>* updaters);
 
 	double getValueObjectiveFunction(ProcessState * processState, int i);

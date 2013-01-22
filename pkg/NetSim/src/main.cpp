@@ -43,10 +43,10 @@ int main(int argc, char *argv[]){
 
 	ModelManager myModelManager;
 
-	std::set<std::pair<NetworkEffect*, double> *> effectParameterPairs;
+	std::set<std::pair<SaomEffect*, double> *> effectParameterPairs;
 
-	effectParameterPairs.insert(new std::pair<NetworkEffect*, double>(new DensityEffect(indexNetwork), -3.0));
-	effectParameterPairs.insert(new std::pair<NetworkEffect*, double>(new ReciprocityEffect(indexNetwork), 1.0));
+	effectParameterPairs.insert(new std::pair<SaomEffect*, double>(new DensityEffect(indexNetwork), -3.0));
+	effectParameterPairs.insert(new std::pair<SaomEffect*, double>(new ReciprocityEffect(indexNetwork), 1.0));
 
 	// one model chain per actor
 	for (int i = 0; i < nActors; i++){
