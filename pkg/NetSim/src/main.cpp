@@ -81,19 +81,6 @@ int main(int argc, char *argv[]){
 	// Run unit tests
 	runSuite();
 
-	RInside R(argc, argv);	// create an embedded R instance
-
-	SEXP s = rcpp_hello_world();
-	Language call("print", s);
-	SEXP s2 = CharacterVector::create("Hello, world");
-	Language call2("print", s2);
-	call.eval();
-	call2.eval();
-
-	s = create_process_state(CharacterVector::create("Hello, universe"));
-	Language call3("print", s);
-	call3.eval();
-
 	return 0;
 }
 
