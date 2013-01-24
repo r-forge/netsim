@@ -91,15 +91,20 @@ TwoPathEffect::TwoPathEffect(size_t networkIndex) : OneModeNetworkEffect(network
 }
 
 double TwoPathEffect::getEffect(ProcessState* processState, int actorIndex) {
-	double value = 0;
 	MemoryOneModeNetwork * net =
 			dynamic_cast<MemoryOneModeNetwork *>(processState->getNetwork(_networkIndex));
 
 	std::set<int> distanceTwo = net->getNodesInDistanceTwo(actorIndex);
+	std::set<int> neighboredNodes = net->getOutgoingNeighbors(actorIndex);
+
 	// delete all neighbored nodes
-	distanceTwo.erase(
-			net->getOutgoingNeighbors(actorIndex).begin(),
-			net->getOutgoingNeighbors(actorIndex).end());
+	// TODO: Is there a faster way?
+	for (std::set<int>::iterator it = neighboredNodes.begin();
+			it != neighboredNodes.end();
+			++it){
+		if (distanceTwo.find(*it) != distanceTwo.end())
+			distanceTwo.erase(*it);
+	}
 
 	return (double) distanceTwo.size();
 }
