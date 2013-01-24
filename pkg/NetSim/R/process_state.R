@@ -11,6 +11,15 @@ add_network <- function(processState, network, name = "default"){
 	.Call("add_network", processState, network, name, PACKAGE = "NetSim")
 }
 
-get_network_index <- function(processStateManager, name = "default"){
+get_network_index <- function(processState, name = "default"){
 	.Call("get_network_index", processState, name, PACKAGE = "NetSim")
 } 
+
+get_network <- function(processState, name = "default"){
+	.Call("get_network", processState, name, PACKAGE = "NetSim")
+} 
+
+# for testing
+print.processState <- function(x){
+	print(network_as_matrix(get_network("default")));
+}

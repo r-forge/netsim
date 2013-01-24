@@ -16,9 +16,9 @@
 RcppExport SEXP create_simulator(
 		SEXP processState, SEXP modelManager, SEXP periodLength, SEXP verbose);
 
-RcppExport SEXP simulate(
-		SEXP simulator);
+RcppExport SEXP simulate(SEXP simulator);
 
+RcppExport SEXP get_iteration_steps(SEXP simulator);
 
 
 #endif /* RWRAPPER_SIMULATOR_H_ */

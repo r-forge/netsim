@@ -36,7 +36,7 @@ SEXP create_network(SEXP matrix_, SEXP directed_, SEXP reflexive_) {
 		Rcpp::Rcout << "Warning: " << problematicTies <<
 			" ties could not be set." <<std::endl;
 
-	Rcpp::XPtr<MemoryOneModeNetwork> pointer(network, true);
+	Rcpp::XPtr<MemoryOneModeNetwork> pointer(network, false);
 	return pointer;
 
 
@@ -61,4 +61,20 @@ SEXP network_as_matrix(SEXP networkPointer_) {
 	return matrix;
 
 	END_RCPP
+}
+
+SEXP set_tie(SEXP network_, SEXP i_, SEXP j_, SEXP value_) {
+	BEGIN_RCPP
+
+		Rcpp::XPtr<MemoryOneModeNetwork> network(network_);
+
+		int i = Rcpp::as<int>(i_);
+		int j = Rcpp::as<int>(j_);
+		double value = Rcpp::as<double>(value_);
+
+		bool tieSet = network->setTie(i, j, value);
+
+		return Rcpp::wrap(tieSet);
+
+		END_RCPP
 }

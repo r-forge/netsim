@@ -16,7 +16,9 @@ SEXP create_process_state(SEXP n) {
 
 	ProcessStateManager * processStateManager = new ProcessStateManager(nameString);
 
-	Rcpp::XPtr<ProcessStateManager> pointer(processStateManager, true);
+	Rcpp::XPtr<ProcessStateManager> pointer(processStateManager, false);
+
+	pointer.attr("class") = "processState";
 
 	return pointer;
 
@@ -63,6 +65,20 @@ SEXP get_network_index(SEXP processStateManager_, SEXP name_) {
 	size_t index = processStateManager->getNetworkIndex(name);
 
 	return Rcpp::wrap(index);
+
+	END_RCPP
+}
+
+SEXP get_network(SEXP processStateManager_, SEXP name_) {
+	BEGIN_RCPP
+
+	ProcessStateManager * processStateManager =
+			Rcpp::XPtr<ProcessStateManager>(processStateManager_);
+	std::string name = Rcpp::as<std::string>(name_);
+
+	Network * network = processStateManager->getNetwork(name);
+
+	return Rcpp::XPtr<Network>(network, false);
 
 	END_RCPP
 }

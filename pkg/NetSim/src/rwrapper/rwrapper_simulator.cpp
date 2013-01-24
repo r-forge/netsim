@@ -9,6 +9,7 @@
 
 SEXP create_simulator(SEXP processStateManager_, SEXP modelManager_,
 		SEXP periodLength_, SEXP verbose_) {
+	BEGIN_RCPP
 
 	ProcessStateManager * processStateManager =
 			Rcpp::XPtr<ProcessStateManager>(processStateManager_);
@@ -21,12 +22,13 @@ SEXP create_simulator(SEXP processStateManager_, SEXP modelManager_,
 	Simulator * simulator = new Simulator(processState, modelManager, periodLength);
 	simulator->setVerbose(verbose);
 
-	return Rcpp::XPtr<Simulator>(simulator, true);
+	return Rcpp::XPtr<Simulator>(simulator, false);
 
-
+	END_RCPP
 }
 
 SEXP simulate(SEXP simulator_) {
+	BEGIN_RCPP
 
 	Simulator * simulator = Rcpp::XPtr<Simulator>(simulator_);
 
@@ -35,6 +37,19 @@ SEXP simulate(SEXP simulator_) {
 
 	SimulationResult result = simulator->getSimulationResult();
 
-	return Rcpp::XPtr<SimulationResult>(&result, true);
+	// return Rcpp::XPtr<SimulationResult>(&result, true);
+	return Rcpp::wrap(1);
 
+	END_RCPP
+}
+
+SEXP get_iteration_steps(SEXP simulator_) {
+	BEGIN_RCPP
+
+	Simulator * simulator = Rcpp::XPtr<Simulator>(simulator_);
+	int steps = simulator->getIterationSteps();
+
+	return Rcpp::wrap(steps);
+
+	END_RCPP
 }

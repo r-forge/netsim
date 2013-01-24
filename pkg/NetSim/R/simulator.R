@@ -13,3 +13,6 @@ simulate <- function(simulator){
 	.Call("simulate", simulator, PACKAGE = "NetSim")
 }
 
+get_iteration_steps <- function(simulator){
+	.Call("get_iteration_steps", simulator, PACKAGE = "NetSim")
+}

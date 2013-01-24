@@ -39,6 +39,9 @@ int main(int argc, char *argv[]){
 
 	size_t indexNetwork = myProcessState.addNetwork(&network);
 
+	// provokes uncaught exception
+	// NetworkUtils::dumpNetwork((OneModeNetwork *) (myProcessState.getNetwork(1)),2);
+
 	// define the models and the ModelManager
 
 	ModelManager myModelManager;

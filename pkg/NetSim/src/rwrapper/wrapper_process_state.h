@@ -21,5 +21,7 @@ RcppExport SEXP add_network(SEXP processStateManager, SEXP networkPointer, SEXP 
 
 RcppExport SEXP get_network_index(SEXP processStateManager, SEXP name);
 
+RcppExport SEXP get_network(SEXP processStateManager, SEXP name);
+
 
 #endif /* CREATE_PROCESS_STATE_H_ */

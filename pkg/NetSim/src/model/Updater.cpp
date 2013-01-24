@@ -126,6 +126,7 @@ void TieSwapUpdater::updateTie(ProcessState* processState,
 	swapTie(network, i, j);
 }
 
+// TODO: only works if undo is run directly after update of the same tie
 void TieSwapUpdater::undoUpdateTie(ProcessState* processState,
 		TieModelResult* result) {
 	int i = result->getActorIndex1();

@@ -10,8 +10,9 @@
 SEXP create_model_manager() {
 	BEGIN_RCPP
 
-	ModelManager * modelManager = new ModelManager;
-	return Rcpp::XPtr<ModelManager>(modelManager, true);
+	ModelManager * modelManager = new ModelManager();
+
+	return Rcpp::XPtr<ModelManager>(modelManager, false);
 
 	END_RCPP;
 }
@@ -24,7 +25,7 @@ SEXP add_time_model(SEXP modelManager_, SEXP timeModel_) {
 
 	modelManager->addTimeModel(timeModel);
 
-	return Rcpp::XPtr<ModelManager>(modelManager, true);
+	return Rcpp::XPtr<ModelManager>(modelManager, false);
 
 	END_RCPP
 }
@@ -38,7 +39,7 @@ SEXP add_change_model(SEXP modelManager_, SEXP timeModel_, SEXP changeModel_) {
 
 	modelManager->addChangeModel(timeModel, changeModel);
 
-	return Rcpp::XPtr<ModelManager>(modelManager, true);
+	return Rcpp::XPtr<ModelManager>(modelManager, false);
 
 	END_RCPP
 }
@@ -52,7 +53,7 @@ SEXP add_updater(SEXP modelManager_, SEXP changeModel_, SEXP updater_) {
 
 	modelManager->addUpdater(changeModel, updater);
 
-	return Rcpp::XPtr<ModelManager>(modelManager, true);
+	return Rcpp::XPtr<ModelManager>(modelManager, false);
 
 	END_RCPP
 }
@@ -63,7 +64,7 @@ SEXP create_poisson_model(SEXP param_) {
 	double param = Rcpp::as<double>(param_);
 	PoissonTimeModel * poissonModel = new PoissonTimeModel(param);
 
-	return Rcpp::XPtr<PoissonTimeModel>(poissonModel, true);
+	return Rcpp::XPtr<PoissonTimeModel>(poissonModel, false);
 
 	END_RCPP
 }
@@ -72,7 +73,7 @@ SEXP create_effect_container() {
 	BEGIN_RCPP
 
 	EffectContainerManager * manager = new EffectContainerManager();
-	return Rcpp::XPtr<EffectContainerManager>(manager, true);
+	return Rcpp::XPtr<EffectContainerManager>(manager, false);
 
 	END_RCPP
 }
@@ -87,7 +88,7 @@ SEXP create_one_mode_effect(SEXP name_, SEXP networkIndex_) {
 	OneModeNetworkEffect * effect =
 			factory.getOneModeNetworkEffect(name, index);
 
-	return Rcpp::XPtr<OneModeNetworkEffect>(effect, true);
+	return Rcpp::XPtr<OneModeNetworkEffect>(effect, false);
 
 	END_RCPP
 }
@@ -108,7 +109,7 @@ SEXP add_to_effect_container(SEXP effectContainer_, SEXP effect_, SEXP paramValu
 
 	manager->addToEffectContainer(effect, parameter);
 
-	return Rcpp::XPtr<EffectContainerManager>(manager, true);
+	return Rcpp::XPtr<EffectContainerManager>(manager, false);
 
 	END_RCPP
 }
@@ -134,7 +135,7 @@ SEXP create_multinomial_choice_network_change_model(SEXP focalActor_,
 			effectManager->getEffectContainer(),
 			updateList);
 
-	return Rcpp::XPtr<MultinomialChoiceNetworkChangeModel>(saom, true);
+	return Rcpp::XPtr<MultinomialChoiceNetworkChangeModel>(saom, false);
 
 	END_RCPP
 }
@@ -147,7 +148,7 @@ SEXP create_tie_swap_updater(SEXP networkIndex_) {
 	TieSwapUpdater * tieSwapUpdater =
 			new TieSwapUpdater(networkIndex);
 
-	return Rcpp::XPtr<TieSwapUpdater>(tieSwapUpdater, true);
+	return Rcpp::XPtr<TieSwapUpdater>(tieSwapUpdater, false);
 
 	END_RCPP
 }

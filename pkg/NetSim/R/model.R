@@ -20,8 +20,9 @@ add_change_model <- function(modelManager, timeModel, changeModel){
 }
 
 add_updater <- function(modelManager, changeModel, updater){
-	.Call("add_change_model",modelManager, changeModel, updater, package = "NetSim")
+	.Call("add_updater",modelManager, changeModel, updater, package = "NetSim")
 }
+
 
 ##############################
 # Create particular models

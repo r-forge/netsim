@@ -8,6 +8,9 @@
 #ifndef PROCESSSTATE_H_
 #define PROCESSSTATE_H_
 
+#include <map>
+#include <boost/lexical_cast.hpp>
+#include <stdexcept>
 #include "../network/Network.h"
 #include "../attribute/AttributeContainer.h"
 
@@ -61,13 +64,30 @@ public:
 	 */
 	int getNumberOfActors();
 
+	/**
+	 * get number of networks
+	 */
+	int getNumberOfNetworks();
+
+	/**
+	 * get number of attribute containers
+	 */
+	int getNumberOfAttributeContainers();
+
+	/**
+	 * get number of global attributes
+	 */
+	int getNumberOfGlobalAttributes();
 
 
 private:
-	std::vector<Network*> _networks;
-	std::vector<AttributeContainer*> _attributeContainers;
-	std::vector<double*> _globalAttributes;
-	int _nActors;
+	std::map<int, Network*> _networks;
+	std::map<int, AttributeContainer*> _attributeContainers;
+	std::map<int, double*> _globalAttributes;
+	size_t _nNetworks;
+	size_t _nAttributeContainers;
+	size_t _nGlobalAttributes;
+	size_t _nActors;
 
 };
 
