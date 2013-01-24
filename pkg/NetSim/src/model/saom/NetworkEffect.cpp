@@ -121,7 +121,15 @@ double InPopularityEffect::getEffect(ProcessState* processState, int actorIndex)
 	MemoryOneModeNetwork * net =
 			dynamic_cast<MemoryOneModeNetwork *>(processState->getNetwork(_networkIndex));
 
-	return (double) net->getInDegree(actorIndex);
+	std::set<int> neighbors = net->getOutgoingNeighbors(actorIndex);
+
+	// sum the incoming ties of all neighbors
+	for (std::set<int>::iterator it = neighbors.begin(); it != neighbors.end(); ++it){
+		value += (double) net->getIncomingNeighbors(*it).size();
+	}
+
+	return value;
+
 }
 
 std::string InPopularityEffect::getName() {
@@ -136,7 +144,15 @@ double OutPopularityEffect::getEffect(ProcessState* processState, int actorIndex
 	MemoryOneModeNetwork * net =
 			dynamic_cast<MemoryOneModeNetwork *>(processState->getNetwork(_networkIndex));
 
-	return (double) net->getOutDegree(actorIndex);
+	std::set<int> neighbors = net->getOutgoingNeighbors(actorIndex);
+
+	// sum the incoming ties of all neighbors
+	for (std::set<int>::iterator it = neighbors.begin(); it != neighbors.end(); ++it){
+		value += (double) net->getOutgoingNeighbors(*it).size();
+	}
+
+	return value;
+
 }
 
 std::string OutPopularityEffect::getName() {

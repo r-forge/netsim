@@ -32,6 +32,18 @@ MemoryOneModeNetwork getSimpleNetwork2(){
 	return network;
 }
 
+// complete network with three nodes
+MemoryOneModeNetwork getSimpleNetwork3(){
+	MemoryOneModeNetwork network(3);
+	network.addTie(0,1);
+	network.addTie(1,0);
+	network.addTie(0,2);
+	network.addTie(2,0);
+	network.addTie(1,2);
+	network.addTie(2,1);
+	return network;
+}
+
 
 void densityEffectTest(){
 	ProcessState processState;
@@ -60,12 +72,100 @@ void twoPathEffectTest(){
 
 }
 
+void transTripEffectTest(){
+	ProcessState processState;
+	MemoryOneModeNetwork network = getSimpleNetwork2();
+	size_t indexNetwork = processState.addNetwork(&network);
+
+	TransitivityEffect transTripEffect(indexNetwork);
+	ASSERT_EQUAL(1, transTripEffect.getEffect(&processState, 0));
+	ASSERT_EQUAL(0, transTripEffect.getEffect(&processState, 1));
+	ASSERT_EQUAL(1, transTripEffect.getEffect(&processState, 2));
+
+	MemoryOneModeNetwork network2 = getSimpleNetwork3();
+	size_t indexNetwork2 = processState.addNetwork(&network2);
+
+	TransitivityEffect transTripEffect2(indexNetwork2);
+	ASSERT_EQUAL(2, transTripEffect2.getEffect(&processState, 0));
+
+}
+
+void threeCycleEffectTest(){
+	ProcessState processState;
+	MemoryOneModeNetwork network = getSimpleNetwork2();
+	size_t indexNetwork = processState.addNetwork(&network);
+
+	ThreeCycleEffect threeCycleEffect(indexNetwork);
+	ASSERT_EQUAL(0, threeCycleEffect.getEffect(&processState, 0));
+	ASSERT_EQUAL(0, threeCycleEffect.getEffect(&processState, 1));
+	ASSERT_EQUAL(0, threeCycleEffect.getEffect(&processState, 2));
+	network.addTie(2,0);
+	ASSERT_EQUAL(1, threeCycleEffect.getEffect(&processState, 0));
+	network.addTie(4,0);
+	ASSERT_EQUAL(2, threeCycleEffect.getEffect(&processState, 0));
+	network.addTie(3,0);
+	ASSERT_EQUAL(3, threeCycleEffect.getEffect(&processState, 0));
+}
+
+void reciprocityEffectTest(){
+	ProcessState processState;
+	MemoryOneModeNetwork network = getSimpleNetwork3();
+	size_t indexNetwork = processState.addNetwork(&network);
+
+	ReciprocityEffect reciprocityEffect(indexNetwork);
+	ASSERT_EQUAL(2, reciprocityEffect.getEffect(&processState, 0));
+	network.removeTie(1,0);
+	ASSERT_EQUAL(1, reciprocityEffect.getEffect(&processState, 0));
+	network.removeTie(0,2);
+	ASSERT_EQUAL(0, reciprocityEffect.getEffect(&processState, 0));
+	network.addTie(1,0);
+	ASSERT_EQUAL(1, reciprocityEffect.getEffect(&processState, 0));
+	network.addTie(1,0);
+	ASSERT_EQUAL(1, reciprocityEffect.getEffect(&processState, 0));
+
+}
+
+void inPopularityEffectTest(){
+	ProcessState processState;
+	MemoryOneModeNetwork network = getSimpleNetwork3();
+	size_t indexNetwork = processState.addNetwork(&network);
+
+	InPopularityEffect inPopEffect(indexNetwork);
+	ASSERT_EQUAL(4, inPopEffect.getEffect(&processState, 0));
+	network.removeTie(1,0);
+	ASSERT_EQUAL(4, inPopEffect.getEffect(&processState, 0));
+	network.removeTie(0,1);
+	ASSERT_EQUAL(2, inPopEffect.getEffect(&processState, 0));
+	network.removeTie(1,2);
+	ASSERT_EQUAL(1, inPopEffect.getEffect(&processState, 0));
+}
+
+void outPopularityEffectTest(){
+	ProcessState processState;
+	MemoryOneModeNetwork network = getSimpleNetwork3();
+	size_t indexNetwork = processState.addNetwork(&network);
+
+	OutPopularityEffect outPopEffect(indexNetwork);
+	ASSERT_EQUAL(4, outPopEffect.getEffect(&processState, 0));
+	network.removeTie(1,0);
+	ASSERT_EQUAL(3, outPopEffect.getEffect(&processState, 0));
+	network.removeTie(0,1);
+	ASSERT_EQUAL(2, outPopEffect.getEffect(&processState, 0));
+	network.removeTie(1,2);
+	ASSERT_EQUAL(2, outPopEffect.getEffect(&processState, 0));
+}
+
 
 cute::suite getTestSaomEffectsSuite(){
 	cute::suite s;
 
 	s.push_back(CUTE(densityEffectTest));
+	s.push_back(CUTE(reciprocityEffectTest));
+	s.push_back(CUTE(transTripEffectTest));
+	s.push_back(CUTE(threeCycleEffectTest));
 	s.push_back(CUTE(twoPathEffectTest));
+	s.push_back(CUTE(inPopularityEffectTest));
+	s.push_back(CUTE(outPopularityEffectTest));
 
 	return s;
 }
