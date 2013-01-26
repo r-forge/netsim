@@ -41,12 +41,12 @@ public:
 	/**
 	 * set attribute to max value
 	 */
-	bool setMax(int i);
+	bool setAsMax(int i);
 
 	/**
 	 * set attribute to minimum value
 	 */
-	bool setMin(int i);
+	bool setAsMin(int i);
 
 	/**
 	 *  sets the attribute value
@@ -73,6 +73,19 @@ public:
 	 * Get the number of actors
 	 */
 	int getSize();
+
+	/**
+	 * get minimum value
+	 */
+	double getMin();
+
+	/**
+	 * get maximum value
+	 */
+	double getMax();
+
+
+
 
 private:
 	double _min;

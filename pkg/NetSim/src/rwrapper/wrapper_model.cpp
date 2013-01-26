@@ -88,7 +88,29 @@ SEXP create_one_mode_effect(SEXP name_, SEXP networkIndex_) {
 	OneModeNetworkEffect * effect =
 			factory.getOneModeNetworkEffect(name, index);
 
-	return Rcpp::XPtr<OneModeNetworkEffect>(effect, false);
+	Rcpp::XPtr<OneModeNetworkEffect> pointer(effect, false);
+	pointer.attr("class") = "OneModeNetworkEffect";
+
+	return pointer;
+
+	END_RCPP
+}
+
+SEXP create_attribute_one_mode_effect(SEXP name_, SEXP networkIndex_, SEXP attributeIndex_) {
+	BEGIN_RCPP
+
+	std::string name = Rcpp::as<std::string>(name_);
+	int networkIndex = Rcpp::as<int>(networkIndex_);
+	int attributeIndex = Rcpp::as<int>(attributeIndex_);
+
+	EffectFactory factory;
+	OneModeNetworkEffect * effect =
+			factory.getAttributeOneModeNetworkEffect(name, networkIndex, attributeIndex);
+
+	Rcpp::XPtr<OneModeNetworkEffect> pointer(effect, false);
+	pointer.attr("class") = "OneModeNetworkEffect";
+
+	return pointer;
 
 	END_RCPP
 }

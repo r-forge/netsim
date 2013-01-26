@@ -20,6 +20,7 @@ class SaomEffect {
 public:
 	virtual ~SaomEffect() { }
 	virtual double getEffect(ProcessState * processState, int actorIndex) = 0;
+	virtual std::string getClassName() = 0;
 	virtual std::string getName() = 0;
 
 };
@@ -28,6 +29,8 @@ class OneModeNetworkEffect : public SaomEffect{
 
 public:
 	OneModeNetworkEffect(size_t networkIndex);
+
+	std::string getClassName();
 
 protected:
 	size_t _networkIndex;
@@ -114,5 +117,101 @@ public:
 	std::string getName();
 
 };
+
+class AttributeEffect : public SaomEffect{
+
+public:
+	AttributeEffect(size_t attributeIndex);
+
+	std::string getClassName();
+
+
+protected:
+	size_t _attributeIndex;
+
+};
+
+class LinearShapeAttributeEffect : public AttributeEffect{
+
+public:
+	LinearShapeAttributeEffect(size_t attributeIndex);
+
+	double getEffect(ProcessState * processState, int actorIndex);
+
+	std::string getName();
+
+
+};
+
+class QuadraticShapeAttributeEffect : public AttributeEffect{
+
+public:
+	QuadraticShapeAttributeEffect(size_t attributeIndex);
+
+	double getEffect(ProcessState * processState, int actorIndex);
+
+	std::string getName();
+
+
+};
+
+
+class AttributeOneModeNetworkEffect : public AttributeEffect, public OneModeNetworkEffect{
+public:
+	AttributeOneModeNetworkEffect(size_t attributeIndex, size_t networkIndex);
+	std::string getClassName();
+
+};
+
+class EgoXEffect : public AttributeOneModeNetworkEffect{
+
+public:
+	EgoXEffect(size_t attributeIndex, size_t networkIndex);
+
+	double getEffect(ProcessState * processState, int actorIndex);
+
+	std::string getName();
+
+};
+
+
+
+
+class AltXEffect : public AttributeOneModeNetworkEffect{
+
+public:
+	AltXEffect(size_t attributeIndex, size_t networkIndex);
+
+	double getEffect(ProcessState * processState, int actorIndex);
+
+	std::string getName();
+};
+
+/**
+ * All similarity related effects share empirical
+ * mean of similarity scores based (see SIENA manual p.105, effect 40 "simX")
+ */
+class SimilarityAttributeOneModeNetworkEffect : public AttributeOneModeNetworkEffect{
+public:
+	SimilarityAttributeOneModeNetworkEffect(size_t attributeIndex, size_t networkIndex, double meanSimilarityScores);
+
+protected:
+	double _meanSimilarityScores;
+};
+
+/**
+ * The total similarity effect is an implementation of simX and totSim.
+ * These effects only differ by the dependent variable (network vs. attribute)
+ */
+class TotalSimilarityEffect : public SimilarityAttributeOneModeNetworkEffect{
+
+public:
+	TotalSimilarityEffect(size_t attributeIndex, size_t networkIndex, double meanSimilarityScores);
+
+	double getEffect(ProcessState * processState, int actorIndex);
+
+	std::string getName();
+};
+
 
 #endif /* NETWORKEFFECT_H_ */

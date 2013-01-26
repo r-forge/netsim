@@ -24,6 +24,9 @@ public:
 	OneModeNetworkEffect * getOneModeNetworkEffect(
 			std::string name, size_t networkIndex);
 
+	AttributeOneModeNetworkEffect * getAttributeOneModeNetworkEffect(
+			std::string name, size_t attributeIndex, size_t networkIndex);
+
 };
 
 

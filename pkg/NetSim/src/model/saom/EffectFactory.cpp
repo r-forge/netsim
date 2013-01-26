@@ -38,3 +38,18 @@ OneModeNetworkEffect * EffectFactory::getOneModeNetworkEffect(
 	errorMessage += name;
 	throw std::invalid_argument(errorMessage);
 }
+
+AttributeOneModeNetworkEffect* EffectFactory::getAttributeOneModeNetworkEffect(
+		std::string name, size_t networkIndex, size_t attributeIndex) {
+
+	if(name == "altX")
+		;
+
+	if(name == "egoX")
+		;
+
+
+	std::string errorMessage = "Unknown attribute one mode network effect: ";
+	errorMessage += name;
+	throw std::invalid_argument(errorMessage);
+}

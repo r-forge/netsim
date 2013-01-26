@@ -38,6 +38,7 @@ bool AttributeContainer::decreaseValue(int i) {
 bool AttributeContainer::setValue(int i, double value) {
 	bool r = false;
 
+	// TODO check the "by" attribute
 	if ( (value >= _min) & (value <= _max) ){
 		_actorValueMap[i] = value;
 		r = true;
@@ -66,12 +67,20 @@ int AttributeContainer::getSize() {
 	return _actorValueMap.size();
 }
 
-bool AttributeContainer::setMax(int i) {
+bool AttributeContainer::setAsMax(int i) {
 	return setValue(i, _max);
 }
 
-bool AttributeContainer::setMin(int i) {
+bool AttributeContainer::setAsMin(int i) {
 	return setValue(i, _min);
+}
+
+double AttributeContainer::getMin() {
+	return _min;
+}
+
+double AttributeContainer::getMax() {
+	return _max;
 }
 
 void AttributeContainer::init(int n, std::vector<double> values, double min,

@@ -158,3 +158,141 @@ double OutPopularityEffect::getEffect(ProcessState* processState, int actorIndex
 std::string OutPopularityEffect::getName() {
 	return "Out-popularity";
 }
+
+AttributeEffect::AttributeEffect(size_t attributeIndex) {
+	_attributeIndex = attributeIndex;
+}
+
+AttributeOneModeNetworkEffect::AttributeOneModeNetworkEffect(size_t attributeIndex, size_t networkIndex) :
+		AttributeEffect(attributeIndex), OneModeNetworkEffect(networkIndex){
+}
+
+std::string OneModeNetworkEffect::getClassName() {
+	return "OneModeNetworkEffect";
+}
+
+std::string AttributeEffect::getClassName() {
+	return "AttributeEffect";
+}
+
+std::string AttributeOneModeNetworkEffect::getClassName() {
+	return "AttributeOneModeNetworkEffect";
+}
+
+double EgoXEffect::getEffect(ProcessState* processState, int actorIndex) {
+	AttributeContainer * attributeContainer =
+			processState->getAttributeContainer(_attributeIndex);
+	MemoryOneModeNetwork * network =
+			dynamic_cast<MemoryOneModeNetwork *>(processState->getNetwork(_networkIndex));
+
+	double value;
+	value = attributeContainer->getValue(actorIndex);
+	value *= network->getOutgoingNeighbors(actorIndex).size();
+
+	return value;
+}
+
+EgoXEffect::EgoXEffect(size_t attributeIndex, size_t networkIndex) :
+	AttributeOneModeNetworkEffect(attributeIndex, networkIndex){
+}
+
+std::string EgoXEffect::getName() {
+	return "egoX";
+}
+
+double AltXEffect::getEffect(ProcessState* processState, int actorIndex) {
+	AttributeContainer * attributeContainer =
+			processState->getAttributeContainer(_attributeIndex);
+	MemoryOneModeNetwork * network =
+			dynamic_cast<MemoryOneModeNetwork *>(processState->getNetwork(_networkIndex));
+
+	double value;
+	std::set<int> neighbors = network->getOutgoingNeighbors(actorIndex);
+	std::set<int>::iterator it = neighbors.begin();
+	for (; it != neighbors.end(); ++it){
+		value += attributeContainer->getValue(*it);
+	}
+
+	return value;
+}
+
+AltXEffect::AltXEffect(size_t attributeIndex, size_t networkIndex) :
+			AttributeOneModeNetworkEffect(attributeIndex, networkIndex){
+}
+
+std::string AltXEffect::getName() {
+	return "altX";
+}
+
+SimilarityAttributeOneModeNetworkEffect::SimilarityAttributeOneModeNetworkEffect(
+		size_t attributeIndex, size_t networkIndex,
+		double meanSimilarityScores = 0.5) : AttributeOneModeNetworkEffect(attributeIndex, networkIndex){
+	_meanSimilarityScores = meanSimilarityScores;
+}
+
+LinearShapeAttributeEffect::LinearShapeAttributeEffect(size_t attributeIndex) :
+	AttributeEffect (attributeIndex){
+}
+
+double LinearShapeAttributeEffect::getEffect(ProcessState* processState,
+		int actorIndex) {
+	AttributeContainer * attributeContainer =
+			processState->getAttributeContainer(_attributeIndex);
+	return attributeContainer->getValue(actorIndex);
+}
+
+std::string LinearShapeAttributeEffect::getName() {
+	return "linear shape effect";
+}
+
+QuadraticShapeAttributeEffect::QuadraticShapeAttributeEffect(size_t attributeIndex) :
+		AttributeEffect (attributeIndex){
+}
+
+double QuadraticShapeAttributeEffect::getEffect(ProcessState* processState,
+		int actorIndex) {
+	AttributeContainer * attributeContainer =
+			processState->getAttributeContainer(_attributeIndex);
+	// return squared effect
+	return pow(attributeContainer->getValue(actorIndex), 2);
+
+}
+
+std::string QuadraticShapeAttributeEffect::getName() {
+	return "Quadratic shape effect";
+}
+
+TotalSimilarityEffect::TotalSimilarityEffect(size_t attributeIndex,
+		size_t networkIndex, double meanSimilarityScores) :
+				SimilarityAttributeOneModeNetworkEffect(attributeIndex, networkIndex, meanSimilarityScores){
+}
+
+double TotalSimilarityEffect::getEffect(ProcessState* processState,
+		int actorIndex) {
+
+	AttributeContainer * attributeContainer =
+			processState->getAttributeContainer(_attributeIndex);
+	MemoryOneModeNetwork * network =
+			dynamic_cast<MemoryOneModeNetwork *>(processState->getNetwork(_networkIndex));
+
+	double value = 0;
+	double minAttributeValue = attributeContainer->getMin();
+	double maxAttributeValue = attributeContainer->getMax();
+	double egoValue = attributeContainer->getValue(actorIndex);
+	double range = maxAttributeValue - minAttributeValue;
+
+	std::set<int> neighbors = network->getOutgoingNeighbors(actorIndex);
+	std::set<int>::iterator it = neighbors.begin();
+
+	for (; it != neighbors.end(); ++it){
+		double alterValue = attributeContainer->getValue(*it);
+		double sim = (range - abs(alterValue - egoValue)) / range;
+		value += sim - _meanSimilarityScores;
+	}
+
+	return value;
+}
+
+std::string TotalSimilarityEffect::getName() {
+	return "Total similarity";
+}
