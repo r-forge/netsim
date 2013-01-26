@@ -38,7 +38,12 @@ bool AttributeContainer::decreaseValue(int i) {
 bool AttributeContainer::setValue(int i, double value) {
 	bool r = false;
 
-	// TODO check the "by" attribute
+	// check that value is a multiple of the by attribute + the min value
+	double checkedValue = (round((value - _min) / _by) * _by) + _min;
+
+	if (value != checkedValue)
+		std::cout << "Incorrect attribute value: " << value << std::endl;
+
 	if ( (value >= _min) & (value <= _max) ){
 		_actorValueMap[i] = value;
 		r = true;
@@ -105,9 +110,7 @@ void AttributeContainer::init(int n, std::vector<double> values, double min,
 		if ( (values[i] < _min) | (values[i] > _max) ){
 			throw std::invalid_argument("initial value out of range");
 		}
-		_actorValueMap.insert(
-				std::map<int,double>::value_type(i, values[i])
-		);
+		setValue(i, values[i]);
 	}
 
 }

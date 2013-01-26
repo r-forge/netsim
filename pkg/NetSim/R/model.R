@@ -44,8 +44,8 @@ create_effect <- function(x, ...){
 }
 
 create_effect.character <- function(name, ...){
-	type = get_effect_type(name);
-	create_effect(type, name, ...)
+	typedName = get_effect_type(name);
+	create_effect(typedName, name, ...)
 	
 }
 
@@ -53,9 +53,28 @@ create_effect.OneModeNetworkEffect <- function(type, name, networkIndex){
 	.Call("create_one_mode_effect", name, networkIndex, PACKAGE = "NetSim")
 }
 
+
+create_effect.AttributeOneModeNetworkEffect <- function(type, name, attributeIndex, networkIndex){
+	.Call("create_attribute_one_mode_effect", name, attributeIndex, networkIndex, PACKAGE = "NetSim")
+}
+
+create_effect.SimilarityAttributeOneModeNetworkEffect <- function(type, name, attributeIndex, networkIndex, meanSimilarityScores){
+	.Call("create_similarity_attribute_one_mode_effect", name, attributeIndex, networkIndex, meanSimilarityScores, PACKAGE = "NetSim")
+}
+
+create_effect.AttributeEffect <- function(type, name, attributeIndex){
+	.Call("create_attribute_effect", name, attributeIndex, PACKAGE = "NetSim")
+}
+
+
+## error
+create_effect.UnknownType <- function(name, ...){
+	print(paste("Unknown effect type: ", name, sep=""))
+}
+
 get_effect_type <- function(name){
-	#.Call("get_effect_type", name, PACKAGE = "NetSim")
-	structure(name, class="OneModeNetworkEffect")
+	type <- .Call("get_effect_type", name, PACKAGE = "NetSim")
+	structure(name, class=type)
 }
 
 add_to_effect_container<- function(effectContainer, effect, paramValue){

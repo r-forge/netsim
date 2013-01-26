@@ -14,6 +14,9 @@
 /**
  * Abstract class of network effects to be used in
  * multinomial choice models
+ *
+ * TODO: consider removing any string naming from internal
+ * effect representation
  */
 class SaomEffect {
 

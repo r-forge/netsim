@@ -7,6 +7,24 @@
 
 #include "EffectFactory.h"
 
+std::string EffectFactory::getType(std::string name) {
+	// create dummy objects
+	if(NULL != getOneModeNetworkEffect(name, -1))
+		return "OneModeNetworkEffect";
+
+	if(NULL != getAttributeOneModeNetworkEffect(name, -1, -1))
+		return "AttributeOneModeNetworkEffect";
+
+	if(NULL != getSimilarityAttributeOneModeNetworkEffect(name, -1, -1, 0))
+		return "SimilarityAttributeOneModeNetworkEffect";
+
+	if(NULL != getAttributeEffect(name, -1))
+		return "AttributeEffect";
+
+	return "UnknownType";
+
+}
+
 OneModeNetworkEffect * EffectFactory::getOneModeNetworkEffect(
 		std::string name, size_t networkIndex) {
 
@@ -34,22 +52,56 @@ OneModeNetworkEffect * EffectFactory::getOneModeNetworkEffect(
 		return new OutPopularityEffect(networkIndex);
 
 
-	std::string errorMessage = "Unknown one mode network effect: ";
-	errorMessage += name;
-	throw std::invalid_argument(errorMessage);
+	return NULL;
+
+	// error moved to R
+	// std::string errorMessage = "Unknown one mode network effect: ";
+	// errorMessage += name;
+	// throw std::invalid_argument(errorMessage);
 }
 
 AttributeOneModeNetworkEffect* EffectFactory::getAttributeOneModeNetworkEffect(
-		std::string name, size_t networkIndex, size_t attributeIndex) {
+		std::string name,
+		size_t attributeIndex,
+		size_t networkIndex) {
 
 	if(name == "altX")
-		;
+		return new AltXEffect(attributeIndex, networkIndex);
 
 	if(name == "egoX")
-		;
+		return new EgoXEffect(attributeIndex, networkIndex);
+
+	return NULL;
+
+}
+
+SimilarityAttributeOneModeNetworkEffect* EffectFactory::getSimilarityAttributeOneModeNetworkEffect(
+		std::string name,
+		size_t attributeIndex,
+		size_t networkIndex,
+		double meanSimilarityScores) {
+
+	// simX and totSim share the same change model
+	if(name == "simX")
+		return new TotalSimilarityEffect(attributeIndex, networkIndex, meanSimilarityScores);
+
+	// simX and totSim share the same change model
+	if(name == "totSim")
+		return new TotalSimilarityEffect(attributeIndex, networkIndex, meanSimilarityScores);
+
+	return NULL;
+}
+
+AttributeEffect * EffectFactory::getAttributeEffect(std::string name,
+		size_t attributeIndex) {
+
+	if(name == "linear")
+		return new LinearShapeAttributeEffect(attributeIndex);
 
 
-	std::string errorMessage = "Unknown attribute one mode network effect: ";
-	errorMessage += name;
-	throw std::invalid_argument(errorMessage);
+	if(name == "quad")
+		return new QuadraticShapeAttributeEffect(attributeIndex);
+
+	return NULL;
+
 }

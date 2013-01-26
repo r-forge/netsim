@@ -33,6 +33,15 @@ RcppExport SEXP create_effect_container();
 
 RcppExport SEXP create_one_mode_effect(SEXP name, SEXP networkIndex);
 
+RcppExport SEXP create_attribute_one_mode_effect(SEXP name, SEXP attributeIndex, SEXP networkIndex);
+
+RcppExport SEXP create_similarity_attribute_one_mode_effect(SEXP name,
+		SEXP attributeIndex,
+		SEXP networkIndex,
+		SEXP meanSimilarityScores);
+
+RcppExport SEXP create_attribute_effect(SEXP name, SEXP attributeIndex);
+
 RcppExport SEXP get_effect_type(SEXP name);
 
 RcppExport SEXP add_to_effect_container(SEXP effectContainer, SEXP effect, SEXP paramValue);
