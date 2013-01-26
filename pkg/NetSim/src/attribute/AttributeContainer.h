@@ -21,7 +21,7 @@
 class AttributeContainer{
 
 public:
-	AttributeContainer(int n, std::vector<double> values,
+	AttributeContainer(std::vector<double> values,
 			double min = 0.0, double max = 1.0, double by = 1.0);
 	AttributeContainer(int n, double value,
 				double min = 0.0, double max = 1.0, double by = 1.0);
@@ -87,6 +87,7 @@ public:
 
 
 
+
 private:
 	double _min;
 	double _max;
@@ -95,7 +96,7 @@ private:
 	// boost::unordered_map<int, double> _actorValueMap;
 	std::map<int, double> _actorValueMap;
 
-	void init(int n, std::vector<double> values,
+	void init(std::vector<double> values,
 			double min = 0.0, double max = 1.0, double by = 1.0);
 };
 

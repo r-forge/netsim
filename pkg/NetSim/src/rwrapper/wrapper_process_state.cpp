@@ -50,7 +50,7 @@ SEXP add_network(SEXP processStateManager_, SEXP network_, SEXP name_) {
 	processStateManager->addNetwork(network, name);
 
 	// is this exactly the same pointer or is there a chance that it has changed?
-	return Rcpp::XPtr<ProcessStateManager>(processStateManager, true);
+	return Rcpp::XPtr<ProcessStateManager>(processStateManager, false);
 
 	END_RCPP
 }
@@ -79,6 +79,52 @@ SEXP get_network(SEXP processStateManager_, SEXP name_) {
 	Network * network = processStateManager->getNetwork(name);
 
 	return Rcpp::XPtr<Network>(network, false);
+
+	END_RCPP
+}
+
+SEXP add_attribute_container(SEXP processStateManager_, SEXP attributeContainer_,
+		SEXP name_) {
+	BEGIN_RCPP
+
+	ProcessStateManager * processStateManager =
+			Rcpp::XPtr<ProcessStateManager>(processStateManager_);
+
+	AttributeContainer * attributeContainer =
+			Rcpp::XPtr<AttributeContainer>(attributeContainer_);
+	std::string name = Rcpp::as<std::string>(name_);
+
+	processStateManager->addAttributeContainter(attributeContainer, name);
+
+	return Rcpp::XPtr<ProcessStateManager>(processStateManager, false);
+
+	END_RCPP
+}
+
+SEXP get_attribute_container_index(SEXP processStateManager_, SEXP name_) {
+	BEGIN_RCPP
+
+	ProcessStateManager * processStateManager =
+			Rcpp::XPtr<ProcessStateManager>(processStateManager_);
+	std::string name = Rcpp::as<std::string>(name_);
+
+	size_t index = processStateManager->getAttributeContainerIndex(name);
+
+	return Rcpp::wrap(index);
+
+	END_RCPP
+}
+
+SEXP get_attribute_container(SEXP processStateManager_, SEXP name_) {
+	BEGIN_RCPP
+
+	ProcessStateManager * processStateManager =
+			Rcpp::XPtr<ProcessStateManager>(processStateManager_);
+	std::string name = Rcpp::as<std::string>(name_);
+
+	AttributeContainer * attributeContainer = processStateManager->getAttributeContainer(name);
+
+	return Rcpp::XPtr<AttributeContainer>(attributeContainer, false);
 
 	END_RCPP
 }
