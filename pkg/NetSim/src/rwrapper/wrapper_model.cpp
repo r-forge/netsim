@@ -224,3 +224,24 @@ SEXP create_attribute_effect(SEXP name_, SEXP attributeIndex_) {
 	END_RCPP
 
 }
+
+SEXP create_multinomial_choice_behavior_change_model(SEXP focalActorIndex_, SEXP attributeIndex_,
+		SEXP effectContainer_) {
+	BEGIN_RCPP
+
+	int actorIndex = Rcpp::as<int>(focalActorIndex_);
+	int attributeIndex = Rcpp::as<int>(attributeIndex_);
+	EffectContainerManager * effectManager =
+			Rcpp::XPtr<EffectContainerManager>(effectContainer_);
+
+
+
+	MultinomialChoiceBehaviorChangeModel * behaviorSaom = new MultinomialChoiceBehaviorChangeModel(
+			actorIndex,
+			attributeIndex,
+			effectManager->getEffectContainer());
+
+	return Rcpp::XPtr<MultinomialChoiceBehaviorChangeModel>(behaviorSaom, false);
+
+	END_RCPP
+}

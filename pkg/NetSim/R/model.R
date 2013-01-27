@@ -90,6 +90,13 @@ create_multinomial_choice_network_change_model <- function(
 			PACKAGE = "NetSim")		
 }
 
+create_multinomial_choice_behavior_change_model <- function(
+		focalActorIndex, attributeIndex, effectContainer){
+	.Call("create_multinomial_choice_behavior_change_model", 
+			focalActorIndex, attributeIndex, effectContainer,
+			PACKAGE = "NetSim")
+}
+
 
 create_siena_model_manager <- function(poissonParameter, dependentNetworkIndex, 
 		effectNames, effectInitParameters, effectParameters, nActors){

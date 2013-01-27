@@ -14,6 +14,7 @@
 #include "../model/TimeModel.h"
 #include "../model/ChangeModel.h"
 #include "../model/MultinomialChoiceNetworkChangeModel.h"
+#include "../model/MultinomialChoiceBehaviorChangeModel.h"
 #include "../model/Updater.h"
 #include "../model/saom/NetworkEffect.h"
 #include "../model/saom/EffectContainerManager.h"
@@ -51,7 +52,10 @@ RcppExport SEXP add_to_effect_container(SEXP effectContainer, SEXP effect, SEXP 
  * So far, this only implements one updater instead of an updater list.
  */
 RcppExport SEXP create_multinomial_choice_network_change_model(
-		SEXP networkIndex, SEXP networkName, SEXP effectContainer, SEXP updater);
+		SEXP focalActorIndex, SEXP networkIndex, SEXP effectContainer, SEXP updater);
+
+RcppExport SEXP create_multinomial_choice_behavior_change_model(
+		SEXP focalActorIndex, SEXP attributeIndex, SEXP effectContainer);
 
 RcppExport SEXP create_tie_swap_updater(SEXP networkIndex);
 
