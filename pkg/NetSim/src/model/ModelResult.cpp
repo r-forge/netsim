@@ -41,3 +41,11 @@ double TimeModelResult::getDoubleResult() {
 std::string TimeModelResult::getResultString() {
 	return ""; //TODO implement
 }
+
+ValueModelResult::ValueModelResult(double value) {
+	_value = value;
+}
+
+double ValueModelResult::getValue() {
+	return _value;
+}

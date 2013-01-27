@@ -18,16 +18,5 @@ public:
 	virtual ModelResult * getChange(ProcessState * processState) = 0;
 };
 
-class ActorNullChangeModel : public ChangeModel{
-
-public:
-	ActorNullChangeModel(int id);
-
-	ModelResult * getChange(ProcessState * processState);
-
-private:
-	int _id;
-};
-
 
 #endif /* CHANGEMODEL_H_ */

@@ -5,7 +5,7 @@
  *      Author: cws
  */
 
-#include "MultinomialChoiceChangeModel.h"
+#include "MultinomialChoiceNetworkChangeModel.h"
 
 MultinomialChoiceNetworkChangeModel::MultinomialChoiceNetworkChangeModel(
 		int actorIndex, size_t dependentNetworkIndex,
@@ -41,7 +41,9 @@ ModelResult* MultinomialChoiceNetworkChangeModel::getChange(
 			}
 
 		// calculate and save objective function
-			objectiveFunctions[j] = getValueObjectiveFunction(processState, i); // processState has been updated previously
+			objectiveFunctions[j] =
+					MultinomialChoiceUtils::getValueObjectiveFunction(processState, i, _effectParameterPairs, _debug);
+					//getValueObjectiveFunction(processState, i); // processState has been updated previously
 
 		// increase sum (denominator)
 			denominator += exp(objectiveFunctions[j]);
@@ -100,22 +102,3 @@ void MultinomialChoiceNetworkChangeModel::init(int actorIndex,
 
 }
 
-double MultinomialChoiceNetworkChangeModel::getValueObjectiveFunction(
-		ProcessState* processState, int i) {
-
-	double valueObjectiveFunction = 0.0;
-
-	std::set<std::pair<SaomEffect*, double> *>::iterator itEffects = _effectParameterPairs->begin();
-
-	for (; itEffects != _effectParameterPairs->end(); ++itEffects){
-		double effectValue = (*itEffects)->first->getEffect(processState, i);
-		double parameter = (*itEffects)->second;
-
-		if(_debug) std::cout << "  param=" << parameter << " value=" << effectValue << std::endl;
-
-		valueObjectiveFunction += ( effectValue * parameter );
-	}
-
-
-	return valueObjectiveFunction;
-}

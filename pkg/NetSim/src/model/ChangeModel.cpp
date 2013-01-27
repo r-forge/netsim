@@ -6,11 +6,3 @@
  */
 
 #include "ChangeModel.h"
-
-ActorNullChangeModel::ActorNullChangeModel(int id) {
-	_id = id;
-}
-
-ModelResult* ActorNullChangeModel::getChange(ProcessState* processState) {
-	return new ActorModelResult(_id);
-}

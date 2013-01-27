@@ -5,24 +5,25 @@
  *      Author: cws
  */
 
-#ifndef MULTINOMIALCHOICECHANGEMODEL_H_
-#define MULTINOMIALCHOICECHANGEMODEL_H_
+#ifndef MULTINOMIALCHOICENETWORKCHANGEMODEL_H_
+#define MULTINOMIALCHOICENETWORKCHANGEMODEL_H_
 
 #include <utility>
 #include <math.h>
 #include <iostream>
+#include "MultinomialChoiceUtils.h"
 #include "ChangeModel.h"
 #include "saom/NetworkEffect.h"
 #include "Updater.h"
 #include "ModelResult.h"
 #include "../utils/Random.h"
-\
+
 class MultinomialChoiceNetworkChangeModel : public ChangeModel{
 
 public:
 	/**
 	 * Create a simple model in which choices are based on how
-	 * the network would look like after a tie swap update
+	 * the network would look like after a number of updates
 	 */
 	MultinomialChoiceNetworkChangeModel(int actorIndex,
 			size_t dependentNetworkIndex,
@@ -63,9 +64,8 @@ private:
 			std::set<std::pair<SaomEffect*, double> *> * effectParameterPairs,
 			std::vector<Updater*>* updaters);
 
-	double getValueObjectiveFunction(ProcessState * processState, int i);
 
 };
 
 
-#endif /* MULTINOMIALCHOICECHANGEMODEL_H_ */
+#endif /* MULTINOMIALCHOICENETWORKCHANGEMODEL_H_ */

@@ -11,7 +11,7 @@
 #include <vector>
 #include "../../model/saom/NetworkEffect.h"
 #include "../../model/ModelManager.h"
-#include "../../model/MultinomialChoiceChangeModel.h"
+#include "../../model/MultinomialChoiceNetworkChangeModel.h"
 #include "../../model/TimeModel.h"
 #include "../../processstate/ProcessState.h"
 #include "../../simulator/Simulator.h"
@@ -144,9 +144,9 @@ void densityParameterSaomTest(){
 	double allowedDeviation = 0.02;
 
 	// 100 expected changes per actor to reach stable state
-	double rateParameter = 10; // was 100
+	double rateParameter = 50; // was 100
 	double timeSpan = 1;
-	int nSimulations = 100; // was 1000
+	int nSimulations = 500; // was 1000
 
 	double averageDensityNull = 0;
 	double averageDensityMinusOne = 0;

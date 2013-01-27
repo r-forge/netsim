@@ -88,6 +88,10 @@ double AttributeContainer::getMax() {
 	return _max;
 }
 
+double AttributeContainer::getBy() {
+	return _by;
+}
+
 void AttributeContainer::init(std::vector<double> values, double min,
 	double max, double by) {
 	// check validity of values

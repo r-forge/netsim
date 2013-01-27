@@ -13,7 +13,7 @@
 #include "../model/ModelManager.h"
 #include "../model/TimeModel.h"
 #include "../model/ChangeModel.h"
-#include "../model/MultinomialChoiceChangeModel.h"
+#include "../model/MultinomialChoiceNetworkChangeModel.h"
 #include "../model/Updater.h"
 #include "../model/saom/NetworkEffect.h"
 #include "../model/saom/EffectContainerManager.h"

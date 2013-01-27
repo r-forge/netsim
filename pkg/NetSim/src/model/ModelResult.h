@@ -52,6 +52,17 @@ private:
 
 };
 
+class ValueModelResult : public ModelResult{
+
+public:
+	ValueModelResult(double value);
+
+	double getValue();
+
+private:
+	double _value;
+};
+
 class TimeModelResult : public ModelResult{
 
 public:

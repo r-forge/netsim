@@ -84,7 +84,10 @@ public:
 	 */
 	double getMax();
 
-
+	/**
+	 * get interval size
+	 */
+	double getBy();
 
 
 
