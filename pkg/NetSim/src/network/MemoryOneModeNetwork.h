@@ -102,37 +102,17 @@ public:
 	 */
 	void multiplyTieValues(double value);
 
-	/**
-	 * Returns the value of the tie with maximum value below a threshold
-	 * or @threshold if no such value is found
-	 */
-	double getMaxTieValueBelow(double threshold);
-
-	/**
-	 * Returns the value of the tie with minimum value above a threshold
-	 * or @threshold if no such value is found
-	 */
-	double getMinTieValueAbove(double threshold);
 
 private:
-	// edge representation of tie values (positive and zero)
-	// multiple variables are stored
-	std::map<std::pair<int, int>, double > _tieValueMap;
-	std::map<double, std::set<std::pair<int, int> > > _valueTiesMap;
 
 	// lookup maps
-	// boost::unordered_map<int, int> _inDegreeMap;
-	// boost::unordered_map<int, int> _outDegreeMap;
-
-	// boost::unordered_map<int,std::set<int>* > _outgoingNeighborsMap;
-	// boost::unordered_map<int,std::set<int>* > _incomingNeighborsMap;
-
 	std::map<int, int> _inDegreeMap;
 	std::map<int, int> _outDegreeMap;
 
 	std::map<int,std::set<int>* > _outgoingNeighborsMap;
 	std::map<int,std::set<int>* > _incomingNeighborsMap;
 
+protected:
 
 	void init();
 	void updateInternalRepresentation(int i, int j, double oldValue, double newValue);

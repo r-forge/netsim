@@ -30,9 +30,6 @@ int MemoryOneModeNetwork::getInDegree(int i) {
 
 void MemoryOneModeNetwork::init(){
 
-	// load initialization in super class
-	OneModeNetwork::init();
-
 	// initialize lookup maps
 	for (int i = 0; i < _size; i++){
 		// initialize degree counts with zero
@@ -111,27 +108,6 @@ void MemoryOneModeNetwork::multiplyTieValues(double value) {
 	}
 }
 
-// TODO: should be implemented in O(log(m)), m = number of ties
-// assuming that the key set is ordered
-double MemoryOneModeNetwork::getMaxTieValueBelow(double threshold) {
-	std::map<double, std::set<std::pair<int, int> > >::iterator it;
-	double maxValue = 0.0;
-	for (it = _valueTiesMap.begin(); it != _valueTiesMap.end(); ++it){
-		if ( (*it).first >= threshold) return maxValue;
-		maxValue = (*it).first;
-	}
-	return threshold;
-}
-
-// TODO: should be implemented in O(log(m)), m = number of ties
-// assuming that the key set is ordered
-double MemoryOneModeNetwork::getMinTieValueAbove(double threshold) {
-	std::map<double, std::set<std::pair<int, int> > >::iterator it;
-	for (it = _valueTiesMap.begin(); it != _valueTiesMap.end(); ++it){
-		if ( (*it).first > threshold) return (*it).first;
-	}
-	return threshold;
-}
 
 std::set<int> MemoryOneModeNetwork::getNodesInDistanceTwo(int i) {
 	std::set<int> distanceTwoNeighbors;
@@ -201,11 +177,6 @@ void MemoryOneModeNetwork::updateInternalRepresentation(int i, int j,
 			_incomingNeighborsMap[j]->erase(i);
 		}
 	}
-
-	// update edge list representation
-	_tieValueMap[std::make_pair(i,j)] = newValue; //automatically replaces old value
-	( _valueTiesMap[newValue] ).insert( std::make_pair(i,j) );
-	( _valueTiesMap[oldValue] ).erase( std::make_pair(i,j) );
 
 
 }

@@ -10,14 +10,16 @@
 
 #include <vector>
 #include "NetworkUtils.h"
+#include "ValuedMemoryOneModeNetwork.h"
+#include "MemoryOneModeNetwork.h"
 
 /*
- * Generates a network in which the first node (0) has a
+ * Generates a valued network in which the first node (0) has a
  * tie TO all other nodes and the second node (1) a tie FROM each
  * node. No reflexive ties are generated.
  * 0 -> ALL -> 1
  */
-MemoryOneModeNetwork* getTwoStarNetwork(int size){
+ValuedMemoryOneModeNetwork * getTwoStarNetwork(int size){
 	// at least two nodes are necessary
 	if (size<2) return NULL;
 
@@ -34,7 +36,7 @@ MemoryOneModeNetwork* getTwoStarNetwork(int size){
 		}
 	}
 
-	MemoryOneModeNetwork *net2 = new MemoryOneModeNetwork(graph);
+	ValuedMemoryOneModeNetwork *net2 = new ValuedMemoryOneModeNetwork(graph);
 	return net2;
 
 }
@@ -93,7 +95,7 @@ void degreeMapTest(){
 	// utils.dumpNetwork(net);
 	// std::cout << "Two degree values of 0: " << net->getOutDegree(0)
 	//		<< " " << net->getInDegree(0);
-	ASSERT((net->getOutDegree(0)) == (size - 1));
+	ASSERT_EQUAL((size - 1), (net->getOutDegree(0)));
 	ASSERT((net->getInDegree(1)) == (size - 1));
 	ASSERT((net->getInDegree(2)) == 1);
 	ASSERT((net->getOutDegree(2)) == 1);
@@ -179,9 +181,9 @@ void unspecificTieUpdateTest(){
 
 void thresholdValueTest(){
 	int size = 5;
-	MemoryOneModeNetwork* net = getTwoStarNetwork(size);
-	ASSERT(net->getTieValue(0,1) == 1);
-	ASSERT(net->getMinTieValueAbove(0.5) == 1.0);
+	ValuedMemoryOneModeNetwork* net = getTwoStarNetwork(size);
+	ASSERT_EQUAL(1, net->getTieValue(0,1));
+	ASSERT_EQUAL(1, net->getMinTieValueAbove(0.5));
 	ASSERT(net->getMaxTieValueBelow(0.5) == 0.0);
 	net->setTie(0,1,1.2);
 	net->setTie(1,0,0.8);

@@ -16,6 +16,7 @@
 #include "../processstate/ProcessState.h"
 #include "../network/Network.h"
 #include "../network/MemoryOneModeNetwork.h"
+#include "../network/ValuedMemoryOneModeNetwork.h"
 #include "../model/TimeModel.h"
 
 class Updater{

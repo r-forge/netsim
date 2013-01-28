@@ -88,8 +88,8 @@ void ExponentialDecayTimeUpdater::update(ProcessState* processState,
 }
 
 double ExponentialDecayTimeUpdater::getTimeSpan(ProcessState* processState) {
-	MemoryOneModeNetwork* network =
-			dynamic_cast<MemoryOneModeNetwork*>(
+	ValuedMemoryOneModeNetwork * network =
+			dynamic_cast<ValuedMemoryOneModeNetwork*>(
 					processState->getNetwork(_networkIndex));
 	double minAboveReset = network->getMinTieValueAbove(_resetValue);
 	return getTimeSpan(minAboveReset, _resetValue);
