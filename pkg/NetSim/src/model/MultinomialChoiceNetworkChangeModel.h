@@ -67,5 +67,14 @@ private:
 
 };
 
+class EmptyMultinomialChoiceNetworkChangeModel : public ChangeModel{
+
+public:
+	EmptyMultinomialChoiceNetworkChangeModel();
+
+	ModelResult * getChange(ProcessState * processState);
+
+};
+
 
 #endif /* MULTINOMIALCHOICENETWORKCHANGEMODEL_H_ */

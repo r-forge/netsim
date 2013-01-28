@@ -29,7 +29,6 @@ void NetworkUtils::dumpNetwork(OneModeNetwork* network, int round) {
 	}
 }
 
-// TODO write unit tests
 double NetworkUtils::getDensity(OneModeNetwork* network) {
 	bool isDirected = network->isDirected();
 	bool isReflexive = network->isReflexive();
@@ -64,3 +63,36 @@ double NetworkUtils::getDensity(OneModeNetwork* network) {
 	return nTies / (double) possibleTies;
 
 }
+
+int NetworkUtils::getNumberOfTies(OneModeNetwork* network) {
+	return countTies(network, false);
+}
+
+int NetworkUtils::getNumberOfReciprocalTies(OneModeNetwork* network) {
+	return countTies(network, true);
+}
+
+int NetworkUtils::countTies(OneModeNetwork * network,
+		bool reciprocal) {
+
+	int nActors = network->getSize();
+	int nTies = 0;
+	int nReciprocalTies = 0;
+
+	for (int i = 0; i < nActors; i++){
+		for (int j = 0; j< nActors; j++){
+			if ( !network->isReflexive() && (i < j) ){
+				if (network->hasTie(i,j))
+					nTies++; // TODO: wrong count for reflexive networks
+				if (network->hasTie(j,i))
+					nTies++;
+				if (network->hasTie(i,j) && network->hasTie(j,i))
+					nReciprocalTies++;
+			}
+		}
+	}
+
+	if (reciprocal) return nReciprocalTies;
+	else return nTies;
+}
+

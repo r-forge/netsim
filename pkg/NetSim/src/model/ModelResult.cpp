@@ -16,7 +16,6 @@ int ActorModelResult::getActorIndex() {
 }
 
 TieModelResult::TieModelResult(int actorIndex1, int actorIndex2) {
-	// TODO: do this in separate file!
 	_actorIndex1 = actorIndex1;
 	_actorIndex2 = actorIndex2;
 }

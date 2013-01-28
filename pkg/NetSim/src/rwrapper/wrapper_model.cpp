@@ -245,3 +245,16 @@ SEXP create_multinomial_choice_behavior_change_model(SEXP focalActorIndex_, SEXP
 
 	END_RCPP
 }
+
+SEXP create_actor_attribute_set_updater(SEXP attributeIndex_, SEXP actorIndex_) {
+	BEGIN_RCPP
+
+	int attributeIndex = Rcpp::as<int>(attributeIndex_);
+	int actorIndex = Rcpp::as<int>(actorIndex_);
+
+	ActorAttributeSetUpdater * attributeSetUpdater = new ActorAttributeSetUpdater(attributeIndex, actorIndex);
+
+	return Rcpp::XPtr<ActorAttributeSetUpdater>(attributeSetUpdater, false);
+
+	END_RCPP
+}

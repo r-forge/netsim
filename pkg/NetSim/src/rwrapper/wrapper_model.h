@@ -59,4 +59,5 @@ RcppExport SEXP create_multinomial_choice_behavior_change_model(
 
 RcppExport SEXP create_tie_swap_updater(SEXP networkIndex);
 
+RcppExport SEXP create_actor_attribute_set_updater(SEXP attributeIndex, SEXP actorIndex);
 #endif /* WRAPPER_MODEL_H_ */

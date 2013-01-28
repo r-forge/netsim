@@ -64,6 +64,20 @@ private:
 
 };
 
+class ActorAttributeSetUpdater : public Updater{
+public:
+	ActorAttributeSetUpdater(size_t indexAttribute, size_t indexActor);
+
+	void update(ProcessState* processState, ModelResult* result);
+
+	void undoUpdate(ProcessState* processState, ModelResult* result);
+
+private:
+	size_t _indexAttribute;
+	size_t _indexActor;
+	double _oldValue;
+};
+
 class GlobalCountUpdater : public Updater{
 
 public:

@@ -67,6 +67,7 @@ int main(int argc, char *argv[]){
 		myModelManager.addUpdater(saom, tieSwapUpdater);
 	}
 
+
 //	ExponentialDecayTimeUpdater* timeUpdater = new ExponentialDecayTimeUpdater(indexNetwork, halfLife, resetValue);
 //	myModelManager.addTimeUpdater(timeUpdater);
 

@@ -13,6 +13,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <math.h>
+#include <boost/unordered_map.hpp>
 
 /**
  * Represents a container for valued attributes,

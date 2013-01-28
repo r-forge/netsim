@@ -102,3 +102,10 @@ void MultinomialChoiceNetworkChangeModel::init(int actorIndex,
 
 }
 
+EmptyMultinomialChoiceNetworkChangeModel::EmptyMultinomialChoiceNetworkChangeModel() {
+}
+
+ModelResult* EmptyMultinomialChoiceNetworkChangeModel::getChange(
+		ProcessState* processState) {
+	return new ActorModelResult(-1);
+}

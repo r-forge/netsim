@@ -9,7 +9,10 @@
 #define SAOMTEST_H_
 
 #include <vector>
+#include <utility>
+#include <set>
 #include "../../model/saom/NetworkEffect.h"
+#include "../../model/saom/EffectContainerManager.h"
 #include "../../model/ModelManager.h"
 #include "../../model/MultinomialChoiceNetworkChangeModel.h"
 #include "../../model/TimeModel.h"
@@ -129,6 +132,97 @@ void densityChoiceTest(){
 
 }
 
+/*
+ * E-Mai Christian Steglich, Jan. 28
+Jeweils n=100.
+
+Parametersatz 1:
+rate period 1 = hoch (=n, =100)
+rate period 2 = 8,81
+outdegree = -2,18
+reciprocity = 2,39
+
+Sollte simulierte Netzwerke liefern, wo
+>> Hamming distance zwischen 2. und 3. Netzwerk = 400
+>> # ties im 2. und 3. Netzwerk jeweils 400
+>> # reciprocal ties im 2. und 3. Netzwerk jeweils 240
+
+
+Parametersatz 2:
+rate period 1 = hoch (=n, =100)
+rate period 2 = 22,3
+outdegree = -2,24
+reciprocity = 2,24
+
+Sollte simulierte Netzwerke liefern, wo
+>> Hamming distance zwischen 2. und 3. Netzwerk = 500
+>> # ties im 2. und 3. Netzwerk jeweils 300
+>> # reciprocal ties im 2. und 3. Netzwerk jeweils 150
+ *
+ */
+
+/**
+ * Test proposed by Christian Steglich, 28. Jan. 2013;
+ * see description above
+ */
+void steglichParameterTest1(){
+
+	int nActors = 40;
+	OneModeNetwork * network = new OneModeNetwork(nActors);
+
+	ProcessState * processState = new ProcessState();
+	int networkIndex = processState->addNetwork(network);
+
+	double poissonParameter1 = 40;
+	double poissonParameter2 = 8.81;
+	ModelManager * modelManager = new ModelManager();
+
+	// specify SAOM
+	EffectContainerManager * effectManager = new EffectContainerManager();
+/*
+	effectManager->addToEffectContainer(
+			new DensityEffect(networkIndex),
+			-2.18);
+	effectManager->addToEffectContainer(
+			new ReciprocityEffect(networkIndex),
+			2.39);
+*/
+
+	TieSwapUpdater * tieSwapUpdater = new TieSwapUpdater(networkIndex);
+
+	for (int i = 0; i < nActors; i++){
+
+		PoissonTimeModel * poissonModel = new PoissonTimeModel(
+				poissonParameter1);
+
+		MultinomialChoiceNetworkChangeModel * saom =
+				new MultinomialChoiceNetworkChangeModel(
+						i, networkIndex,
+						effectManager->getEffectContainer(),
+						new std::vector<Updater*>(1, tieSwapUpdater)
+						);
+
+		modelManager->addTimeModel(poissonModel);
+		modelManager->addChangeModel(poissonModel, saom);
+		modelManager->addUpdater(saom, tieSwapUpdater);
+	}
+
+	int nSimulations = 100;
+
+	Simulator simulator(processState, modelManager, 1);
+	simulator.simulate();
+
+	std::cout << "Number of ties: " <<
+			NetworkUtils::getNumberOfTies(network) << std::endl;
+	std::cout << "Number of reciprocal ties: " <<
+			NetworkUtils::getNumberOfReciprocalTies(network) << std::endl;
+
+}
+
+
+/**
+ * based on working paper on expected network densities
+ */
 void densityParameterSaomTest(){
 	ProcessState processState1;
 	ProcessState processState2;
@@ -231,6 +325,7 @@ cute::suite getTestSaomSuite(){
 	s.push_back(CUTE(poissonparameterTest));
 	s.push_back(CUTE(densityChoiceTest));
 	s.push_back(CUTE(densityParameterSaomTest));
+	s.push_back(CUTE(steglichParameterTest1));
 
 	return s;
 }

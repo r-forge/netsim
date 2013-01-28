@@ -144,3 +144,29 @@ void TieSwapUpdater::swapTie(Network* network, int i, int j) {
 	}
 }
 
+ActorAttributeSetUpdater::ActorAttributeSetUpdater(size_t indexAttribute,
+		size_t indexActor) {
+	_indexAttribute = indexAttribute;
+	_indexActor = indexActor;
+	_oldValue = -1;
+}
+
+void ActorAttributeSetUpdater::update(ProcessState* processState,
+		ModelResult* result) {
+
+	AttributeContainer * attributeContainer = processState->getAttributeContainer(_indexAttribute);
+
+	ValueModelResult * valueModelResult = dynamic_cast<ValueModelResult*>(result);
+	_oldValue = attributeContainer->getValue(_indexActor);
+
+	attributeContainer->setValue(_indexActor, valueModelResult->getValue());
+
+}
+
+void ActorAttributeSetUpdater::undoUpdate(ProcessState* processState,
+		ModelResult* result) {
+
+	AttributeContainer * attributeContainer = processState->getAttributeContainer(_indexAttribute);
+	attributeContainer->setValue(_indexActor, _oldValue);
+
+}

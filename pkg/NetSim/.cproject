@@ -46,10 +46,12 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/simulator}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/unittest}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/utils}&quot;"/>
+									<listOptionValue builtIn="false" value="/usr/share/doc/binutils"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.preprocessor.def.1507367350" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="INSIDE"/>
 								</option>
+								<option id="gnu.cpp.compiler.option.debugging.gprof.772568147" name="Generate gprof information (-pg)" superClass="gnu.cpp.compiler.option.debugging.gprof" value="true" valueType="boolean"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1067853911" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.exe.debug.892941938" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.exe.debug">
@@ -79,6 +81,7 @@
 									<listOptionValue builtIn="false" value="/home/cws/R/i686-pc-linux-gnu-library/2.15/RInside/lib/libRInside.so"/>
 									<listOptionValue builtIn="false" value="/home/cws/R/i686-pc-linux-gnu-library/2.15/RInside/lib/libRInside.a"/>
 								</option>
+								<option id="gnu.cpp.link.option.debugging.gprof.651186118" name="Generate gprof information (-pg)" superClass="gnu.cpp.link.option.debugging.gprof" value="true" valueType="boolean"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1285183139" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>

@@ -121,11 +121,17 @@ private:
 	std::map<double, std::set<std::pair<int, int> > > _valueTiesMap;
 
 	// lookup maps
-	boost::unordered_map<int, int> _inDegreeMap;
-	boost::unordered_map<int, int> _outDegreeMap;
+	// boost::unordered_map<int, int> _inDegreeMap;
+	// boost::unordered_map<int, int> _outDegreeMap;
 
-	boost::unordered_map<int,std::set<int>* > _outgoingNeighborsMap;
-	boost::unordered_map<int,std::set<int>* > _incomingNeighborsMap;
+	// boost::unordered_map<int,std::set<int>* > _outgoingNeighborsMap;
+	// boost::unordered_map<int,std::set<int>* > _incomingNeighborsMap;
+
+	std::map<int, int> _inDegreeMap;
+	std::map<int, int> _outDegreeMap;
+
+	std::map<int,std::set<int>* > _outgoingNeighborsMap;
+	std::map<int,std::set<int>* > _incomingNeighborsMap;
 
 
 	void init();

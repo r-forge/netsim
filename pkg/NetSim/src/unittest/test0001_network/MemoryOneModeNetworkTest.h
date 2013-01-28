@@ -9,6 +9,7 @@
 #define MEMORYONEMODENETWORKTEST_H_
 
 #include <vector>
+#include "NetworkUtils.h"
 
 /*
  * Generates a network in which the first node (0) has a
@@ -198,6 +199,25 @@ void thresholdValueTest(){
 
 }
 
+void testNetworkUtilsCountTiesAndDensity(){
+	MemoryOneModeNetwork * network = getTwoStarNetwork(3);
+
+	NetworkUtils::dumpNetwork(network);
+
+	ASSERT_EQUAL(3,NetworkUtils::getNumberOfTies(network));
+	ASSERT_EQUAL(0,NetworkUtils::getNumberOfReciprocalTies(network));
+	ASSERT_EQUAL(0.5, NetworkUtils::getDensity(network));
+	network->addTie(1,0);
+	ASSERT_EQUAL(4,NetworkUtils::getNumberOfTies(network));
+	ASSERT_EQUAL(1,NetworkUtils::getNumberOfReciprocalTies(network));
+	ASSERT_EQUAL(4.0/6.0, NetworkUtils::getDensity(network));
+	network->addTie(2,0);
+	ASSERT_EQUAL(5,NetworkUtils::getNumberOfTies(network));
+	ASSERT_EQUAL(2,NetworkUtils::getNumberOfReciprocalTies(network));
+	ASSERT_EQUAL(5.0/6.0, NetworkUtils::getDensity(network));
+
+}
+
 cute::suite getTestSuiteMemoryOneModeNetwork(){
 	cute::suite s;
 
@@ -208,6 +228,7 @@ cute::suite getTestSuiteMemoryOneModeNetwork(){
 	s.push_back(CUTE(overlappingNeighborsTest));
 	s.push_back(CUTE(unspecificTieUpdateTest));
 	s.push_back(CUTE(thresholdValueTest));
+	s.push_back(CUTE(testNetworkUtilsCountTiesAndDensity));
 
 	return s;
 }

@@ -146,5 +146,6 @@ create_tie_swap_updater <- function(networkIndex){
 	.Call("create_tie_swap_updater", networkIndex, PACKAGE = "NetSim")
 }
 
-
-
+create_actor_attribute_set_updater <- function(attributeIndex, actorIndex){
+	.Call("create_actor_attribute_set_updater", attributeIndex, actorIndex, PACKAGE = "NetSim")
+}

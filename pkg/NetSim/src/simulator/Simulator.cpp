@@ -36,7 +36,6 @@ void Simulator::simulate() {
 			if (nextPercentageToPrint == 0 && _verbose) std::cout << "Progress (in 10%) [";
 			if (_verbose) std::cout << "=" << std::flush;
 			nextPercentageToPrint += 0.1;
-			if (nextPercentageToPrint > 0.9 && _verbose) std::cout << "] done." << std::endl;
 		}
 
 		// maximum possible time span
@@ -127,12 +126,17 @@ void Simulator::simulate() {
 
 	} // while loop
 
+	if (_verbose) std::cout << "] done." << std::endl;
+
+
 	_iterationSteps = nChanges;
 
 	// report time and iteration steps
 	if(_verbose){
+		double duration = (double)(clock() - timeStart)/CLOCKS_PER_SEC;
 		printf("Iteration steps: %d\n", nChanges);
-		printf("Simulation time: %.2fs\n", (double)(clock() - timeStart)/CLOCKS_PER_SEC);
+		printf("Simulation time: %.2fs\n", duration);
+		printf("Time per iteration: %.4fs\n", duration / ((double) nChanges));
 	}
 
 }
