@@ -167,26 +167,25 @@ Sollte simulierte Netzwerke liefern, wo
  */
 void steglichParameterTest1(){
 
-	int nActors = 40;
-	OneModeNetwork * network = new OneModeNetwork(nActors);
+	int nActors = 100;
+	MemoryOneModeNetwork * network = new MemoryOneModeNetwork(nActors);
 
 	ProcessState * processState = new ProcessState();
 	int networkIndex = processState->addNetwork(network);
 
-	double poissonParameter1 = 40;
+	double poissonParameter1 = 100;
 	double poissonParameter2 = 8.81;
 	ModelManager * modelManager = new ModelManager();
 
 	// specify SAOM
 	EffectContainerManager * effectManager = new EffectContainerManager();
-/*
 	effectManager->addToEffectContainer(
 			new DensityEffect(networkIndex),
 			-2.18);
 	effectManager->addToEffectContainer(
 			new ReciprocityEffect(networkIndex),
 			2.39);
-*/
+
 
 	TieSwapUpdater * tieSwapUpdater = new TieSwapUpdater(networkIndex);
 
@@ -207,15 +206,44 @@ void steglichParameterTest1(){
 		modelManager->addUpdater(saom, tieSwapUpdater);
 	}
 
-	int nSimulations = 100;
-
+	// burn in
+	std::cout << "Burn in simulation:" << std::endl;
 	Simulator simulator(processState, modelManager, 1);
 	simulator.simulate();
 
-	std::cout << "Number of ties: " <<
-			NetworkUtils::getNumberOfTies(network) << std::endl;
-	std::cout << "Number of reciprocal ties: " <<
-			NetworkUtils::getNumberOfReciprocalTies(network) << std::endl;
+	int nSimulations = 40;
+	double periodLength = poissonParameter2/ poissonParameter1;
+
+	double averageTies =
+			((double) NetworkUtils::getNumberOfTies(network))
+			/ ((double) nSimulations + 1.0);
+	double averageReciprocalTies =
+			((double) NetworkUtils::getNumberOfReciprocalTies(network))
+			/ ((double) nSimulations + 1.0);
+
+	std::cout << nSimulations << " shorter simulations:" << std::endl;
+	for (int iSim = 0; iSim < nSimulations; iSim++){
+		Simulator simulator(processState, modelManager, periodLength);
+		simulator.setVerbose(false);
+		simulator.simulate();
+
+		// update number of ties and reciprocal ties
+		averageTies +=
+				((double) NetworkUtils::getNumberOfTies(network))
+				/ ((double) nSimulations + 1.0);
+		averageReciprocalTies +=
+				((double) NetworkUtils::getNumberOfReciprocalTies(network))
+				/ ((double) nSimulations + 1.0);
+
+		// calculate Hamming distance and update average distance
+		// div nSimulations without +1
+	}
+
+	std::cout << "average ties: " << averageTies << std::endl;
+	std::cout << "average reciprocal ties: " << averageReciprocalTies << std::endl;
+
+	ASSERT(abs(400.0 - averageTies) < 5);
+	ASSERT(abs(240.0 - averageReciprocalTies) < 5);
 
 }
 

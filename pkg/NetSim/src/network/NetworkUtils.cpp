@@ -87,7 +87,7 @@ int NetworkUtils::countTies(OneModeNetwork * network,
 				if (network->hasTie(j,i))
 					nTies++;
 				if (network->hasTie(i,j) && network->hasTie(j,i))
-					nReciprocalTies++;
+					nReciprocalTies += 2;
 			}
 		}
 	}

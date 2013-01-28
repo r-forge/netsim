@@ -211,11 +211,11 @@ void testNetworkUtilsCountTiesAndDensity(){
 	ASSERT_EQUAL(0.5, NetworkUtils::getDensity(network));
 	network->addTie(1,0);
 	ASSERT_EQUAL(4,NetworkUtils::getNumberOfTies(network));
-	ASSERT_EQUAL(1,NetworkUtils::getNumberOfReciprocalTies(network));
+	ASSERT_EQUAL(2,NetworkUtils::getNumberOfReciprocalTies(network));
 	ASSERT_EQUAL(4.0/6.0, NetworkUtils::getDensity(network));
 	network->addTie(2,0);
 	ASSERT_EQUAL(5,NetworkUtils::getNumberOfTies(network));
-	ASSERT_EQUAL(2,NetworkUtils::getNumberOfReciprocalTies(network));
+	ASSERT_EQUAL(4,NetworkUtils::getNumberOfReciprocalTies(network));
 	ASSERT_EQUAL(5.0/6.0, NetworkUtils::getDensity(network));
 
 }
