@@ -133,7 +133,7 @@ void densityChoiceTest(){
 }
 
 /*
- * E-Mai Christian Steglich, Jan. 28
+ * E-Mail Christian Steglich, Jan. 28
 Jeweils n=100.
 
 Parametersatz 1:
@@ -160,31 +160,40 @@ Sollte simulierte Netzwerke liefern, wo
 >> # reciprocal ties im 2. und 3. Netzwerk jeweils 150
  *
  */
+void steglichParameterTest(
+		double poissonParameter1,
+		double poissonParameter2,
+		double densityParameter,
+		double reciprocityParameter,
+		double expectedSingleTie,
+		double expectedReciprocity,
+		double expectedHammingDistance,
+		double allowedDeviation,
+		int nSimulations){
 
-/**
- * Test proposed by Christian Steglich, 28. Jan. 2013;
- * see description above
- */
-void steglichParameterTest1(){
 
 	int nActors = 100;
 	MemoryOneModeNetwork * network = new MemoryOneModeNetwork(nActors);
+	// initialize with 50% non-reciprocal ties to improve burn in
+	for (int iActor = 0; iActor < (nActors - 1); iActor++){
+		for (int jActor = (iActor+1); jActor < nActors; jActor++){
+			network->addTie(iActor, iActor);
+		}
+	}
 
 	ProcessState * processState = new ProcessState();
 	int networkIndex = processState->addNetwork(network);
 
-	double poissonParameter1 = 100;
-	double poissonParameter2 = 8.81;
 	ModelManager * modelManager = new ModelManager();
 
 	// specify SAOM
 	EffectContainerManager * effectManager = new EffectContainerManager();
 	effectManager->addToEffectContainer(
 			new DensityEffect(networkIndex),
-			-2.18);
+			densityParameter);
 	effectManager->addToEffectContainer(
 			new ReciprocityEffect(networkIndex),
-			2.39);
+			reciprocityParameter);
 
 
 	TieSwapUpdater * tieSwapUpdater = new TieSwapUpdater(networkIndex);
@@ -211,7 +220,6 @@ void steglichParameterTest1(){
 	Simulator simulator(processState, modelManager, 1);
 	simulator.simulate();
 
-	int nSimulations = 40;
 	double periodLength = poissonParameter2/ poissonParameter1;
 
 	double averageTies =
@@ -220,6 +228,13 @@ void steglichParameterTest1(){
 	double averageReciprocalTies =
 			((double) NetworkUtils::getNumberOfReciprocalTies(network))
 			/ ((double) nSimulations + 1.0);
+	double averageHammingDistance = 0;
+
+	std::cout << "Single ties: " << NetworkUtils::getNumberOfTies(network) << std::endl;
+	std::cout << "Reciprocal ties: " << NetworkUtils::getNumberOfReciprocalTies(network) << std::endl;
+
+	// copy network for later comparison
+	MemoryOneModeNetwork * oldNetwork = new MemoryOneModeNetwork(network->getGraph());
 
 	std::cout << nSimulations << " shorter simulations:" << std::endl;
 	for (int iSim = 0; iSim < nSimulations; iSim++){
@@ -237,16 +252,105 @@ void steglichParameterTest1(){
 
 		// calculate Hamming distance and update average distance
 		// div nSimulations without +1
+		averageHammingDistance +=
+				NetworkUtils::getHammingDistance(network, oldNetwork) /
+				nSimulations;
+
+		// copy old network
+		oldNetwork = new MemoryOneModeNetwork(network->getGraph());
 	}
 
 	std::cout << "average ties: " << averageTies << std::endl;
 	std::cout << "average reciprocal ties: " << averageReciprocalTies << std::endl;
+	std::cout << "average Hamming distance: " << averageHammingDistance << std::endl;
 
-	ASSERT(abs(400.0 - averageTies) < 5);
-	ASSERT(abs(240.0 - averageReciprocalTies) < 5);
+	ASSERT(abs(expectedSingleTie - averageTies) < allowedDeviation);
+	ASSERT(abs(expectedReciprocity - averageReciprocalTies) < allowedDeviation);
+	ASSERT(abs(expectedHammingDistance - averageHammingDistance) < allowedDeviation);
 
 }
 
+/**
+ * Test 1 proposed by Christian Steglich, 28. Jan. 2013;
+ * see description above
+ *
+ Parametersatz 1:
+rate period 1 = hoch (=n, =100)
+rate period 2 = 8,81
+outdegree = -2,18
+reciprocity = 2,39
+
+Sollte simulierte Netzwerke liefern, wo
+>> Hamming distance zwischen 2. und 3. Netzwerk = 400
+>> # ties im 2. und 3. Netzwerk jeweils 400
+>> # reciprocal ties im 2. und 3. Netzwerk jeweils 240
+ */
+void steglichParameterTest1(){
+
+	double poissonParameter1 = 200;
+	double poissonParameter2 = 8.81;
+	double densityParameter = -2.18;
+	double reciprocityParameter = 2.39;
+	double expectedSingleTie = 400;
+	double expectedReciprocity = 240;
+	double expectedHammingDistance = 400;
+	double allowedDeviation = 10;
+	int nSimulations = 40;
+
+	steglichParameterTest(
+			poissonParameter1,
+			poissonParameter2,
+			densityParameter,
+			reciprocityParameter,
+			expectedSingleTie,
+			expectedReciprocity,
+			expectedHammingDistance,
+			allowedDeviation,
+			nSimulations);
+
+
+}
+
+/**
+ * Test 2 proposed by Christian Steglich, 28. Jan. 2013;
+ * see description above
+ *
+Parametersatz 2:
+rate period 1 = hoch (=n, =100)
+rate period 2 = 22,3
+outdegree = -2,24
+reciprocity = 2,24
+
+Sollte simulierte Netzwerke liefern, wo
+>> Hamming distance zwischen 2. und 3. Netzwerk = 500
+>> # ties im 2. und 3. Netzwerk jeweils 300
+>> # reciprocal ties im 2. und 3. Netzwerk jeweils 150
+ */
+void steglichParameterTest2(){
+
+	double poissonParameter1 = 200;
+	double poissonParameter2 = 22.3;
+	double densityParameter = -2.24;
+	double reciprocityParameter = 2.24;
+	double expectedSingleTie = 300;
+	double expectedReciprocity = 150;
+	double expectedHammingDistance = 500;
+	double allowedDeviation = 10;
+	int nSimulations = 40;
+
+	steglichParameterTest(
+			poissonParameter1,
+			poissonParameter2,
+			densityParameter,
+			reciprocityParameter,
+			expectedSingleTie,
+			expectedReciprocity,
+			expectedHammingDistance,
+			allowedDeviation,
+			nSimulations);
+
+
+}
 
 /**
  * based on working paper on expected network densities
@@ -353,7 +457,8 @@ cute::suite getTestSaomSuite(){
 	s.push_back(CUTE(poissonparameterTest));
 	s.push_back(CUTE(densityChoiceTest));
 	s.push_back(CUTE(densityParameterSaomTest));
-	s.push_back(CUTE(steglichParameterTest1));
+	// s.push_back(CUTE(steglichParameterTest1));
+	// s.push_back(CUTE(steglichParameterTest2));
 
 	return s;
 }

@@ -24,6 +24,8 @@ public:
 
 	static int getNumberOfReciprocalTies(OneModeNetwork* network);
 
+	static int getHammingDistance(OneModeNetwork* network1, OneModeNetwork * network2);
+
 private:
 	static int countTies(OneModeNetwork* network, bool reciprocal);
 

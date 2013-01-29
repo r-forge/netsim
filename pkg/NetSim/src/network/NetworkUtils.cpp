@@ -72,6 +72,25 @@ int NetworkUtils::getNumberOfReciprocalTies(OneModeNetwork* network) {
 	return countTies(network, true);
 }
 
+int NetworkUtils::getHammingDistance(OneModeNetwork* network1,
+		OneModeNetwork* network2) {
+	int nActors = network1->getSize();
+	if (network2->getSize() != nActors) return -1;
+
+	int distance = 0;
+
+	for (int i = 0; i < nActors; i++){
+		for (int j = 0; j< nActors; j++){
+			if(network1->getTieValue(i, j) !=
+					network2->getTieValue(i,j))
+				distance++;
+		}
+	}
+
+	return distance;
+
+}
+
 int NetworkUtils::countTies(OneModeNetwork * network,
 		bool reciprocal) {
 
