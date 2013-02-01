@@ -79,8 +79,8 @@ void ExponentialDecayTimeUpdater::update(ProcessState* processState,
 
 void ExponentialDecayTimeUpdater::update(ProcessState* processState,
 		TimeModelResult* timeModelResult) {
-	MemoryOneModeNetwork* network =
-			dynamic_cast<MemoryOneModeNetwork*>(
+	ValuedMemoryOneModeNetwork* network =
+			dynamic_cast<ValuedMemoryOneModeNetwork*>(
 					processState->getNetwork(_networkIndex));
 	double timeSpan = timeModelResult->getDoubleResult();
 

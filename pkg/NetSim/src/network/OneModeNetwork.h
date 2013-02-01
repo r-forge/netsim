@@ -10,6 +10,7 @@
 
 #include "Network.h"
 #include <vector>
+#include <stddef.h>
 
 
 
@@ -58,10 +59,10 @@ public:
 	/*
 	 * Accessor 2d vector representation of the network
 	 */
-	std::vector<std::vector<double> > getGraph() const;
+	std::vector<std::vector<double> > getGraph();
 
 	/*
-	 * Get size of the network which resembles the number of actors
+	 * Get size of the network which equals the number of actors
 	 */
 	int getSize();
 
@@ -77,6 +78,7 @@ public:
 	bool isReflexive() const;
 
 private:
+
 	// a binary network is the default network
 	static const double DefaultTieValue = 1.0;
 
@@ -90,9 +92,23 @@ private:
 	 */
 	bool isIndexesValid(int i, int j);
 
+	/*
+	 * internal index of the 2d vector representation
+	 */
+	int getInternalIndex(int i, int j);
+
+	/**
+	 * clean up a graph regarding is reflexivity and directed features
+	 */
+	std::vector<double> stripGraph(
+			std::vector<std::vector<double> > graph,
+			bool reflexive, bool directed);
+
+
 protected:
 
-	std::vector<std::vector<double> > _graph;
+	// internal representation of graph as a 1d vector. Encapsulated in this class.
+	std::vector<double> _graph;
 	int _size;
 	bool _directed;
 	bool _reflexive;
@@ -106,6 +122,7 @@ protected:
 	 * Initialization of variables and lookup maps. To be called by constructors.
 	 */
 	virtual void init();
+
 
 };
 

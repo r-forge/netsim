@@ -9,7 +9,8 @@
 
 OneModeNetwork::OneModeNetwork(int size, bool directed, bool reflexive) {
 	_size = size;
-	_graph = std::vector<std::vector<double> >(_size, std::vector<double>(_size));
+	int vectorLength = size * size;
+	_graph = std::vector<double>(vectorLength, 0.0);
 	_directed = directed;
 	_reflexive = reflexive;
 	init();
@@ -19,9 +20,9 @@ OneModeNetwork::OneModeNetwork(int size, bool directed, bool reflexive) {
 OneModeNetwork::OneModeNetwork(std::vector<std::vector<double> > graph,
 		bool directed, bool reflexive) {
 	_size = graph.size();
-	_graph = graph;
 	_directed = directed;
 	_reflexive = reflexive;
+	_graph = stripGraph(graph, reflexive, directed);
 	init();
 }
 
@@ -43,7 +44,7 @@ bool OneModeNetwork::hasTie(int i, int j) {
 	// check validity
 	if (!isIndexesValid(i, j)) return false;
 
-	return(_graph[i][j] > 0);
+	return(getTieValue(i,j) > 0);
 
 }
 
@@ -57,8 +58,14 @@ bool OneModeNetwork::removeTie(int i, int j) {
 
 }
 
-std::vector<std::vector<double> > OneModeNetwork::getGraph() const {
-	return _graph;
+std::vector<std::vector<double> > OneModeNetwork::getGraph() {
+	std::vector<std::vector<double> > graph(_size, std::vector<double>(_size));
+	for (int i = 0; i < _size; i++){
+		for (int j = 0; j < _size; j++){
+			graph[i][j] = _graph[getInternalIndex(i, j)];
+		}
+	}
+	return graph;
 }
 
 int OneModeNetwork::getSize(){
@@ -70,18 +77,18 @@ bool OneModeNetwork::setTie(int i, int j, double value) {
 	if (!isIndexesValid(i, j)) return false;
 
 	// no change at all
-	if (_graph[i][j] == value) return true;
+	if (getTieValue(i,j) == value) return true;
 
 	// trying to set a reflexive tie in a non-reflexive network
 	if((!_reflexive) && (i == j)) return false;
 
 	// Sets tie value and updates lookup maps
-	double oldValue = _graph[i][j];
-	_graph[i][j] = value;
+	double oldValue = getTieValue(i, j);
+	_graph[getInternalIndex(i, j)] = value;
 	updateInternalRepresentation(i, j, oldValue, value);
 	if (!_directed) {
-		double oldValue = _graph[j][i];
-		_graph[j][i] = value;
+		double oldValue = getTieValue(j,i);
+		_graph[getInternalIndex(j,i)] = value;
 		this->updateInternalRepresentation(j, i, oldValue, value);
 	}
 
@@ -113,8 +120,37 @@ bool OneModeNetwork::isReflexive() const {
 }
 
 double OneModeNetwork::getTieValue(int i, int j) {
-	return _graph[i][j];
+	return _graph[getInternalIndex(i,j)];
 }
+
 
 void OneModeNetwork::init() {
 }
+
+int OneModeNetwork::getInternalIndex(int i, int j) {
+	return (i * _size) + j;
+}
+
+std::vector<double> OneModeNetwork::stripGraph(
+		std::vector<std::vector<double> > graph,
+		bool reflexive,
+		bool directed) {
+
+	std::vector<double> graph1d(_size * _size, 0.0);
+
+	// set reflexive ties to zero
+	// TODO symmetrize
+	for (size_t i = 0; i < graph.size(); i++){
+		for (size_t j = 0; j < graph.size(); j++){
+			graph1d[getInternalIndex(i, j)] = graph[i][j];
+			if (!_reflexive){
+				if (i == j){
+					graph1d[getInternalIndex(i, j)] = 0;
+				}
+			}
+		}
+	}
+
+	return graph1d;
+}
+

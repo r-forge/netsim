@@ -45,17 +45,58 @@ double ValuedMemoryOneModeNetwork::getMinTieValueAbove(double threshold) {
 	return threshold;
 }
 
-void ValuedMemoryOneModeNetwork::init() {
+// TODO: inefficient implementation
+// It would be better to have a internal list representation of positive values
+// It should be ordered by tie value so that requests like: "What is the minimum
+// tie value > threshold?" can be answered quickly
+void ValuedMemoryOneModeNetwork::addToTieValues(double value) {
+/*
+	int i = 0;
+	std::vector<std::vector<double> >::iterator itRow = _graph.begin();
+	for(; itRow != _graph.end(); ++itRow){
+		int j = 0;
+		std::vector<double>::iterator itCol = (*itRow).begin();
+		for (; itCol != (*itRow).end(); ++itCol){
+			double oldValue = (*itCol);
+			// TODO this must be a setTieValue call! (see multiply)
+			setTie(i,j,oldValue + value);
+			j++;
+		}
+		i++;
+	}
+*/
+}
 
+// TODO: very inefficient implementation O(n^2) instead of O(m)
+// m number of ties, n number of nodes
+void ValuedMemoryOneModeNetwork::multiplyTieValues(double value) {
+/*
+	int i = 0;
+	std::vector<std::vector<double> >::iterator itRow = _graph.begin();
+	for(; itRow != _graph.end(); ++itRow){
+		int j = 0;
+		std::vector<double>::iterator itCol = (*itRow).begin();
+		for (; itCol != (*itRow).end(); ++itCol){
+			double oldValue = (*itCol);
+			// TODO this must be a setTieValue call! (see multiply)
+			setTie(i,j,oldValue * value);
+			j++;
+		}
+		i++;
+	}
+*/
+}
+
+
+void ValuedMemoryOneModeNetwork::init() {
 	// basically does what updateInternalRepresentation() does
 	// but without calling base class
 	for (int i = 0; i < _size; i++){
 		for (int j = 0; j < _size; j++){
-			_tieValueMap[std::make_pair(i,j)] = _graph[i][j];
-			( _valueTiesMap[_graph[i][j]] ).insert( std::make_pair(i,j) );
+			_tieValueMap[std::make_pair(i,j)] = getTieValue(i,j);
+			( _valueTiesMap[getTieValue(i,j)] ).insert( std::make_pair(i,j) );
 		}
 	}
-
 
 }
 

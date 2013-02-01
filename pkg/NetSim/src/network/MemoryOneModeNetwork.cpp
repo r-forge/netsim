@@ -51,7 +51,7 @@ void MemoryOneModeNetwork::init(){
 	// set initial values.
 	for (int i = 0; i < _size; i++){
 		for (int j = 0; j < _size; j++){
-			updateInternalRepresentation(i, j, 0, _graph[i][j]);
+			updateInternalRepresentation(i, j, 0, getTieValue(i,j));
 		}
 	}
 
@@ -68,44 +68,6 @@ std::set<int> MemoryOneModeNetwork::getIncomingNeighbors(int i) {
 
 std::set<int> MemoryOneModeNetwork::getReciprocalNeighbors(int i) {
 	return intersectSets(_incomingNeighborsMap[i], _outgoingNeighborsMap[i]);
-}
-
-// TODO: inefficient implementation
-// It would be better to have a internal list representation of positive values
-// It should be ordered by tie value so that requests like: "What is the minimum
-// tie value > threshold?" can be answered quickly
-void MemoryOneModeNetwork::addToTieValues(double value) {
-	int i = 0;
-	std::vector<std::vector<double> >::iterator itRow = _graph.begin();
-	for(; itRow != _graph.end(); ++itRow){
-		int j = 0;
-		std::vector<double>::iterator itCol = (*itRow).begin();
-		for (; itCol != (*itRow).end(); ++itCol){
-			double oldValue = (*itCol);
-			// TODO this must be a setTieValue call! (see multiply)
-			setTie(i,j,oldValue + value);
-			j++;
-		}
-		i++;
-	}
-}
-
-// TODO: very inefficient implementation O(n^2) instead of O(m)
-// m number ot ties, n number of nodes
-void MemoryOneModeNetwork::multiplyTieValues(double value) {
-	int i = 0;
-	std::vector<std::vector<double> >::iterator itRow = _graph.begin();
-	for(; itRow != _graph.end(); ++itRow){
-		int j = 0;
-		std::vector<double>::iterator itCol = (*itRow).begin();
-		for (; itCol != (*itRow).end(); ++itCol){
-			double oldValue = (*itCol);
-			// TODO this must be a setTieValue call! (see multiply)
-			setTie(i,j,oldValue * value);
-			j++;
-		}
-		i++;
-	}
 }
 
 

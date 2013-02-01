@@ -173,6 +173,7 @@ void steglichParameterTest(
 
 
 	int nActors = 100;
+	// TODO set back to Memory...
 	MemoryOneModeNetwork * network = new MemoryOneModeNetwork(nActors);
 	// initialize with 50% non-reciprocal ties to improve burn in
 	for (int iActor = 0; iActor < (nActors - 1); iActor++){
@@ -253,11 +254,13 @@ void steglichParameterTest(
 		// calculate Hamming distance and update average distance
 		// div nSimulations without +1
 		averageHammingDistance +=
-				NetworkUtils::getHammingDistance(network, oldNetwork) /
-				nSimulations;
+			NetworkUtils::getHammingDistance(network, oldNetwork) /
+			nSimulations;
 
 		// copy old network
 		oldNetwork = new MemoryOneModeNetwork(network->getGraph());
+		std::cout << iSim + 1 << " " << std::flush;
+		if ((iSim + 1) % 20 == 0) std::cout << std::endl;
 	}
 
 	std::cout << "average ties: " << averageTies << std::endl;
@@ -287,7 +290,7 @@ Sollte simulierte Netzwerke liefern, wo
  */
 void steglichParameterTest1(){
 
-	double poissonParameter1 = 200;
+	double poissonParameter1 = 10;
 	double poissonParameter2 = 8.81;
 	double densityParameter = -2.18;
 	double reciprocityParameter = 2.39;
@@ -295,7 +298,7 @@ void steglichParameterTest1(){
 	double expectedReciprocity = 240;
 	double expectedHammingDistance = 400;
 	double allowedDeviation = 10;
-	int nSimulations = 40;
+	int nSimulations = 1;
 
 	steglichParameterTest(
 			poissonParameter1,
@@ -328,7 +331,7 @@ Sollte simulierte Netzwerke liefern, wo
  */
 void steglichParameterTest2(){
 
-	double poissonParameter1 = 200;
+	double poissonParameter1 = 10;
 	double poissonParameter2 = 22.3;
 	double densityParameter = -2.24;
 	double reciprocityParameter = 2.24;
@@ -336,7 +339,7 @@ void steglichParameterTest2(){
 	double expectedReciprocity = 150;
 	double expectedHammingDistance = 500;
 	double allowedDeviation = 10;
-	int nSimulations = 40;
+	int nSimulations = 1;
 
 	steglichParameterTest(
 			poissonParameter1,
@@ -457,8 +460,8 @@ cute::suite getTestSaomSuite(){
 	s.push_back(CUTE(poissonparameterTest));
 	s.push_back(CUTE(densityChoiceTest));
 	s.push_back(CUTE(densityParameterSaomTest));
-	// s.push_back(CUTE(steglichParameterTest1));
-	// s.push_back(CUTE(steglichParameterTest2));
+	s.push_back(CUTE(steglichParameterTest1));
+	s.push_back(CUTE(steglichParameterTest2));
 
 	return s;
 }

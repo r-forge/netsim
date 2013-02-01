@@ -163,20 +163,20 @@ void overlappingNeighborsTest(){
 
 void unspecificTieUpdateTest(){
 	int size = 5;
-	MemoryOneModeNetwork* net = getTwoStarNetwork(size);
+	ValuedMemoryOneModeNetwork* net = getTwoStarNetwork(size);
 	// NetworkUtils utils;
 	// utils.dumpNetwork(net);
 
 	ASSERT(net->getTieValue(0,1) == 1);
 
-	net->multiplyTieValues(1.0);
-	ASSERT(net->getTieValue(0,1) == 1);
+	net->multiplyTieValues(1.1);
+	ASSERT(net->getTieValue(0,1) == 1.1);
 
 	net->addToTieValues(1.0);
-	ASSERT(net->getTieValue(0,1) == 2);
+	ASSERT(net->getTieValue(0,1) == 2.2);
 
 	net->multiplyTieValues(exp(1));
-	ASSERT(net->getTieValue(0,1) == ( 2 * exp(1) ) );
+	ASSERT(net->getTieValue(0,1) == ( 2.2 * exp(1) ) );
 }
 
 void thresholdValueTest(){
@@ -220,6 +220,19 @@ void testNetworkUtilsCountTiesAndDensity(){
 
 }
 
+void testNetworkUtilsHammingDistance(){
+	MemoryOneModeNetwork * network1 = getTwoStarNetwork(10);
+	MemoryOneModeNetwork * network2 = getTwoStarNetwork(10);
+	MemoryOneModeNetwork * network3 = new MemoryOneModeNetwork(10);
+	std::vector<double> onLineOfGraph(10, 1.0);
+	std::vector<std::vector<double> > graph(10, onLineOfGraph);
+	MemoryOneModeNetwork * network4 = new MemoryOneModeNetwork(graph);
+
+	ASSERT_EQUAL(0, NetworkUtils::getHammingDistance(network1, network2));
+	ASSERT_EQUAL(9+8, NetworkUtils::getHammingDistance(network1, network3));
+	ASSERT_EQUAL(10*9, NetworkUtils::getHammingDistance(network3, network4));
+}
+
 cute::suite getTestSuiteMemoryOneModeNetwork(){
 	cute::suite s;
 
@@ -231,6 +244,7 @@ cute::suite getTestSuiteMemoryOneModeNetwork(){
 	s.push_back(CUTE(unspecificTieUpdateTest));
 	s.push_back(CUTE(thresholdValueTest));
 	s.push_back(CUTE(testNetworkUtilsCountTiesAndDensity));
+	s.push_back(CUTE(testNetworkUtilsHammingDistance));
 
 	return s;
 }

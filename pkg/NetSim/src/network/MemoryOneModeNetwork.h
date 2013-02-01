@@ -88,19 +88,6 @@ public:
 	 */
 	std::set<int> getNodesInDistanceTwo(int i);
 
-	/**
-	 * Add a constant value to all ties
-	 * The function can, for example, be used for count networks
-	 */
-	void addToTieValues(double value);
-
-	/**
-	 * Multiply all tie values with a constant value
-	 * The function can, for example, be used for decay of network ties
-	 * This can never change the order of ties in case they are saved
-	 * in a tree structure
-	 */
-	void multiplyTieValues(double value);
 
 
 private:
@@ -119,6 +106,28 @@ protected:
 
 	std::set<int> intersectSets(std::set<int>* set1, std::set<int>* set2);
 
+};
+
+class MockMemoryOneModeNetwork : public MemoryOneModeNetwork{
+
+public:
+
+	MockMemoryOneModeNetwork(int size, bool directed=true, bool reflexive = false) :
+	MemoryOneModeNetwork(size, directed, reflexive){
+
+	}
+
+	MockMemoryOneModeNetwork(std::vector<std::vector<double> > graph, bool directed=true,
+				bool reflexive = false) : MemoryOneModeNetwork(graph, directed, reflexive){
+
+	}
+
+protected:
+
+	// do not make any internal updates after initialization
+	void updateInternalRepresentation(int i, int j, double oldValue, double newValue){
+
+	}
 };
 
 

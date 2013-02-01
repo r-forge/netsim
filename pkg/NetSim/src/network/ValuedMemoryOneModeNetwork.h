@@ -35,6 +35,20 @@ public:
 	 */
 	double getMinTieValueAbove(double threshold);
 
+	/**
+	 * Add a constant value to all ties
+	 * The function can, for example, be used for count networks
+	 */
+	void addToTieValues(double value);
+
+	/**
+	 * Multiply all tie values with a constant value
+	 * The function can, for example, be used for decay of network ties
+	 * This can never change the order of ties in case they are saved
+	 * in a tree structure
+	 */
+	void multiplyTieValues(double value);
+
 
 private:
 	// edge representation of tie values (positive and zero)
