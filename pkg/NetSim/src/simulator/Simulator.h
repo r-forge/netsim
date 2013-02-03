@@ -32,6 +32,7 @@ public:
 
 private:
 	std::string _textualResult;
+
 };
 
 /**
@@ -57,6 +58,8 @@ public:
 private:
 	double _time;
 	double _periodLength;
+	int _iterationSteps;
+	bool _verbose;
 	SimulationResult _result;
 	ProcessState* _processState;
 	ModelManager* _modelManager;
@@ -64,8 +67,29 @@ private:
 	void nextIterationStep();
 	bool isTimeLeft();
 	double getTimeUntilPeriodEnd();
-	int _iterationSteps;
-	bool _verbose;
+
+	/**
+	 * returns a pair with time until next change
+	 * and a set of all timeModel pointers that returned that time span
+	 * first: time span
+	 * second: index set of time models
+	 */
+	std::pair<double, std::set<TimeModel *> > chooseTimeModels(
+			std::vector<TimeModel*> timeModels,
+			double remainingSimulationTime);
+
+	/**
+	 * apply time related updates
+	 */
+	void applyTimeUpdates(std::vector<TimeUpdater*>, double timeSpan);
+
+	/**
+	 * apply change models
+	 */
+	std::list< std::pair<ModelResult*, Updater*> > applyChangeModels(std::vector<ChangeModel *> changeModels);
+
+	void applyChangeUpdates(std::list< std::pair<ModelResult*, Updater*> >);
+
 };
 
 

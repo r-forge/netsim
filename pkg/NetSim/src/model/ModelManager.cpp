@@ -40,6 +40,21 @@ std::vector<ChangeModel*> ModelManager::getChangeModels(TimeModel* timeModel) {
 	return _timeModelChangeModelMap[timeModel];
 }
 
+std::vector<ChangeModel*> ModelManager::getChangeModel(
+		std::set<TimeModel*> timeModels) {
+
+	std::vector<ChangeModel*> changeModels;
+
+	std::set<TimeModel*>::iterator it = timeModels.begin();
+	for ( ; it != timeModels.end(); ++it){
+		std::vector<ChangeModel*> res = getChangeModels(*it);
+		changeModels.insert(changeModels.end(), res.begin(), res.end());
+	}
+
+	return changeModels;
+
+}
+
 std::vector<Updater*> ModelManager::getUpdaters(ChangeModel* changeModel) {
 	return _changeModelChangeUpdaterMap[changeModel];
 }

@@ -39,74 +39,29 @@ void Simulator::simulate() {
 		}
 
 		// maximum possible time span
-		double timeSpan = _periodLength - _time;
+		double nextTimeSpan = _periodLength - _time;
 
-		// -1 indicates that no TimeModel returns shorter than
-		// the remaining time span
-		int indexTimeModel = -1;
-		std::vector<TimeModel*> timeModels = _modelManager->getTimeModels();
-		std::set<int> indexesNextTimeModels;
 
 		// choose TIME MODELS and determine timeSpan
-		for (std::vector<TimeModel*>::iterator it = timeModels.begin();
-				it != timeModels.end(); ++it){
-
-			double tmp = (**it).getTimeSpan(_processState);
-
-			// several changes at the same time
-			if (tmp == timeSpan){
-				indexTimeModel = it - timeModels.begin();
-				// add index to set of indexes
-				indexesNextTimeModels.insert(indexTimeModel);
-			}
-
-			// a new shorter time interval
-			if (tmp < timeSpan){
-				timeSpan = tmp;
-				indexTimeModel = it - timeModels.begin();
-				// reset set of indexed
-				indexesNextTimeModels.clear();
-				indexesNextTimeModels.insert(indexTimeModel);
-			}
-
-		}
+		std::vector<TimeModel*> timeModels = _modelManager->getTimeModels();
+		std::pair<double, std::set<TimeModel *> > timeResult = chooseTimeModels(timeModels, nextTimeSpan);
+		nextTimeSpan = timeResult.first;
+		std::set<TimeModel * > nextTimeModels = timeResult.second;
 
 		// TIME UPDATES based on timeSpan
 		std::vector<TimeUpdater*> timeUpdaters = _modelManager->getTimeUpdater();
+		applyTimeUpdates(timeUpdaters, nextTimeSpan);
 
-		TimeModelResult* timeModelResult = new TimeModelResult(timeSpan);
+		if (!nextTimeModels.empty()){
 
-		for (std::vector<TimeUpdater*>::iterator it = timeUpdaters.begin();
-				it != timeUpdaters.end(); ++it){
-
-			(*it)->update(_processState,
-					timeModelResult);
-		}
-
-		// at least one time model was chosen
-		if (indexesNextTimeModels.size() > 0){
-
-			_time += timeSpan;
-
+			_time += nextTimeSpan;
 			nChanges++;
 
-			// run CHANGE MODELS of each TimeModel and collect results; linke these to updates
-			std::list< std::pair<ModelResult*, Updater*> > resultUpdaterPairs;
-			std::set<int>::iterator itTimeModelIndexes = indexesNextTimeModels.begin();
-			for (; itTimeModelIndexes != indexesNextTimeModels.end(); ++itTimeModelIndexes){
-				std::vector<ChangeModel*> changeModels = _modelManager->getChangeModels( timeModels[(*itTimeModelIndexes)] );
+			// apply CHANGE MODELS if at least one time model was chosen
+			std::vector<ChangeModel * > changeModels = _modelManager->getChangeModel(nextTimeModels);
+			std::list< std::pair<ModelResult*, Updater*> > resultUpdaterPairs = applyChangeModels(changeModels);
 
-				std::vector<ChangeModel*>::iterator itChangeModels = changeModels.begin();
-				for (; itChangeModels != changeModels.end(); ++itChangeModels){
-					ModelResult * result =  (*itChangeModels)->getChange(_processState);
-					std::vector<Updater*> updaters = _modelManager->getUpdaters(*itChangeModels);
-					// link all Updaters to results
-					std::vector<Updater*>::iterator itUpdaters = updaters.begin();
-					for (; itUpdaters != updaters.end(); ++itUpdaters){
-						resultUpdaterPairs.push_back(std::make_pair(result, *itUpdaters));
-					} // updaters
-				} // changeModels
-			} // timeModels
+			// apply CHANGE UPDATES
 
 			// apply all UPDATES using ModelResults
 			// This part is separate as updates are subsequently applied to the previous process state
@@ -116,12 +71,13 @@ void Simulator::simulate() {
 				ModelResult * result = (*itResultUpdaterPairs).first;
 				updater->update(_processState, result);
 			}
-		}
+		} // if at least one time model was chosen
 
 		// No time model was chosen.
 		// This means the remaining time is shorter than any TimeResult
 		else {
 			_time = _periodLength; // terminates loop
+
 		}
 
 	} // while loop
@@ -136,7 +92,7 @@ void Simulator::simulate() {
 		double duration = (double)(clock() - timeStart)/CLOCKS_PER_SEC;
 		printf("Iteration steps: %d\n", nChanges);
 		printf("Simulation time: %.2fs\n", duration);
-		printf("Time per iteration: %.4fs\n", duration / ((double) nChanges));
+		printf("Time per iteration: %.6fs\n", duration / ((double) nChanges));
 	}
 
 }
@@ -165,4 +121,80 @@ void Simulator::setVerbose(bool verbose) {
 
 double Simulator::getTimeUntilPeriodEnd() {
 	return (_periodLength - _time);
+}
+
+std::pair<double, std::set<TimeModel *> > Simulator::chooseTimeModels(
+		std::vector<TimeModel*> timeModels,
+		double remainingSimulationTime) {
+
+	// -1 indicates that no TimeModel returns shorter than
+	// the remaining time span
+
+	std::set<TimeModel *> nextTimeModels;
+
+
+	for (std::vector<TimeModel*>::iterator itTimeModel = timeModels.begin();
+			itTimeModel != timeModels.end(); ++itTimeModel){
+
+		double latestTimeSpan = (**itTimeModel).getTimeSpan(_processState);
+
+		// several changes at the same time
+		if (latestTimeSpan == remainingSimulationTime){
+			nextTimeModels.insert(*itTimeModel);
+		}
+
+		// a new shorter time interval
+		if (latestTimeSpan < remainingSimulationTime){
+			remainingSimulationTime = latestTimeSpan;
+			nextTimeModels.clear();
+			nextTimeModels.insert(*itTimeModel);
+		}
+
+	}
+
+	return std::make_pair(remainingSimulationTime, nextTimeModels);
+
+}
+
+void Simulator::applyTimeUpdates(std::vector<TimeUpdater*> timeUpdaters,
+		double timeSpan) {
+	if (timeUpdaters.empty()) return;
+	else {
+		TimeModelResult* timeModelResult = new TimeModelResult(timeSpan);
+
+		for (std::vector<TimeUpdater*>::iterator it = timeUpdaters.begin();
+				it != timeUpdaters.end(); ++it){
+
+			(*it)->update(_processState,
+					timeModelResult);
+		}
+
+		delete timeModelResult;
+	}
+
+}
+
+std::list< std::pair<ModelResult*, Updater*> > Simulator::applyChangeModels(std::vector<ChangeModel *> changeModels) {
+
+
+				// run CHANGE MODELS of each TimeModel and collect results; link these to updates
+				std::list< std::pair<ModelResult*, Updater*> > resultUpdaterPairs;
+				std::vector<ChangeModel*>::iterator itChangeModels = changeModels.begin();
+
+				for (; itChangeModels != changeModels.end(); ++itChangeModels){
+						ModelResult * result =  (*itChangeModels)->getChange(_processState);
+						std::vector<Updater*> updaters = _modelManager->getUpdaters(*itChangeModels);
+						// link all Updaters to results
+						std::vector<Updater*>::iterator itUpdaters = updaters.begin();
+						for (; itUpdaters != updaters.end(); ++itUpdaters){
+							resultUpdaterPairs.push_back(std::make_pair(result, *itUpdaters));
+						} // updaters
+
+				} // changeModels
+
+				return resultUpdaterPairs;
+}
+
+void Simulator::applyChangeUpdates(
+		std::list<std::pair<ModelResult*, Updater*> > pair) {
 }

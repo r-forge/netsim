@@ -6,3 +6,7 @@
  */
 
 #include "ChangeModel.h"
+
+ModelResult* NullChangeModel::getChange(ProcessState* processState) {
+	return new ActorModelResult(0);
+}

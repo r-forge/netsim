@@ -48,6 +48,8 @@ public:
 	 */
 	std::vector<ChangeModel*> getChangeModels(TimeModel* timeModel);
 
+	std::vector<ChangeModel*> getChangeModel(std::set<TimeModel*> timeModel);
+
 	/**
 	 * Get the change updater based on the index determined
 	 * by a comparison of time models

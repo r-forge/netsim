@@ -19,7 +19,7 @@
 
 
 
-void runSuite(){
+void runUnitTestSuite(){
 	cute::suite s0001 = getTestSuiteMemoryOneModeNetwork();
 	cute::suite s0002 = getTestAttributeContainerSuite();
 	cute::suite s0003 = getTestSaomSuite();

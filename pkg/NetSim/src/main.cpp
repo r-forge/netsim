@@ -11,6 +11,7 @@
 #include <Rcpp.h>
 // #include <RInside.h>	// for the embedded R via RInside
 #include <iostream>
+#include <map>
 #include "rwrapper/rcpp_hello_world.h"
 #include "rwrapper/wrapper_process_state.h"
 #include "rwrapper/wrapper_network.h"
@@ -30,6 +31,7 @@ using namespace Rcpp;
 
 int main(int argc, char *argv[]){
 
+	/*
 	// define the process state
 	ProcessState myProcessState;
 	int nActors = 100;
@@ -81,9 +83,50 @@ int main(int argc, char *argv[]){
 	NetworkUtils utils;
 	utils.dumpNetwork((OneModeNetwork*)myProcessState.getNetwork(indexNetwork),1);
 
+	*/
+
+	int nActors = 1;
+
+	MemoryOneModeNetwork network(nActors, true, false);
+
+	ProcessState myProcessState;
+	size_t indexNetwork = myProcessState.addNetwork(&network);
+
+	ModelManager myModelManager;
+	PoissonTimeModel * poissonModel = new PoissonTimeModel(100);
+
+	MultinomialChoiceNetworkChangeModel * saom = new MultinomialChoiceNetworkChangeModel(
+			0,
+			indexNetwork,
+			new std::set<std::pair<SaomEffect*, double> *>(),
+			new std::vector<Updater*>(1, new TieSwapUpdater(indexNetwork)));
+
+
+	myModelManager.addTimeModel(poissonModel);
+	myModelManager.addChangeModel(poissonModel, saom);
+
+	double periodLength = 10000;
+	Simulator mySimulator(&myProcessState, &myModelManager, periodLength);
+
+	mySimulator.simulate();
+
+	clock_t timeStart = clock();
+	int nIterations = 1000000;
+
+	for (int i = 0; i< nIterations; i++){
+		poissonModel->getTimeSpan(&myProcessState);
+		saom->getChange(&myProcessState);
+	}
+
+	double duration = (double)(clock() - timeStart)/CLOCKS_PER_SEC;
+
+	std::cout << "Same without simulation" << std::endl;
+	printf("Simulation time: %.2fs\n", duration);
+	printf("Time per iteration: %.6fs\n", duration / ((double) nIterations));
+
 
 	// Run unit tests
-	runSuite();
+	runUnitTestSuite();
 
 	return 0;
 }

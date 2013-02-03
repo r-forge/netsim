@@ -18,5 +18,9 @@ public:
 	virtual ModelResult * getChange(ProcessState * processState) = 0;
 };
 
+class NullChangeModel : public ChangeModel{
+	ModelResult * getChange(ProcessState * processState);
+};
+
 
 #endif /* CHANGEMODEL_H_ */
