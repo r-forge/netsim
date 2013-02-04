@@ -108,21 +108,28 @@ int main(int argc, char *argv[]){
 	double periodLength = 10000;
 	Simulator mySimulator(&myProcessState, &myModelManager, periodLength);
 
+
+
+	mySimulator.setVerbose(true);
 	mySimulator.simulate();
 
-	clock_t timeStart = clock();
-	int nIterations = 1000000;
+	mySimulator.setVerbose(true);
+	mySimulator.simulateOLD(); // deprecated simulation
 
+	// just doing the right number of changes
+	// without model manager and simulatorinvolved
+	int nIterations = 1000000;
+	clock_t timeStart2 = clock();
 	for (int i = 0; i< nIterations; i++){
 		poissonModel->getTimeSpan(&myProcessState);
 		saom->getChange(&myProcessState);
 	}
 
-	double duration = (double)(clock() - timeStart)/CLOCKS_PER_SEC;
+	double duration2 = (double)(clock() - timeStart2)/CLOCKS_PER_SEC;
 
 	std::cout << "Same without simulation" << std::endl;
-	printf("Simulation time: %.2fs\n", duration);
-	printf("Time per iteration: %.6fs\n", duration / ((double) nIterations));
+	printf("Simulation time: %.2fs\n", duration2);
+	printf("Time per iteration: %.7fs\n", duration2 / ((double) nIterations));
 
 
 	// Run unit tests

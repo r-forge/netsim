@@ -290,7 +290,7 @@ Sollte simulierte Netzwerke liefern, wo
  */
 void steglichParameterTest1(){
 
-	double poissonParameter1 = 10;
+	double poissonParameter1 = 1000;
 	double poissonParameter2 = 8.81;
 	double densityParameter = -2.18;
 	double reciprocityParameter = 2.39;
@@ -298,7 +298,7 @@ void steglichParameterTest1(){
 	double expectedReciprocity = 240;
 	double expectedHammingDistance = 400;
 	double allowedDeviation = 10;
-	int nSimulations = 1;
+	int nSimulations = 300;
 
 	steglichParameterTest(
 			poissonParameter1,
@@ -331,7 +331,7 @@ Sollte simulierte Netzwerke liefern, wo
  */
 void steglichParameterTest2(){
 
-	double poissonParameter1 = 10;
+	double poissonParameter1 = 1000;
 	double poissonParameter2 = 22.3;
 	double densityParameter = -2.24;
 	double reciprocityParameter = 2.24;
@@ -339,7 +339,7 @@ void steglichParameterTest2(){
 	double expectedReciprocity = 150;
 	double expectedHammingDistance = 500;
 	double allowedDeviation = 10;
-	int nSimulations = 1;
+	int nSimulations = 10;
 
 	steglichParameterTest(
 			poissonParameter1,
@@ -460,7 +460,7 @@ cute::suite getTestSaomSuite(){
 	s.push_back(CUTE(poissonparameterTest));
 	s.push_back(CUTE(densityChoiceTest));
 	s.push_back(CUTE(densityParameterSaomTest));
-	s.push_back(CUTE(steglichParameterTest1));
+	// s.push_back(CUTE(steglichParameterTest1));
 	s.push_back(CUTE(steglichParameterTest2));
 
 	return s;

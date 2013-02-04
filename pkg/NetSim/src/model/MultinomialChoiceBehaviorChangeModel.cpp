@@ -71,7 +71,9 @@ ModelResult* MultinomialChoiceBehaviorChangeModel::getChange(
 		double rand = Random::getInstance().getRandom();
 
 		if (cumulatedProbability > rand){
-			return new ValueModelResult(behaviorValues[i]);
+			_valueModelResult = new ValueModelResult(behaviorValues[i]);
+			return _valueModelResult;
+			// return new ValueModelResult(behaviorValues[i]);
 		}
 	}
 

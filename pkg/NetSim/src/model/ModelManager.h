@@ -34,37 +34,36 @@ public:
 
 	void addUpdater(ChangeModel * changeModel, Updater * updater);
 
-	std::vector<TimeModel*> getTimeModels();
+	std::vector<TimeModel*> * getTimeModels();
 
 	/**
 	 * Get all TimeUpdater objects.
 	 * These are all time dependent network changes.
 	 */
-	std::vector<TimeUpdater*> getTimeUpdater();
+	std::vector<TimeUpdater*> * getTimeUpdater();
 
 	/**
 	 * Get the change model based on the index determined
 	 * by a comparison of time models
 	 */
-	std::vector<ChangeModel*> getChangeModels(TimeModel* timeModel);
+	std::vector<ChangeModel*> * getChangeModels(TimeModel* timeModel);
 
-	std::vector<ChangeModel*> getChangeModel(std::set<TimeModel*> timeModel);
+	std::vector<ChangeModel*> * getChangeModels(std::set<TimeModel*> timeModel);
 
 	/**
 	 * Get the change updater based on the index determined
 	 * by a comparison of time models
 	 */
-	std::vector<Updater*> getUpdaters(ChangeModel* changeModel);
+	std::vector<Updater*> * getUpdaters(ChangeModel* changeModel);
 
 	std::string getLatestMessage();
 
 private:
 
-	std::vector<TimeUpdater*> _timeUpdaters;
-
 	std::vector<TimeModel*>_timeModels;
-	boost::unordered_map<TimeModel*, std::vector<ChangeModel*> > _timeModelChangeModelMap;
-	boost::unordered_map<ChangeModel*, std::vector<Updater*> > _changeModelChangeUpdaterMap;
+	std::vector<TimeUpdater*> _timeUpdaters;
+	std::map<TimeModel*, std::vector<ChangeModel*> > _timeModelChangeModelMap;
+	std::map<ChangeModel*, std::vector<Updater*> > _changeModelChangeUpdaterMap;
 
 	// std::vector<ChangeModel*> _changeModels;
 	// std::vector<Updater*> _updaters;

@@ -32,7 +32,7 @@ SEXP simulate(SEXP simulator_) {
 
 	Simulator * simulator = Rcpp::XPtr<Simulator>(simulator_);
 
-	simulator->simulate();
+	simulator->simulateOLD();
 
 	SimulationResult result = simulator->getSimulationResult();
 

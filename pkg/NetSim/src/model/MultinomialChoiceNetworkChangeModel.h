@@ -51,11 +51,10 @@ public:
 
 
 private:
+	TieModelResult * _tieModelResult;
 	int _actorIndex;
 	size_t _dependentNetworkIndex;
 	std::set<std::pair<SaomEffect*, double> *> * _effectParameterPairs;
-	// std::vector<NetworkEffect*> * _effects; // Effect container
-	// std::vector<double> * _parameters;
 	std::vector<Updater*> * _updaters;
 	bool _debug;
 

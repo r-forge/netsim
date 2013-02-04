@@ -74,7 +74,9 @@ ModelResult* MultinomialChoiceNetworkChangeModel::getChange(
 		// j is the randomly chosen actor
 		// create and return ActorModelResult
 		if (cumProbability >= randomNumber){
-			return new TieModelResult(_actorIndex,j);
+			_tieModelResult = new TieModelResult(_actorIndex,j);
+			return _tieModelResult;
+			// return new TieModelResult(_actorIndex,j);
 		}
 	}
 

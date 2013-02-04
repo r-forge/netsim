@@ -29,6 +29,7 @@ public:
 	virtual ModelResult * getChange(ProcessState * processState);
 
 private:
+	ValueModelResult * _valueModelResult;
 	int _actorIndex;
 	int _attributeIndex;
 	bool _debug;

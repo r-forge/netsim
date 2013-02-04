@@ -47,6 +47,8 @@ public:
 	Simulator(ProcessState * processState, ModelManager * modelManager,
 			double periodLength);
 
+	void simulateOLD();
+
 	void simulate();
 
 	SimulationResult getSimulationResult();
@@ -63,6 +65,10 @@ private:
 	SimulationResult _result;
 	ProcessState* _processState;
 	ModelManager* _modelManager;
+	std::vector<TimeModel * > _nextTimeModels;
+	std::vector<ChangeModel * > _nextChangeModels;
+	std::vector<ModelResult * > _nextResults;
+	std::vector<std::vector<Updater * > * >_nextUpdaters; // one for each result
 
 	void nextIterationStep();
 	bool isTimeLeft();
@@ -75,20 +81,24 @@ private:
 	 * second: index set of time models
 	 */
 	std::pair<double, std::set<TimeModel *> > chooseTimeModels(
-			std::vector<TimeModel*> timeModels,
+			std::vector<TimeModel*> * timeModels,
 			double remainingSimulationTime);
 
 	/**
 	 * apply time related updates
 	 */
-	void applyTimeUpdates(std::vector<TimeUpdater*>, double timeSpan);
+	void applyTimeUpdates(std::vector<TimeUpdater*> *, double timeSpan);
 
 	/**
 	 * apply change models
 	 */
-	std::list< std::pair<ModelResult*, Updater*> > applyChangeModels(std::vector<ChangeModel *> changeModels);
+	std::vector< std::pair<ModelResult*, Updater*> > applyChangeModels(
+			std::vector<ChangeModel *> * changeModels);
 
-	void applyChangeUpdates(std::list< std::pair<ModelResult*, Updater*> >);
+	/**
+	 * apply change updates
+	 */
+	void applyChangeUpdates(std::vector< std::pair<ModelResult*, Updater*> >);
 
 };
 

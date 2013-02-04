@@ -100,6 +100,7 @@ public:
 
 	virtual double getTimeSpan(ProcessState * processState) = 0;
 	virtual void update(ProcessState* processState, TimeModelResult* timeModelResult) = 0;
+	virtual void update(ProcessState* processState, double timeSpan) = 0;
 	// TODO implement with a proper exception
 	void undoUpdate(ProcessState* processState, TimeModelResult* timeModelResult){
 		std::cout << "Undo not implemented for TimeUpdaters.";
@@ -119,6 +120,8 @@ public:
 	void update(ProcessState* processState, ModelResult* modelResult);
 
 	void update(ProcessState* processState, TimeModelResult* timeModelResult);
+
+	void update(ProcessState* processState, double timeSpan);
 
 	/**
 	 * returns The time until a critical threshold is reached

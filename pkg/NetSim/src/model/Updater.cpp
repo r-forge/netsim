@@ -79,13 +79,19 @@ void ExponentialDecayTimeUpdater::update(ProcessState* processState,
 
 void ExponentialDecayTimeUpdater::update(ProcessState* processState,
 		TimeModelResult* timeModelResult) {
+	double timeSpan = timeModelResult->getDoubleResult();
+	update(processState, timeSpan);
+}
+
+void ExponentialDecayTimeUpdater::update(ProcessState* processState,
+		double timeSpan) {
 	ValuedMemoryOneModeNetwork* network =
 			dynamic_cast<ValuedMemoryOneModeNetwork*>(
 					processState->getNetwork(_networkIndex));
-	double timeSpan = timeModelResult->getDoubleResult();
 
 	network->multiplyTieValues(getMultiplicatorTieValues(timeSpan));
 }
+
 
 double ExponentialDecayTimeUpdater::getTimeSpan(ProcessState* processState) {
 	ValuedMemoryOneModeNetwork * network =
