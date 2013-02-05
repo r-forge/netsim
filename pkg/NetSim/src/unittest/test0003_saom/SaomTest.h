@@ -255,15 +255,27 @@ void steglichParameterTest(
 		// calculate Hamming distance and update average distance
 		// div nSimulations without +1
 		averageHammingDistance +=
-			NetworkUtils::getHammingDistance(network, oldNetwork) /
-			nSimulations;
+			(double) NetworkUtils::getHammingDistance(network, oldNetwork) /
+			(double) nSimulations;
 
 		// delete and re-assign old network
 		delete oldNetwork;
 		oldNetwork = new MemoryOneModeNetwork(network->getGraph());
 		std::cout << iSim + 1 << " " << std::flush;
-		if ((iSim + 1) % 20 == 0) std::cout << std::endl;
+		if ((iSim + 1) % 20 == 0) {
+			std::cout << std::endl;
+			std::cout << "avg (ties / recip / hamming): " <<
+					averageTies * nSimulations / (iSim + 1);
+			std::cout << " / " <<
+					averageReciprocalTies * nSimulations / (iSim + 1);
+			std::cout << " / " <<
+					averageHammingDistance * (double) nSimulations / (iSim)<< std::endl;
+
+
+		}
 	}
+
+	delete oldNetwork;
 
 	std::cout << "average ties: " << averageTies << std::endl;
 	std::cout << "average reciprocal ties: " << averageReciprocalTies << std::endl;
@@ -272,6 +284,10 @@ void steglichParameterTest(
 	ASSERT(abs(expectedSingleTie - averageTies) < allowedDeviation);
 	ASSERT(abs(expectedReciprocity - averageReciprocalTies) < allowedDeviation);
 	ASSERT(abs(expectedHammingDistance - averageHammingDistance) < allowedDeviation);
+
+	delete processState;
+	delete modelManager;
+	delete effectManager;
 
 }
 
@@ -333,7 +349,7 @@ Sollte simulierte Netzwerke liefern, wo
  */
 void steglichParameterTest2(){
 
-	double poissonParameter1 = 1; // was 1000
+	double poissonParameter1 = 1000;
 	double poissonParameter2 = 22.3;
 	double densityParameter = -2.24;
 	double reciprocityParameter = 2.24;
@@ -341,7 +357,7 @@ void steglichParameterTest2(){
 	double expectedReciprocity = 150;
 	double expectedHammingDistance = 500;
 	double allowedDeviation = 10;
-	int nSimulations = 1; // was 400
+	int nSimulations = 200; // was 400
 
 	steglichParameterTest(
 			poissonParameter1,
