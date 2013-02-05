@@ -27,7 +27,7 @@ public:
 	OneModeNetwork(int size, bool directed = true, bool reflexive = false);
 	OneModeNetwork(std::vector<std::vector<double> > graph,
 			bool directed = true, bool reflexive = false);
-	virtual ~OneModeNetwork();
+	~OneModeNetwork();
 
 	/*
 	 * Adds a tie to the network. This equals

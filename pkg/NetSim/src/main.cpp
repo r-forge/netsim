@@ -105,7 +105,7 @@ int main(int argc, char *argv[]){
 	myModelManager.addTimeModel(poissonModel);
 	myModelManager.addChangeModel(poissonModel, saom);
 
-	double periodLength = 10000;
+	double periodLength = 10;
 	Simulator mySimulator(&myProcessState, &myModelManager, periodLength);
 
 
@@ -113,16 +113,17 @@ int main(int argc, char *argv[]){
 	mySimulator.setVerbose(true);
 	mySimulator.simulate();
 
-	mySimulator.setVerbose(true);
-	mySimulator.simulateOLD(); // deprecated simulation
+	// mySimulator.setVerbose(true);
+	// mySimulator.simulateOLD(); // deprecated simulation
 
 	// just doing the right number of changes
 	// without model manager and simulatorinvolved
-	int nIterations = 1000000;
+	int nIterations = 1000;
 	clock_t timeStart2 = clock();
 	for (int i = 0; i< nIterations; i++){
 		poissonModel->getTimeSpan(&myProcessState);
-		saom->getChange(&myProcessState);
+		ModelResult * result = saom->getChange(&myProcessState);
+		delete result;
 	}
 
 	double duration2 = (double)(clock() - timeStart2)/CLOCKS_PER_SEC;
@@ -131,6 +132,7 @@ int main(int argc, char *argv[]){
 	printf("Simulation time: %.2fs\n", duration2);
 	printf("Time per iteration: %.7fs\n", duration2 / ((double) nIterations));
 
+	delete poissonModel;
 
 	// Run unit tests
 	runUnitTestSuite();

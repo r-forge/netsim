@@ -117,6 +117,7 @@ void densityChoiceTest(){
 		TieModelResult * actorResult = dynamic_cast<TieModelResult*>(result);
 
 		estimatedValues[actorResult->getActorIndex2()] += 1 / ((double) nSimulations);
+
 	}
 
 	std::cout << "i: " << "expected" << " / " << "estimated" << std:: endl;
@@ -257,7 +258,8 @@ void steglichParameterTest(
 			NetworkUtils::getHammingDistance(network, oldNetwork) /
 			nSimulations;
 
-		// copy old network
+		// delete and re-assign old network
+		delete oldNetwork;
 		oldNetwork = new MemoryOneModeNetwork(network->getGraph());
 		std::cout << iSim + 1 << " " << std::flush;
 		if ((iSim + 1) % 20 == 0) std::cout << std::endl;
@@ -331,7 +333,7 @@ Sollte simulierte Netzwerke liefern, wo
  */
 void steglichParameterTest2(){
 
-	double poissonParameter1 = 1000;
+	double poissonParameter1 = 1; // was 1000
 	double poissonParameter2 = 22.3;
 	double densityParameter = -2.24;
 	double reciprocityParameter = 2.24;
@@ -339,7 +341,7 @@ void steglichParameterTest2(){
 	double expectedReciprocity = 150;
 	double expectedHammingDistance = 500;
 	double allowedDeviation = 10;
-	int nSimulations = 10;
+	int nSimulations = 1; // was 400
 
 	steglichParameterTest(
 			poissonParameter1,

@@ -67,7 +67,7 @@ private:
 	ModelManager* _modelManager;
 	std::vector<TimeModel * > _nextTimeModels;
 	std::vector<ChangeModel * > _nextChangeModels;
-	std::vector<ModelResult * > _nextResults;
+	std::vector<ModelResult * > _nextChangeResults;
 	std::vector<std::vector<Updater * > * >_nextUpdaters; // one for each result
 
 	void nextIterationStep();

@@ -68,7 +68,6 @@ void Simulator::simulateOLD() {
 					_modelManager->getChangeModels(nextTimeModels);
 			std::vector< std::pair<ModelResult*, Updater*> > resultUpdaterPairs =
 					applyChangeModels(changeModels);
-			free(changeModels);
 
 			// apply CHANGE UPDATES
 			applyChangeUpdates(resultUpdaterPairs);
@@ -153,25 +152,33 @@ void Simulator::simulate() {
 					_modelManager->getChangeModels(*it)->end());
 		}
 		// get change results and create update vector
-		_nextResults.clear();
+		_nextChangeResults.clear();
 		_nextUpdaters.clear();
 		for (std::vector<ChangeModel * >::iterator it = _nextChangeModels.begin();
 				it != _nextChangeModels.end(); ++it){
 			ModelResult * result = (*it)->getChange(_processState);
-			_nextResults.push_back(result);
+			_nextChangeResults.push_back(result);
 			std::vector<Updater *> * updaters = _modelManager->getUpdaters(*it);
 			_nextUpdaters.push_back(updaters);
+
 		}
 
 		// UPDATES
-		if (_nextResults.size() != _nextUpdaters.size())
+		if (_nextChangeResults.size() != _nextUpdaters.size())
 			return; // throw error
-		for (size_t i = 0; i < _nextResults.size(); i++){
+		for (size_t i = 0; i < _nextChangeResults.size(); i++){
 			for (std::vector<Updater *>::iterator it = (*_nextUpdaters[i]).begin();
 					it != (*_nextUpdaters[i]).end(); ++it){
 				(*it)->update(_processState,
-						_nextResults[i]);
+						_nextChangeResults[i]);
 			}
+		}
+
+		// delete result pointers
+		// TODO maybe replace with boost::ptr_vector
+		for (std::vector<ModelResult * >::iterator it = _nextChangeResults.begin();
+				it != _nextChangeResults.end(); ++it){
+			delete (*it);
 		}
 
 		++_iterationSteps;

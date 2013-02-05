@@ -41,6 +41,8 @@ class TieModelResult : public ModelResult{
 public:
 	TieModelResult(int actorIndex1, int actorIndex2);
 
+	TieModelResult& operator=( const TieModelResult& tmr );
+
 	int getActorIndex1();
 
 	int getActorIndex2();

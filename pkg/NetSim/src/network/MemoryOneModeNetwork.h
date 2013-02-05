@@ -30,6 +30,7 @@ public:
 	MemoryOneModeNetwork(int size, bool directed=true, bool reflexive = false);
 	MemoryOneModeNetwork(std::vector<std::vector<double> > graph, bool directed=true,
 			bool reflexive = false);
+	~MemoryOneModeNetwork();
 
 	/**
 	 * Returns the (dichotomized) in-degree of a node i in O(1)

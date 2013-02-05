@@ -24,6 +24,11 @@ int TieModelResult::getActorIndex1() {
 	return _actorIndex1;
 }
 
+TieModelResult& TieModelResult::operator =(const TieModelResult& tmr) {
+	_actorIndex1 = tmr._actorIndex1;
+	_actorIndex1 = tmr._actorIndex2;
+	return *this;
+}
 
 int TieModelResult::getActorIndex2() {
 	return _actorIndex2;

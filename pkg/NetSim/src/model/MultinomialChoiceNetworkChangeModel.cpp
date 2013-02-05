@@ -37,7 +37,9 @@ ModelResult* MultinomialChoiceNetworkChangeModel::getChange(
 
 		// update tie.
 			for (std::vector<Updater*>::iterator it = _updaters->begin(); it != _updaters->end(); ++it){
-				(*it)->update(processState, new TieModelResult(i,j)); // TODO check i, j
+				TieModelResult * result = new TieModelResult(i,j); // TODO check i, j
+				(*it)->update(processState, result);
+				delete result;
 			}
 
 		// calculate and save objective function
@@ -55,7 +57,9 @@ ModelResult* MultinomialChoiceNetworkChangeModel::getChange(
 		// Performance can be improved by implementing a
 			// Memento mechanism in the process state
 			for (std::vector<Updater*>::iterator it = _updaters->begin(); it != _updaters->end(); ++it){
-				(*it)->undoUpdate(processState, new TieModelResult(i,j)); // TODO check i, j
+				TieModelResult * result = new TieModelResult(i,j); // TODO check i, j
+				(*it)->undoUpdate(processState, result);
+				delete result;
 			}
 	}
 
@@ -74,9 +78,9 @@ ModelResult* MultinomialChoiceNetworkChangeModel::getChange(
 		// j is the randomly chosen actor
 		// create and return ActorModelResult
 		if (cumProbability >= randomNumber){
-			_tieModelResult = new TieModelResult(_actorIndex,j);
-			return _tieModelResult;
-			// return new TieModelResult(_actorIndex,j);
+			// TieModelResult result(_actorIndex,j);
+			return new TieModelResult(_actorIndex,j);
+			// return &_tieModelResult;
 		}
 	}
 

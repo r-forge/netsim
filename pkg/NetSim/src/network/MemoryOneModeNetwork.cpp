@@ -20,6 +20,19 @@ MemoryOneModeNetwork::MemoryOneModeNetwork(
 	init();
 }
 
+MemoryOneModeNetwork::~MemoryOneModeNetwork() {
+	typedef std::map<int,std::set<int>* >::iterator it_type;
+	for (it_type it = _outgoingNeighborsMap.begin();
+			it != _outgoingNeighborsMap.end(); ++it){
+		delete (*it).second;
+	}
+	for (it_type it = _incomingNeighborsMap.begin();
+			it != _incomingNeighborsMap.end(); ++it){
+		delete (*it).second;
+	}
+
+}
+
 int MemoryOneModeNetwork::getOutDegree(int i) {
 	return _outDegreeMap[i];
 }
