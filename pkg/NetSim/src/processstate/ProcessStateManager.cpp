@@ -31,7 +31,7 @@ size_t ProcessStateManager::addAttributeContainter(
 	return index;
 }
 
-size_t ProcessStateManager::addGlobalAttribute(double* attribute,
+size_t ProcessStateManager::addGlobalAttribute(double attribute,
 		std::string name) {
 	size_t index = _processState->addGlobalAttribute(attribute);
 	_globalAttributeNameIndexMap.insert(
@@ -50,7 +50,7 @@ AttributeContainer* ProcessStateManager::getAttributeContainer(
 	return _processState->getAttributeContainer(index);
 }
 
-double* ProcessStateManager::getGlobalAttribute(std::string name) {
+double ProcessStateManager::getGlobalAttribute(std::string name) {
 	size_t index = _globalAttributeNameIndexMap[name];
 	return _processState->getGlobalAttribute(index);
 }

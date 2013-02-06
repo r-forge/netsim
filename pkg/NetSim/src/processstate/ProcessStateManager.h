@@ -25,12 +25,12 @@ public:
 			std::string name);
 	size_t addAttributeContainter(AttributeContainer* attributeContainer,
 			std::string name);
-	size_t addGlobalAttribute(double* attribute,
+	size_t addGlobalAttribute(double attribute,
 			std::string name);
 
 	Network* getNetwork(std::string name);
 	AttributeContainer* getAttributeContainer(std::string name);
-	double* getGlobalAttribute(std::string name);
+	double getGlobalAttribute(std::string name);
 
 	size_t getNetworkIndex(std::string name);
 	size_t getAttributeContainerIndex(std::string name);

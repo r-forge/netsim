@@ -123,6 +123,11 @@ double OneModeNetwork::getTieValue(int i, int j) {
 	return _graph[getInternalIndex(i,j)];
 }
 
+OneModeNetworkMemento* OneModeNetwork::saveToMemento() {
+}
+
+void OneModeNetwork::restoreFromMemento(NetworkMemento* memento) {
+}
 
 void OneModeNetwork::init() {
 }
@@ -154,3 +159,10 @@ std::vector<double> OneModeNetwork::stripGraph(
 	return graph1d;
 }
 
+void OneModeNetworkMemento::saveGraph(std::vector<double> graph) {
+	_graph = graph; // copy constructor ?
+}
+
+std::vector<double> OneModeNetworkMemento::getGraph() {
+	return _graph;
+}

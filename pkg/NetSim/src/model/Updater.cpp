@@ -51,13 +51,16 @@ GlobalCountUpdater::GlobalCountUpdater(size_t indexGlobalVariableToUpdate) {
 
 void GlobalCountUpdater::update(ProcessState* processState,
 		ModelResult* result) {
-	//TODO: How does that work in elegant?
-	*(processState->getGlobalAttribute(_indexGlobalVariable)) += 1.0;
+	double value = processState->getGlobalAttribute(_indexGlobalVariable);
+	value += 1;
+	processState->setGlobalAttribute(_indexGlobalVariable, value);
 }
 
 void GlobalCountUpdater::undoUpdate(ProcessState* processState,
 		ModelResult* result) {
-	*(processState->getGlobalAttribute(_indexGlobalVariable)) -= 1.0;
+	double value = processState->getGlobalAttribute(_indexGlobalVariable);
+	value -= 1;
+	processState->setGlobalAttribute(_indexGlobalVariable, value);
 }
 
 ExponentialDecayTimeUpdater::ExponentialDecayTimeUpdater(size_t networkIndex,

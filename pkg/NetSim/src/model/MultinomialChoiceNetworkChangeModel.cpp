@@ -30,38 +30,49 @@ ModelResult* MultinomialChoiceNetworkChangeModel::getChange(
 	std::vector<double> objectiveFunctions(nActors, 0);
 	double denominator = 0;
 
+
+	// save process state as memento
+	ProcessStateMemento * memento = processState->saveToMemento();
+
 	// iterate over all actors
 	for (int j = 0; j < nActors; j++){
 
 		int i = _actorIndex;
 
 		// update tie.
-			for (std::vector<Updater*>::iterator it = _updaters->begin(); it != _updaters->end(); ++it){
-				TieModelResult * result = new TieModelResult(i,j); // TODO check i, j
-				(*it)->update(processState, result);
-				delete result;
-			}
+		for (std::vector<Updater*>::iterator it = _updaters->begin(); it != _updaters->end(); ++it){
+			TieModelResult * result = new TieModelResult(i,j); // TODO check i, j
+			(*it)->update(processState, result);
+			delete result;
+		}
 
 		// calculate and save objective function
-			objectiveFunctions[j] =
-					MultinomialChoiceUtils::getValueObjectiveFunction(processState, i, _effectParameterPairs, _debug);
-					//getValueObjectiveFunction(processState, i); // processState has been updated previously
+		objectiveFunctions[j] =
+				MultinomialChoiceUtils::getValueObjectiveFunction(processState, i, _effectParameterPairs, _debug);
+				//getValueObjectiveFunction(processState, i); // processState has been updated previously
 
 		// increase sum (denominator)
-			denominator += exp(objectiveFunctions[j]);
+		denominator += exp(objectiveFunctions[j]);
 
-			if (_debug) std::cout << "" << objectiveFunctions[j] << std::endl;
+		if (_debug) std::cout << "" << objectiveFunctions[j] << std::endl;
 
+		// COMMENTED OUT TO TEST MEMENTO
 		// reset process state
 		// So far, this is implemented as a swap back
 		// Performance can be improved by implementing a
-			// Memento mechanism in the process state
-			for (std::vector<Updater*>::iterator it = _updaters->begin(); it != _updaters->end(); ++it){
-				TieModelResult * result = new TieModelResult(i,j); // TODO check i, j
-				(*it)->undoUpdate(processState, result);
-				delete result;
-			}
+		// Memento mechanism in the process state
+		for (std::vector<Updater*>::iterator it = _updaters->begin(); it != _updaters->end(); ++it){
+			TieModelResult * result = new TieModelResult(i,j); // TODO check i, j
+			(*it)->undoUpdate(processState, result);
+			delete result;
+		}
+
+		// reset process state
+		//processState->restoreFromMemento(memento);
 	}
+
+	delete memento;
+
 
 	if (_debug) std::cout << "Active actor: " << _actorIndex << std::endl;
 	if (_debug) std::cout << "calculated denominator: " << denominator << std::endl;

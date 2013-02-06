@@ -47,8 +47,6 @@ public:
 	Simulator(ProcessState * processState, ModelManager * modelManager,
 			double periodLength);
 
-	void simulateOLD();
-
 	void simulate();
 
 	SimulationResult getSimulationResult();
@@ -73,6 +71,11 @@ private:
 	void nextIterationStep();
 	bool isTimeLeft();
 	double getTimeUntilPeriodEnd();
+
+	/*
+	 * Deprecated simuation routine
+	 */
+	void simulateOLD();
 
 	/**
 	 * returns a pair with time until next change

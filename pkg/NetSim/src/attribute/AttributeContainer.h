@@ -15,6 +15,9 @@
 #include <math.h>
 #include <boost/unordered_map.hpp>
 
+// forward declation
+class AttributeContainerMemento;
+
 /**
  * Represents a container for valued attributes,
  * e.g., a value measured on a discrete scale
@@ -90,6 +93,16 @@ public:
 	 */
 	double getBy();
 
+	/**
+	 * save to Memento
+	 */
+	AttributeContainerMemento * saveToMemento();
+
+	/**
+	 * restore from Memento
+	 */
+	void restroreFromMemento(AttributeContainerMemento * memento);
+
 
 
 private:
@@ -102,6 +115,17 @@ private:
 
 	void init(std::vector<double> values,
 			double min = 0.0, double max = 1.0, double by = 1.0);
+};
+
+class AttributeContainerMemento{
+private:
+
+	void setActorValueMap(std::map<int, double> actorValueMap);
+	std::map<int, double> getActorValueMap();
+
+	std::map<int, double> _actorValueMap;
+
+	friend class AttributeContainer;
 };
 
 

@@ -1,5 +1,5 @@
 /*
- * NetworkInterface.h
+ * Network.h
  *
  *  Created on: Nov 28, 2012
  *      Author: cws
@@ -7,6 +7,13 @@
 
 #ifndef NETWORK_H_
 #define NETWORK_H_
+
+class NetworkMemento{
+public:
+	virtual ~NetworkMemento(){ }
+};
+
+
 
 /**
  * Abstract network class

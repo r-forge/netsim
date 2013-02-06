@@ -46,6 +46,8 @@ void poissonparameterTest(){
 		simulator.simulate();
 
 		averageSteps += ( (double) simulator.getIterationSteps() ) / (double) nSimulations;
+
+		delete poissonModel;
 	}
 
 	std::cout << "Average number of iteration steps: " << averageSteps << std::endl;
@@ -308,7 +310,7 @@ Sollte simulierte Netzwerke liefern, wo
  */
 void steglichParameterTest1(){
 
-	double poissonParameter1 = 1000;
+	double poissonParameter1 = 10; // was 1000
 	double poissonParameter2 = 8.81;
 	double densityParameter = -2.18;
 	double reciprocityParameter = 2.39;
@@ -316,7 +318,7 @@ void steglichParameterTest1(){
 	double expectedReciprocity = 240;
 	double expectedHammingDistance = 400;
 	double allowedDeviation = 10;
-	int nSimulations = 300;
+	int nSimulations = 1; // was: 300
 
 	steglichParameterTest(
 			poissonParameter1,
@@ -429,6 +431,10 @@ void densityParameterSaomTest(){
 						&effects2,
 						new std::vector<Updater*>(1, tieSwapUpdater));
 
+		// TODO remove
+		// saom1->setDebugMode(true);
+		// saom2->setDebugMode(true);
+
 		modelManager1.addTimeModel(poissonModel);
 		modelManager1.addChangeModel(poissonModel, saom1);
 		modelManager1.addUpdater(saom1, tieSwapUpdater);
@@ -478,8 +484,9 @@ cute::suite getTestSaomSuite(){
 	s.push_back(CUTE(poissonparameterTest));
 	s.push_back(CUTE(densityChoiceTest));
 	s.push_back(CUTE(densityParameterSaomTest));
-	// s.push_back(CUTE(steglichParameterTest1));
-	s.push_back(CUTE(steglichParameterTest2));
+	// commented out as very time consuming (in original specification)
+	s.push_back(CUTE(steglichParameterTest1));
+	// s.push_back(CUTE(steglichParameterTest2));
 
 	return s;
 }

@@ -92,6 +92,17 @@ double AttributeContainer::getBy() {
 	return _by;
 }
 
+AttributeContainerMemento* AttributeContainer::saveToMemento() {
+	AttributeContainerMemento * memento = new AttributeContainerMemento();
+	memento->setActorValueMap(_actorValueMap);
+	return memento;
+}
+
+void AttributeContainer::restroreFromMemento(
+		AttributeContainerMemento* memento) {
+	_actorValueMap = memento->getActorValueMap();
+}
+
 void AttributeContainer::init(std::vector<double> values, double min,
 	double max, double by) {
 	// check validity of values
@@ -115,4 +126,13 @@ void AttributeContainer::init(std::vector<double> values, double min,
 		setValue(i, values[i]);
 	}
 
+}
+
+void AttributeContainerMemento::setActorValueMap(
+		std::map<int, double> actorValueMap) {
+	_actorValueMap = actorValueMap;
+}
+
+std::map<int, double> AttributeContainerMemento::getActorValueMap() {
+	return _actorValueMap;
 }

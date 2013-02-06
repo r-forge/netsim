@@ -39,13 +39,16 @@ size_t ProcessState::addAttributeContainer(AttributeContainer* attributeContaine
 	// return -1 + _attributeContainers.end() - _attributeContainers.begin();
 }
 
-size_t ProcessState::addGlobalAttribute(double* attribute) {
+size_t ProcessState::addGlobalAttribute(double attribute) {
 
 	_globalAttributes[_nGlobalAttributes] = attribute;
 	return _nGlobalAttributes++;
 
 	// _globalAttributes.insert(_globalAttributes.end(), attribute);
 	// return -1 + _globalAttributes.end() - _globalAttributes.begin() ;
+}
+
+void ProcessState::setGlobalAttribute(size_t index, double attribute) {
 }
 
 Network* ProcessState::getNetwork(size_t index) {
@@ -63,7 +66,7 @@ AttributeContainer* ProcessState::getAttributeContainer(size_t index) {
 }
 
 
-double* ProcessState::getGlobalAttribute(size_t index) {
+double ProcessState::getGlobalAttribute(size_t index) {
 	if ((index >= _nGlobalAttributes))
 		throw std::invalid_argument("Global attribute index does not exist: "
 				+ boost::lexical_cast<std::string>(index));
@@ -85,4 +88,85 @@ int ProcessState::getNumberOfAttributeContainers() {
 
 int ProcessState::getNumberOfGlobalAttributes() {
 	return _nGlobalAttributes;
+}
+
+ProcessStateMemento* ProcessState::saveToMemento() {
+	ProcessStateMemento * memento = new ProcessStateMemento();
+	std::map<int, Network*>::iterator itNet = _networks.begin();
+
+	// save networks
+	for (; itNet != _networks.end(); ++itNet){
+		MemoryOneModeNetwork * net =
+				dynamic_cast<MemoryOneModeNetwork*>((*itNet).second);
+		memento->setNetworkMemento((*itNet).first, net->saveToMemento());
+	}
+
+	// save attribute containers
+	std::map<int, AttributeContainer*>::iterator itAttCont = _attributeContainers.begin();
+	for (; itAttCont != _attributeContainers.end(); ++itAttCont){
+		memento->setAttributeContainerMemento((*itAttCont).first,
+				(*itAttCont).second->saveToMemento());
+	}
+
+	// save global attributes
+	std::map<int, double>::iterator itGlobAtt = _globalAttributes.begin();
+	for (; itGlobAtt != _globalAttributes.end(); ++itGlobAtt){
+		_globalAttributes[(*itGlobAtt).first] = (*itGlobAtt).second;
+	}
+
+	return memento;
+}
+
+void ProcessState::restoreFromMemento(ProcessStateMemento* memento) {
+	// restore networks
+	std::map<int, Network*>::iterator itNet = _networks.begin();
+	for (; itNet != _networks.end(); ++itNet){
+		MemoryOneModeNetwork * net =
+				dynamic_cast<MemoryOneModeNetwork*>((*itNet).second);
+		//MemoryOneModeNetworkMemento * netMemento =
+		//		dynamic_cast<MemoryOneModeNetworkMemento*>(
+		//				memento->getNetworkMemento((*itNet).first));
+		net->restoreFromMemento(memento->getNetworkMemento((*itNet).first));
+	}
+
+	// restore attribute containers
+	std::map<int, AttributeContainer*>::iterator itAttCont = _attributeContainers.begin();
+	for (; itAttCont != _attributeContainers.end(); ++itAttCont){
+		AttributeContainerMemento * attMemento =
+				memento->getAttributeContainerMemento((*itAttCont).first);
+		(*itAttCont).second->restroreFromMemento(attMemento);
+	}
+
+	// restore global attributes
+	std::map<int, double>::iterator itGlobAtt = _globalAttributes.begin();
+	for (; itGlobAtt != _globalAttributes.end(); ++itGlobAtt){
+		_globalAttributes[(*itGlobAtt).first] = (*itGlobAtt).second;
+	}
+
+}
+
+void ProcessStateMemento::setNetworkMemento(int i, NetworkMemento* memento) {
+	_networkMementos[i] = memento;
+}
+
+void ProcessStateMemento::setGlobalAttribute(int i, double value) {
+	_globalAttributes[i] = value;
+}
+
+void ProcessStateMemento::setAttributeContainerMemento(int i,
+		AttributeContainerMemento* memento) {
+	_attributeContainerMementos[i] = memento;
+}
+
+NetworkMemento* ProcessStateMemento::getNetworkMemento(int i) {
+	return _networkMementos[i];
+}
+
+AttributeContainerMemento* ProcessStateMemento::getAttributeContainerMemento(
+		int i) {
+	return _attributeContainerMementos[i];
+}
+
+double ProcessStateMemento::getGlobalAttribute(int i) {
+	return _globalAttributes[i];
 }

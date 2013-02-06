@@ -12,6 +12,8 @@
 #include <vector>
 #include <stddef.h>
 
+// forward declaration
+class OneModeNetworkMemento;
 
 
 /**
@@ -77,6 +79,17 @@ public:
 	 */
 	bool isReflexive() const;
 
+	/**
+	 * Saves the current proess state in a memento and returns it
+	 */
+	OneModeNetworkMemento * saveToMemento();
+
+	/**
+	 * Restores the process state from memento
+	 */
+	void restoreFromMemento(NetworkMemento * memento);
+
+
 private:
 
 	// a binary network is the default network
@@ -125,5 +138,16 @@ protected:
 
 
 };
+
+class OneModeNetworkMemento : public NetworkMemento{
+
+private:
+	void saveGraph(std::vector<double> graph);
+
+	std::vector<double> getGraph();
+
+	std::vector<double> _graph;
+};
+
 
 #endif /* ONEMODENETWORK_H_ */

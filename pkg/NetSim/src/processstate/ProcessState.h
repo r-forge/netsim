@@ -13,6 +13,13 @@
 #include <stdexcept>
 #include "../network/Network.h"
 #include "../attribute/AttributeContainer.h"
+#include "../network/MemoryOneModeNetwork.h"
+
+
+/*
+ * forward declarations
+ */
+class ProcessStateMemento;
 
 /**
  * Defines the process state of the simulated Markov process.
@@ -38,10 +45,15 @@ public:
 	size_t addAttributeContainer(AttributeContainer* attributeContainer);
 
 	/**
-	 * Add a network pointer to a global attribute
+	 * Adds a global attribute
 	 * @returns unique index
 	 */
-	size_t addGlobalAttribute(double* attribute);
+	size_t addGlobalAttribute(double attribute);
+
+	/**
+	 * Resets an existing network pointer
+	 */
+	void setGlobalAttribute(size_t index, double attribute);
 
 	/**
 	 * Get network from network stack by index
@@ -56,7 +68,7 @@ public:
 	/**
 	 * Get global attribute from attribute stack by index
 	 */
-	double* getGlobalAttribute(size_t index);
+	double getGlobalAttribute(size_t index);
 
 	/**
 	 * Get the number of actors represented by the elements of
@@ -79,16 +91,43 @@ public:
 	 */
 	int getNumberOfGlobalAttributes();
 
+	/**
+	 * save process state as memento
+	 */
+	ProcessStateMemento * saveToMemento();
+
+	/**
+	 * restore process state from memento
+	 */
+	void restoreFromMemento(ProcessStateMemento * memento);
+
 
 private:
 	std::map<int, Network*> _networks;
 	std::map<int, AttributeContainer*> _attributeContainers;
-	std::map<int, double*> _globalAttributes;
+	std::map<int, double> _globalAttributes;
 	size_t _nNetworks;
 	size_t _nAttributeContainers;
 	size_t _nGlobalAttributes;
 	size_t _nActors;
 
+};
+
+class ProcessStateMemento{
+private:
+
+	void setNetworkMemento(int i, NetworkMemento* memento);
+	void setAttributeContainerMemento(int i, AttributeContainerMemento* memento);
+	void setGlobalAttribute(int i, double);
+	NetworkMemento* getNetworkMemento(int i);
+	AttributeContainerMemento* getAttributeContainerMemento(int i);
+	double getGlobalAttribute(int i);
+
+	std::map<int, NetworkMemento*> _networkMementos;
+	std::map<int, AttributeContainerMemento*> _attributeContainerMementos;
+	std::map<int, double> _globalAttributes;
+
+	friend class ProcessState;
 };
 
 

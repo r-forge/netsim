@@ -16,18 +16,18 @@
 class NetworkUtils{
 
 public:
-	static void dumpNetwork(OneModeNetwork* network, int round = 2);
+	static void dumpNetwork(MemoryOneModeNetwork* network, int round = 2);
 
-	static double getDensity(OneModeNetwork* network);
+	static double getDensity(MemoryOneModeNetwork* network);
 
-	static int getNumberOfTies(OneModeNetwork* network);
+	static int getNumberOfTies(MemoryOneModeNetwork* network);
 
-	static int getNumberOfReciprocalTies(OneModeNetwork* network);
+	static int getNumberOfReciprocalTies(MemoryOneModeNetwork* network);
 
-	static int getHammingDistance(OneModeNetwork* network1, OneModeNetwork * network2);
+	static int getHammingDistance(MemoryOneModeNetwork* network1, MemoryOneModeNetwork * network2);
 
 private:
-	static int countTies(OneModeNetwork* network, bool reciprocal);
+	static int countTies(MemoryOneModeNetwork* network, bool reciprocal);
 
 };
 

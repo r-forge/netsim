@@ -12,6 +12,7 @@
 #include "NetworkUtils.h"
 #include "ValuedMemoryOneModeNetwork.h"
 #include "MemoryOneModeNetwork.h"
+#include "../processstate/ProcessState.h"
 
 /*
  * Generates a valued network in which the first node (0) has a
@@ -135,6 +136,8 @@ void neighborSetTest(){
 	n1 = net->getOutgoingNeighbors(1);
 	ASSERT( n1.find(0) != n0.end() );
 	ASSERT( n0.find(1) == n0.end() );
+
+	delete net;
 }
 
 void overlappingNeighborsTest(){
@@ -159,6 +162,8 @@ void overlappingNeighborsTest(){
 	ASSERT(nodeSet4.size() == 1 ); // node 0
 	ASSERT(nodeSet5 == nodeSet4 ); // is such a comparison valid?
 
+	delete net;
+
 }
 
 void unspecificTieUpdateTest(){
@@ -177,6 +182,8 @@ void unspecificTieUpdateTest(){
 
 	net->multiplyTieValues(exp(1));
 	ASSERT(net->getTieValue(0,1) == ( 2.2 * exp(1) ) );
+
+	delete net;
 }
 
 void thresholdValueTest(){
@@ -199,6 +206,7 @@ void thresholdValueTest(){
 	ASSERT(net->getMaxTieValueBelow(1.3) == 1.2);
 	ASSERT(net->getMaxTieValueBelow(0.999) == 0.85);
 
+	delete net;
 }
 
 void testNetworkUtilsCountTiesAndDensity(){
@@ -218,6 +226,7 @@ void testNetworkUtilsCountTiesAndDensity(){
 	ASSERT_EQUAL(4,NetworkUtils::getNumberOfReciprocalTies(network));
 	ASSERT_EQUAL(5.0/6.0, NetworkUtils::getDensity(network));
 
+	delete network;
 }
 
 void testNetworkUtilsHammingDistance(){
@@ -231,6 +240,11 @@ void testNetworkUtilsHammingDistance(){
 	ASSERT_EQUAL(0, NetworkUtils::getHammingDistance(network1, network2));
 	ASSERT_EQUAL(9+8, NetworkUtils::getHammingDistance(network1, network3));
 	ASSERT_EQUAL(10*9, NetworkUtils::getHammingDistance(network3, network4));
+
+	delete network1;
+	delete network2;
+	delete network3;
+	delete network4;
 }
 
 cute::suite getTestSuiteMemoryOneModeNetwork(){

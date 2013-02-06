@@ -11,7 +11,7 @@
 /**
  *
  */
-void NetworkUtils::dumpNetwork(OneModeNetwork* network, int round) {
+void NetworkUtils::dumpNetwork(MemoryOneModeNetwork* network, int round) {
 	std::vector<std::vector<double> > graph = network->getGraph();
 	int size = network->getSize();
 
@@ -29,7 +29,7 @@ void NetworkUtils::dumpNetwork(OneModeNetwork* network, int round) {
 	}
 }
 
-double NetworkUtils::getDensity(OneModeNetwork* network) {
+double NetworkUtils::getDensity(MemoryOneModeNetwork* network) {
 	bool isDirected = network->isDirected();
 	bool isReflexive = network->isReflexive();
 	int size = network->getSize();
@@ -64,16 +64,16 @@ double NetworkUtils::getDensity(OneModeNetwork* network) {
 
 }
 
-int NetworkUtils::getNumberOfTies(OneModeNetwork* network) {
+int NetworkUtils::getNumberOfTies(MemoryOneModeNetwork* network) {
 	return countTies(network, false);
 }
 
-int NetworkUtils::getNumberOfReciprocalTies(OneModeNetwork* network) {
+int NetworkUtils::getNumberOfReciprocalTies(MemoryOneModeNetwork* network) {
 	return countTies(network, true);
 }
 
-int NetworkUtils::getHammingDistance(OneModeNetwork* network1,
-		OneModeNetwork* network2) {
+int NetworkUtils::getHammingDistance(MemoryOneModeNetwork* network1,
+		MemoryOneModeNetwork* network2) {
 	int nActors = network1->getSize();
 	if (network2->getSize() != nActors) return -1;
 
@@ -91,7 +91,7 @@ int NetworkUtils::getHammingDistance(OneModeNetwork* network1,
 
 }
 
-int NetworkUtils::countTies(OneModeNetwork * network,
+int NetworkUtils::countTies(MemoryOneModeNetwork * network,
 		bool reciprocal) {
 
 	int nActors = network->getSize();
