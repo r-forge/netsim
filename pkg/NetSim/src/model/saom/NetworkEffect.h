@@ -23,7 +23,17 @@ class SaomEffect {
 public:
 	virtual ~SaomEffect() { }
 	virtual double getEffect(ProcessState * processState, int actorIndex) = 0;
-	virtual std::string getClassName() = 0;
+	/**
+	 * getEffectContribution is implemented as a fast lookup that
+	 * can be run after an initial getEffect().
+	 * It returns the value that has to be subtracted from the
+	 * effect once all corresponding tie updates are applied.
+	 *
+	 * It assumes that the effect can be reconstructed by iterating over
+	 * all ties (using hasTie) and then summing up the effect contributions.
+	 */
+	virtual double getEffectContribution(ProcessState * processState,
+			int actorIndex1, int actorIndex2) = 0;
 	virtual std::string getName() = 0;
 
 };
@@ -48,6 +58,9 @@ public:
 
 	double getEffect(ProcessState * processState, int actorIndex);
 
+	double getEffectContribution(ProcessState * processState,
+				int actorIndex1, int actorIndex2);
+
 	std::string getName();
 
 };
@@ -58,6 +71,9 @@ public:
 	ReciprocityEffect(size_t networkIndex);
 
 	double getEffect(ProcessState * processState, int actorIndex);
+
+	double getEffectContribution(ProcessState * processState,
+				int actorIndex1, int actorIndex2);
 
 	std::string getName();
 
@@ -72,6 +88,9 @@ public:
 
 	double getEffect(ProcessState * processState, int actorIndex);
 
+	double getEffectContribution(ProcessState * processState,
+				int actorIndex1, int actorIndex2);
+
 	std::string getName();
 
 };
@@ -82,6 +101,9 @@ public:
 	ThreeCycleEffect(size_t networkIndex);
 
 	double getEffect(ProcessState * processState, int actorIndex);
+
+	double getEffectContribution(ProcessState * processState,
+				int actorIndex1, int actorIndex2);
 
 	std::string getName();
 
@@ -95,6 +117,9 @@ public:
 
 	double getEffect(ProcessState * processState, int actorIndex);
 
+	double getEffectContribution(ProcessState * processState,
+				int actorIndex1, int actorIndex2);
+
 	std::string getName();
 
 };
@@ -106,6 +131,9 @@ public:
 
 	double getEffect(ProcessState * processState, int actorIndex);
 
+	double getEffectContribution(ProcessState * processState,
+				int actorIndex1, int actorIndex2);
+
 	std::string getName();
 
 };
@@ -116,6 +144,9 @@ public:
 	OutPopularityEffect(size_t networkIndex);
 
 	double getEffect(ProcessState * processState, int actorIndex);
+
+	double getEffectContribution(ProcessState * processState,
+				int actorIndex1, int actorIndex2);
 
 	std::string getName();
 
@@ -141,6 +172,9 @@ public:
 
 	double getEffect(ProcessState * processState, int actorIndex);
 
+	double getEffectContribution(ProcessState * processState,
+				int actorIndex1, int actorIndex2);
+
 	std::string getName();
 
 
@@ -152,6 +186,9 @@ public:
 	QuadraticShapeAttributeEffect(size_t attributeIndex);
 
 	double getEffect(ProcessState * processState, int actorIndex);
+
+	double getEffectContribution(ProcessState * processState,
+				int actorIndex1, int actorIndex2);
 
 	std::string getName();
 
@@ -173,6 +210,9 @@ public:
 
 	double getEffect(ProcessState * processState, int actorIndex);
 
+	double getEffectContribution(ProcessState * processState,
+				int actorIndex1, int actorIndex2);
+
 	std::string getName();
 
 };
@@ -186,6 +226,9 @@ public:
 	AltXEffect(size_t attributeIndex, size_t networkIndex);
 
 	double getEffect(ProcessState * processState, int actorIndex);
+
+	double getEffectContribution(ProcessState * processState,
+				int actorIndex1, int actorIndex2);
 
 	std::string getName();
 };
@@ -210,6 +253,9 @@ class TotalSimilarityEffect : public SimilarityAttributeOneModeNetworkEffect{
 
 public:
 	TotalSimilarityEffect(size_t attributeIndex, size_t networkIndex, double meanSimilarityScores);
+
+	double getEffectContribution(ProcessState * processState,
+				int actorIndex1, int actorIndex2);
 
 	double getEffect(ProcessState * processState, int actorIndex);
 

@@ -122,8 +122,8 @@ void neighborSetTest(){
 	MemoryOneModeNetwork* net = getTwoStarNetwork(size);
 	std::set<int> n0 = net->getOutgoingNeighbors(0);
 	ASSERT( (n0.size()) == (size -1) );
-	ASSERT( n0.find(1) != n0.end() );
-	ASSERT( n0.find(0) == n0.end() );
+	ASSERT( n0.find(1) != n0.end() ); // 1 is a neighbor of 0
+	ASSERT( n0.find(0) == n0.end() ); // 0 is not a neighbor of 0
 	std::set<int> n1 = net->getOutgoingNeighbors(1);
 	ASSERT( (n1.size()) == 0 );
 	n1.insert(100);
@@ -138,6 +138,62 @@ void neighborSetTest(){
 	ASSERT( n0.find(1) == n0.end() );
 
 	delete net;
+}
+
+void neighborSetTestWithMultipleChanges(){
+	int nActors = 4;
+
+	MemoryOneModeNetwork * network = new MemoryOneModeNetwork(nActors);
+
+	network->addTie(0,1);
+
+	ProcessState * processState = new ProcessState();
+	int networkIndex = processState->addNetwork(network);
+
+	// iterate over all actors
+	for (int j = 0; j < nActors; j++){
+
+		int i = 0;
+
+		if (processState->getNetwork(networkIndex)->hasTie(i, j)){
+			processState->getNetwork(networkIndex)->removeTie(i, j);
+			std::cout << "removing tie " << i << "->" << j << std::endl;
+		}
+		else {
+			processState->getNetwork(networkIndex)->addTie(i, j);
+			std::cout << "adding tie " << i << "->" << j << std::endl;
+		}
+
+
+	} // iterate over all actors
+
+	// now expecting a network with ties
+	// 0->2
+	// 0->3
+
+	MemoryOneModeNetwork * network2 =
+			dynamic_cast<MemoryOneModeNetwork*>(
+					processState->getNetwork(networkIndex));
+
+	NetworkUtils::dumpNetwork(network2);
+	NetworkUtils::dumpInternalObjects(network2);
+
+	ASSERT_EQUAL(2, network2->getOutgoingNeighbors(0).size());
+	ASSERT_EQUAL(2, network2->getOutDegree(0));
+	std::set<int> out0 = network2->getOutgoingNeighbors(0);
+	ASSERT(out0.find(1) == out0.end());
+	ASSERT(out0.find(2) != out0.end());
+	ASSERT(out0.find(3) != out0.end());
+
+	ASSERT_EQUAL(1, network2->getIncomingNeighbors(2).size());
+	ASSERT_EQUAL(1, network2->getInDegree(2));
+	std::set<int> in2 = network2->getIncomingNeighbors(2);
+	std::set<int> in3 = network2->getIncomingNeighbors(3);
+
+	ASSERT(in2.find(0) != in2.end());
+	ASSERT(in3.find(0) != in3.end());
+	ASSERT(in2.find(1) == in2.end());
+
 }
 
 void overlappingNeighborsTest(){
@@ -255,8 +311,10 @@ cute::suite getTestSuiteMemoryOneModeNetwork(){
 	s.push_back(CUTE(degreeMapTest));
 	s.push_back(CUTE(neighborSetTest));
 	s.push_back(CUTE(overlappingNeighborsTest));
-	s.push_back(CUTE(unspecificTieUpdateTest));
-	s.push_back(CUTE(thresholdValueTest));
+	s.push_back(CUTE(neighborSetTestWithMultipleChanges));
+	// DO not work with binary MemoryOneModeNetwork implementation
+	// s.push_back(CUTE(unspecificTieUpdateTest));
+	// s.push_back(CUTE(thresholdValueTest));
 	s.push_back(CUTE(testNetworkUtilsCountTiesAndDensity));
 	s.push_back(CUTE(testNetworkUtilsHammingDistance));
 

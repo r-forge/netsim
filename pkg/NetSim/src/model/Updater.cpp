@@ -146,10 +146,10 @@ void TieSwapUpdater::undoUpdateTie(ProcessState* processState,
 
 void TieSwapUpdater::swapTie(Network* network, int i, int j) {
 	if (i == j) return;
-	if (network->hasTie(i,j))
-		network->removeTie(i,j);
-	else if (!network->hasTie(i,j)){
-		network->addTie(i,j);
+	if (network->hasTie(i, j))
+		network->removeTie(i, j);
+	else if (!network->hasTie(i, j)){
+		network->addTie(i, j);
 	}
 }
 

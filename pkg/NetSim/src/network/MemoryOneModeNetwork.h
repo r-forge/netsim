@@ -29,6 +29,8 @@ class MemoryOneModeNetworkMemento;
  */
 class MemoryOneModeNetwork : public Network {
 
+	friend class NetworkUtils;
+
 public:
 
 	MemoryOneModeNetwork(int size, bool directed=true, bool reflexive = false);
@@ -192,13 +194,17 @@ private:
 
 	std::map<int, int> getSavedInDegreeMap();
 	std::map<int, int> getSavedOutDegreeMap();
-	std::map<int,std::set<int>* > getSavedIncomingNeighborsMap();
-	std::map<int,std::set<int>* > getSavedOutgoingNeighborsMap();
+	std::map<int, std::set<int>* > getSavedIncomingNeighborsMap(std::map<int, std::set<int>* > source);
+	std::map<int, std::set<int>* > getSavedOutgoingNeighborsMap(std::map<int, std::set<int>* > source);
 
 	void saveInDegreeMap(const std::map<int, int> inDegreeMap);
 	void saveOutDegreeMap(const std::map<int, int> outDegreeMap);
-	void saveIncomingNeighborsMap(const std::map<int,std::set<int>* > incomingNeighborsMap);
-	void saveOutgoingNeighborsMap(const std::map<int,std::set<int>* > outgoingNeighborsMap);
+	void saveIncomingNeighborsMap(const std::map<int, std::set<int>* > incomingNeighborsMap);
+	void saveOutgoingNeighborsMap(const std::map<int, std::set<int>* > outgoingNeighborsMap);
+
+	std::map<int,std::set<int>* > copyNeighborsSet(
+			std::map<int,std::set<int>* > destination,
+			std::map<int,std::set<int>* > source);
 
 	std::map<int, int> _inDegreeMap;
 	std::map<int, int> _outDegreeMap;

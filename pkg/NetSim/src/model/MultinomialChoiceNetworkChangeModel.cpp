@@ -40,8 +40,10 @@ ModelResult* MultinomialChoiceNetworkChangeModel::getChange(
 		int i = _actorIndex;
 
 		// update tie.
-		for (std::vector<Updater*>::iterator it = _updaters->begin(); it != _updaters->end(); ++it){
-			TieModelResult * result = new TieModelResult(i,j); // TODO check i, j
+		for (std::vector<Updater*>::iterator it =
+				_updaters->begin(); it != _updaters->end(); ++it){
+
+			TieModelResult * result = new TieModelResult(i,j);
 			(*it)->update(processState, result);
 			delete result;
 		}
@@ -49,7 +51,6 @@ ModelResult* MultinomialChoiceNetworkChangeModel::getChange(
 		// calculate and save objective function
 		objectiveFunctions[j] =
 				MultinomialChoiceUtils::getValueObjectiveFunction(processState, i, _effectParameterPairs, _debug);
-				//getValueObjectiveFunction(processState, i); // processState has been updated previously
 
 		// increase sum (denominator)
 		denominator += exp(objectiveFunctions[j]);
@@ -61,15 +62,16 @@ ModelResult* MultinomialChoiceNetworkChangeModel::getChange(
 		// So far, this is implemented as a swap back
 		// Performance can be improved by implementing a
 		// Memento mechanism in the process state
-		for (std::vector<Updater*>::iterator it = _updaters->begin(); it != _updaters->end(); ++it){
+/*		for (std::vector<Updater*>::iterator it = _updaters->begin(); it != _updaters->end(); ++it){
 			TieModelResult * result = new TieModelResult(i,j); // TODO check i, j
 			(*it)->undoUpdate(processState, result);
 			delete result;
 		}
-
+*/
 		// reset process state
-		//processState->restoreFromMemento(memento);
-	}
+		processState->restoreFromMemento(memento);
+
+	} // iterate over all actors
 
 	delete memento;
 

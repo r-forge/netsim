@@ -92,13 +92,19 @@ int ProcessState::getNumberOfGlobalAttributes() {
 
 ProcessStateMemento* ProcessState::saveToMemento() {
 	ProcessStateMemento * memento = new ProcessStateMemento();
-	std::map<int, Network*>::iterator itNet = _networks.begin();
 
 	// save networks
+	std::map<int, Network*>::iterator itNet = _networks.begin();
 	for (; itNet != _networks.end(); ++itNet){
-		MemoryOneModeNetwork * net =
-				dynamic_cast<MemoryOneModeNetwork*>((*itNet).second);
-		memento->setNetworkMemento((*itNet).first, net->saveToMemento());
+		// first: index
+		int index = (*itNet).first;
+		// second: network pointer
+		Network * network = (*itNet).second;
+
+		MemoryOneModeNetwork * memoryNet =
+				dynamic_cast<MemoryOneModeNetwork*>(network);
+		NetworkMemento * networkMemento = memoryNet->saveToMemento();
+		memento->setNetworkMemento(index, networkMemento);
 	}
 
 	// save attribute containers
@@ -118,15 +124,19 @@ ProcessStateMemento* ProcessState::saveToMemento() {
 }
 
 void ProcessState::restoreFromMemento(ProcessStateMemento* memento) {
+
 	// restore networks
 	std::map<int, Network*>::iterator itNet = _networks.begin();
 	for (; itNet != _networks.end(); ++itNet){
+		// first  = index as int
+		int index = (*itNet).first;
+		// second = network pointer
+		Network * network = (*itNet).second;
+
+		NetworkMemento * networkMemento = memento->getNetworkMemento(index);
 		MemoryOneModeNetwork * net =
-				dynamic_cast<MemoryOneModeNetwork*>((*itNet).second);
-		//MemoryOneModeNetworkMemento * netMemento =
-		//		dynamic_cast<MemoryOneModeNetworkMemento*>(
-		//				memento->getNetworkMemento((*itNet).first));
-		net->restoreFromMemento(memento->getNetworkMemento((*itNet).first));
+				dynamic_cast<MemoryOneModeNetwork*>(network);
+		net->restoreFromMemento(networkMemento);
 	}
 
 	// restore attribute containers

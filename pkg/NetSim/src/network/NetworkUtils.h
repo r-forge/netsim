@@ -12,10 +12,16 @@
 #include "MemoryOneModeNetwork.h"
 #include <iostream>
 #include <cstdio>
+#include <set>
 
 class NetworkUtils{
 
 public:
+	/**
+	 * for debugging
+	 */
+	static void dumpInternalObjects(MemoryOneModeNetwork* network);
+
 	static void dumpNetwork(MemoryOneModeNetwork* network, int round = 2);
 
 	static double getDensity(MemoryOneModeNetwork* network);

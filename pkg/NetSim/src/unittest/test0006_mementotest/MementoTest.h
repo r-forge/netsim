@@ -9,6 +9,7 @@
 #define MEMENTOTEST_H_
 
 #include "MemoryOneModeNetwork.h"
+#include "cute.h"
 #include "ProcessState.h"
 #include "NetworkUtils.h"
 
@@ -62,11 +63,83 @@ void processStateMementoTestWithNetwork(){
 	delete processState;
 }
 
+void multipleMementoSetAndResetTest(){
+
+	int nActors = 5;
+
+
+	MemoryOneModeNetwork * network = new MemoryOneModeNetwork(nActors);
+
+	network->addTie(0,1);
+
+	ProcessState * processState = new ProcessState();
+	int networkIndex = processState->addNetwork(network);
+
+	std::vector<Updater*> updaters(1, new TieSwapUpdater(networkIndex));
+
+	MemoryOneModeNetworkMemento * networkMemento = network->saveToMemento();
+
+	ProcessStateMemento * processMemento = processState->saveToMemento();
+
+	// iterate over all actors
+	for (int j = 1; j < nActors; j++){
+
+		int i = 0;
+
+		// update of tie consisting of exactly one tie swap
+		for (std::vector<Updater*>::iterator it =
+				updaters.begin(); it != updaters.end(); ++it){
+
+			TieModelResult * result = new TieModelResult(i,j);
+			(*it)->update(processState, result);
+			delete result;
+		}
+
+		// network->addTie(0,4);
+
+		MemoryOneModeNetwork * net1 =
+				dynamic_cast<MemoryOneModeNetwork * >(processState->getNetwork(networkIndex));
+		//if (j == (nActors - 1))
+		//	NetworkUtils::dumpNetwork(net1);
+		//if (j == (nActors - 1))
+		//	NetworkUtils::dumpInternalObjects(net1);
+
+
+		// reset process state
+		processState->restoreFromMemento(processMemento);
+
+	} // iterate over all actors
+
+	// check restore from process state first
+
+	MemoryOneModeNetwork * net2 =
+			dynamic_cast<MemoryOneModeNetwork * >(processState->getNetwork(networkIndex));
+	NetworkUtils::dumpNetwork(net2);
+	//NetworkUtils::dumpInternalObjects(net2);
+
+	// network from process state memento
+	ASSERT(processState->getNetwork(networkIndex)->hasTie(0,1));
+	ASSERT(!processState->getNetwork(networkIndex)->hasTie(0,2));
+	ASSERT(!processState->getNetwork(networkIndex)->hasTie(1,0));
+
+	delete processMemento;
+
+	// RESTORE network directly
+
+	network->restoreFromMemento(networkMemento);
+	ASSERT(processState->getNetwork(networkIndex)->hasTie(0,1));
+	ASSERT(!processState->getNetwork(networkIndex)->hasTie(0,2));
+	ASSERT(!processState->getNetwork(networkIndex)->hasTie(1,0));
+
+}
+
+
 cute::suite getMementoTests(){
 	cute::suite s;
 
 	s.push_back(CUTE(networkMementoTest));
 	s.push_back(CUTE(processStateMementoTestWithNetwork));
+	s.push_back(CUTE(multipleMementoSetAndResetTest));
 
 	return s;
 }

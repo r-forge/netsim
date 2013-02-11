@@ -20,6 +20,12 @@ double DensityEffect::getEffect(ProcessState* processState, int actorIndex) {
 	return net->getOutDegree(actorIndex);
 }
 
+double DensityEffect::getEffectContribution(ProcessState* processState,
+		int actorIndex1, int actorIndex2) {
+
+	return 1.0;
+}
+
 std::string DensityEffect::getName() {
 	return "Density";// +_networkIndex;
 }
@@ -34,6 +40,14 @@ double ReciprocityEffect::getEffect(ProcessState* processState,
 	return net->getReciprocalNeighbors(actorIndex).size();
 }
 
+double ReciprocityEffect::getEffectContribution(ProcessState* processState,
+		int actorIndex1, int actorIndex2) {
+	MemoryOneModeNetwork * net =
+			dynamic_cast<MemoryOneModeNetwork *>(processState->getNetwork(_networkIndex));
+	if (net->hasTie(actorIndex2, actorIndex1))
+		return 1.0;
+	else return 0.0;
+}
 
 std::string ReciprocityEffect::getName() {
 	return "Reciprocity";
@@ -59,6 +73,10 @@ double TransitivityEffect::getEffect(ProcessState* processState,
 	return value;
 }
 
+double TransitivityEffect::getEffectContribution(ProcessState* processState,
+		int actorIndex1, int actorIndex2) {
+}
+
 std::string TransitivityEffect::getName() {
 	return "Transitivity";
 }
@@ -81,6 +99,10 @@ double ThreeCycleEffect::getEffect(ProcessState* processState,
 	}
 
 	return value;
+}
+
+double ThreeCycleEffect::getEffectContribution(ProcessState* processState,
+		int actorIndex1, int actorIndex2) {
 }
 
 std::string ThreeCycleEffect::getName() {
@@ -109,6 +131,10 @@ double TwoPathEffect::getEffect(ProcessState* processState, int actorIndex) {
 	return (double) distanceTwo.size();
 }
 
+double TwoPathEffect::getEffectContribution(ProcessState* processState,
+		int actorIndex1, int actorIndex2) {
+}
+
 std::string TwoPathEffect::getName() {
 	return "Two Path";
 }
@@ -132,6 +158,10 @@ double InPopularityEffect::getEffect(ProcessState* processState, int actorIndex)
 
 }
 
+double InPopularityEffect::getEffectContribution(ProcessState* processState,
+		int actorIndex1, int actorIndex2) {
+}
+
 std::string InPopularityEffect::getName() {
 	return "In-popularity";
 }
@@ -153,6 +183,10 @@ double OutPopularityEffect::getEffect(ProcessState* processState, int actorIndex
 
 	return value;
 
+}
+
+double OutPopularityEffect::getEffectContribution(ProcessState* processState,
+		int actorIndex1, int actorIndex2) {
 }
 
 std::string OutPopularityEffect::getName() {
@@ -196,6 +230,10 @@ EgoXEffect::EgoXEffect(size_t attributeIndex, size_t networkIndex) :
 	AttributeOneModeNetworkEffect(attributeIndex, networkIndex){
 }
 
+double EgoXEffect::getEffectContribution(ProcessState* processState,
+		int actorIndex1, int actorIndex2) {
+}
+
 std::string EgoXEffect::getName() {
 	return "egoX";
 }
@@ -220,6 +258,10 @@ AltXEffect::AltXEffect(size_t attributeIndex, size_t networkIndex) :
 			AttributeOneModeNetworkEffect(attributeIndex, networkIndex){
 }
 
+double AltXEffect::getEffectContribution(ProcessState* processState,
+		int actorIndex1, int actorIndex2) {
+}
+
 std::string AltXEffect::getName() {
 	return "altX";
 }
@@ -241,6 +283,10 @@ double LinearShapeAttributeEffect::getEffect(ProcessState* processState,
 	return attributeContainer->getValue(actorIndex);
 }
 
+double LinearShapeAttributeEffect::getEffectContribution(
+		ProcessState* processState, int actorIndex1, int actorIndex2) {
+}
+
 std::string LinearShapeAttributeEffect::getName() {
 	return "linear shape effect";
 }
@@ -256,6 +302,10 @@ double QuadraticShapeAttributeEffect::getEffect(ProcessState* processState,
 	// return squared effect
 	return pow(attributeContainer->getValue(actorIndex), 2);
 
+}
+
+double QuadraticShapeAttributeEffect::getEffectContribution(
+		ProcessState* processState, int actorIndex1, int actorIndex2) {
 }
 
 std::string QuadraticShapeAttributeEffect::getName() {
@@ -291,6 +341,10 @@ double TotalSimilarityEffect::getEffect(ProcessState* processState,
 	}
 
 	return value;
+}
+
+double TotalSimilarityEffect::getEffectContribution(ProcessState* processState,
+		int actorIndex1, int actorIndex2) {
 }
 
 std::string TotalSimilarityEffect::getName() {

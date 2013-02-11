@@ -310,7 +310,7 @@ Sollte simulierte Netzwerke liefern, wo
  */
 void steglichParameterTest1(){
 
-	double poissonParameter1 = 10; // was 1000
+	double poissonParameter1 = 1; // was 1000
 	double poissonParameter2 = 8.81;
 	double densityParameter = -2.18;
 	double reciprocityParameter = 2.39;
@@ -483,7 +483,7 @@ cute::suite getTestSaomSuite(){
 
 	s.push_back(CUTE(poissonparameterTest));
 	s.push_back(CUTE(densityChoiceTest));
-	s.push_back(CUTE(densityParameterSaomTest));
+	// s.push_back(CUTE(densityParameterSaomTest));
 	// commented out as very time consuming (in original specification)
 	s.push_back(CUTE(steglichParameterTest1));
 	// s.push_back(CUTE(steglichParameterTest2));

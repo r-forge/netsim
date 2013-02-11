@@ -16,7 +16,7 @@ void NetworkUtils::dumpNetwork(MemoryOneModeNetwork* network, int round) {
 	int size = network->getSize();
 
 	// print
-	std::cout << "OneModeNetwork, " << size << " nodes" << std::endl;
+	std::cout << "MemoryOneModeNetwork, " << size << " nodes" << std::endl;
 	for (int i = 0; i < size; i++){
 		for (int j = 0; j < size; j++){
 			printf("%.2lf", graph[i][j]);
@@ -89,6 +89,53 @@ int NetworkUtils::getHammingDistance(MemoryOneModeNetwork* network1,
 
 	return distance;
 
+}
+
+void NetworkUtils::dumpInternalObjects(MemoryOneModeNetwork* network) {
+
+	std::cout << "-------------------" << std::endl;
+	std::cout << "Dumping internal objects of a MemoryOneModeNetwork:" << std::endl;
+	std::cout << "Size: " << network->_size << std::endl;
+	std::cout << "Directed: " << network->_directed << std::endl;
+	std::cout << "Reflexive: " << network->_reflexive << std::endl;
+
+	std::cout << "Node : in-degree" << std::endl;
+	std::map<int, int>::iterator itInDeg = network->_inDegreeMap.begin();
+	for (; itInDeg != network->_inDegreeMap.end(); ++itInDeg){
+		std::cout << (*itInDeg).first << " : " << (*itInDeg).second << std::endl;
+	}
+	std::cout << "Node : out-degree" << std::endl;
+	std::map<int, int>::iterator itOutDeg = network->_outDegreeMap.begin();
+	for (; itOutDeg != network->_outDegreeMap.end(); ++itOutDeg){
+		std::cout << (*itOutDeg).first << " : " << (*itOutDeg).second << std::endl;
+	}
+
+	std::cout << "Node : incoming neighbors" << std::endl;
+	std::map<int,std::set<int>* >::iterator itIncNeigh =
+			network->_incomingNeighborsMap.begin();
+	for (; itIncNeigh != network->_incomingNeighborsMap.end(); ++itIncNeigh){
+		std::cout << (*itIncNeigh).first << " : ";
+		std::set<int>::iterator itNeighbors =  (*itIncNeigh).second->begin();
+		for(; itNeighbors !=  (*itIncNeigh).second->end(); ++itNeighbors){
+			std::cout << (*itNeighbors) << ", ";
+		}
+		std::cout << std::endl;
+	}
+
+	std::cout << "Node : outgoing neighbors" << std::endl;
+	std::map<int,std::set<int>* >::iterator itOutNeigh =
+			network->_outgoingNeighborsMap.begin();
+	for (; itOutNeigh != network->_outgoingNeighborsMap.end(); ++itOutNeigh){
+		std::cout << (*itOutNeigh).first << " : ";
+		std::set<int>::iterator itNeighbors =  (*itOutNeigh).second->begin();
+		for(; itNeighbors !=  (*itOutNeigh).second->end(); ++itNeighbors){
+			std::cout << (*itNeighbors) << ", ";
+		}
+		std::cout << std::endl;
+	}
+
+
+	std::cout << "-------------------" << std::endl;
 }
 
 int NetworkUtils::countTies(MemoryOneModeNetwork * network,
