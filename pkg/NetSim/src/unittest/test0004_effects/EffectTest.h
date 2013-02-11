@@ -8,7 +8,7 @@
 #ifndef EFFECTTEST_H_
 #define EFFECTTEST_H_
 
-#include "../../model/saom/NetworkEffect.h"
+#include "../../model/saom/SaomEffect.h"
 #include "../../processstate/ProcessState.h"
 #include "../../network/MemoryOneModeNetwork.h"
 

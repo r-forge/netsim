@@ -152,10 +152,10 @@ SEXP create_one_mode_effect(SEXP name_, SEXP networkIndex_) {
 	int index = Rcpp::as<int>(networkIndex_);
 
 	EffectFactory factory;
-	OneModeNetworkEffect * effect =
+	NetworkEffect * effect =
 			factory.getOneModeNetworkEffect(name, index);
 
-	Rcpp::XPtr<OneModeNetworkEffect> pointer(effect, false);
+	Rcpp::XPtr<NetworkEffect> pointer(effect, false);
 	pointer.attr("class") = "OneModeNetworkEffect";
 
 	return pointer;

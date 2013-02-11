@@ -11,7 +11,7 @@
 #include <vector>
 #include <utility>
 #include <set>
-#include "../../model/saom/NetworkEffect.h"
+#include "../../model/saom/SaomEffect.h"
 #include "../../model/saom/EffectContainerManager.h"
 #include "../../model/ModelManager.h"
 #include "../../model/MultinomialChoiceNetworkChangeModel.h"
@@ -69,8 +69,8 @@ void densityChoiceTest(){
 	double densityParameter = -2.0;
 	int actorIndex = 0;
 	size_t networkIndex = 0;
-	int nSimulations = 1000;
-	double allowedDeviation = 0.05;
+	int nSimulations = 10000;
+	double allowedDeviation = 0.01;
 
 	// calculating expected values
 	// network description below
@@ -101,6 +101,8 @@ void densityChoiceTest(){
 			networkIndex,
 			&effects,
 			new std::vector<Updater*>(1,new TieSwapUpdater(networkIndex)));
+
+	saom.setDebugMode(false);
 
 	for (int iSim = 0; iSim < nSimulations; iSim++){
 
@@ -310,7 +312,7 @@ Sollte simulierte Netzwerke liefern, wo
  */
 void steglichParameterTest1(){
 
-	double poissonParameter1 = 1; // was 1000
+	double poissonParameter1 = 1000; // was 1000
 	double poissonParameter2 = 8.81;
 	double densityParameter = -2.18;
 	double reciprocityParameter = 2.39;
@@ -318,7 +320,7 @@ void steglichParameterTest1(){
 	double expectedReciprocity = 240;
 	double expectedHammingDistance = 400;
 	double allowedDeviation = 10;
-	int nSimulations = 1; // was: 300
+	int nSimulations = 300; // was: 300
 
 	steglichParameterTest(
 			poissonParameter1,
@@ -483,7 +485,7 @@ cute::suite getTestSaomSuite(){
 
 	s.push_back(CUTE(poissonparameterTest));
 	s.push_back(CUTE(densityChoiceTest));
-	// s.push_back(CUTE(densityParameterSaomTest));
+	s.push_back(CUTE(densityParameterSaomTest));
 	// commented out as very time consuming (in original specification)
 	s.push_back(CUTE(steglichParameterTest1));
 	// s.push_back(CUTE(steglichParameterTest2));

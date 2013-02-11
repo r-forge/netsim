@@ -5,13 +5,13 @@
  *      Author: cws
  */
 
-#include "NetworkEffect.h"
+#include "SaomEffect.h"
 
-OneModeNetworkEffect::OneModeNetworkEffect(size_t networkIndex) {
+NetworkEffect::NetworkEffect(size_t networkIndex) {
 	_networkIndex = networkIndex;
 }
 
-DensityEffect::DensityEffect(size_t networkIndex) : OneModeNetworkEffect(networkIndex){
+DensityEffect::DensityEffect(size_t networkIndex) : NetworkEffect(networkIndex){
 }
 
 double DensityEffect::getEffect(ProcessState* processState, int actorIndex) {
@@ -30,7 +30,7 @@ std::string DensityEffect::getName() {
 	return "Density";// +_networkIndex;
 }
 
-ReciprocityEffect::ReciprocityEffect(size_t networkIndex) : OneModeNetworkEffect(networkIndex){
+ReciprocityEffect::ReciprocityEffect(size_t networkIndex) : NetworkEffect(networkIndex){
 }
 
 double ReciprocityEffect::getEffect(ProcessState* processState,
@@ -53,7 +53,7 @@ std::string ReciprocityEffect::getName() {
 	return "Reciprocity";
 }
 
-TransitivityEffect::TransitivityEffect(size_t networkIndex)  : OneModeNetworkEffect(networkIndex){
+TransitivityEffect::TransitivityEffect(size_t networkIndex)  : NetworkEffect(networkIndex){
 }
 
 double TransitivityEffect::getEffect(ProcessState* processState,
@@ -75,13 +75,17 @@ double TransitivityEffect::getEffect(ProcessState* processState,
 
 double TransitivityEffect::getEffectContribution(ProcessState* processState,
 		int actorIndex1, int actorIndex2) {
+	MemoryOneModeNetwork * net =
+			dynamic_cast<MemoryOneModeNetwork *>(processState->getNetwork(_networkIndex));
+	return net->getIntermediateNodesForward(actorIndex1, actorIndex2).size();
+
 }
 
 std::string TransitivityEffect::getName() {
 	return "Transitivity";
 }
 
-ThreeCycleEffect::ThreeCycleEffect(size_t networkIndex) : OneModeNetworkEffect(networkIndex){
+ThreeCycleEffect::ThreeCycleEffect(size_t networkIndex) : NetworkEffect(networkIndex){
 }
 
 double ThreeCycleEffect::getEffect(ProcessState* processState,
@@ -103,13 +107,17 @@ double ThreeCycleEffect::getEffect(ProcessState* processState,
 
 double ThreeCycleEffect::getEffectContribution(ProcessState* processState,
 		int actorIndex1, int actorIndex2) {
+	MemoryOneModeNetwork * net =
+			dynamic_cast<MemoryOneModeNetwork *>(processState->getNetwork(_networkIndex));
+	return net->getIntermediateNodesBackward(actorIndex1, actorIndex2).size();
+
 }
 
 std::string ThreeCycleEffect::getName() {
 	return "Three-circle";
 }
 
-TwoPathEffect::TwoPathEffect(size_t networkIndex) : OneModeNetworkEffect(networkIndex){
+TwoPathEffect::TwoPathEffect(size_t networkIndex) : NetworkEffect(networkIndex){
 }
 
 double TwoPathEffect::getEffect(ProcessState* processState, int actorIndex) {
@@ -133,13 +141,17 @@ double TwoPathEffect::getEffect(ProcessState* processState, int actorIndex) {
 
 double TwoPathEffect::getEffectContribution(ProcessState* processState,
 		int actorIndex1, int actorIndex2) {
+	MemoryOneModeNetwork * net =
+			dynamic_cast<MemoryOneModeNetwork *>(processState->getNetwork(_networkIndex));
+	return - net->getIntermediateNodesForward(actorIndex1, actorIndex2).size();
+
 }
 
 std::string TwoPathEffect::getName() {
 	return "Two Path";
 }
 
-InPopularityEffect::InPopularityEffect(size_t networkIndex)  : OneModeNetworkEffect(networkIndex){
+InPopularityEffect::InPopularityEffect(size_t networkIndex)  : NetworkEffect(networkIndex){
 }
 
 double InPopularityEffect::getEffect(ProcessState* processState, int actorIndex) {
@@ -160,13 +172,17 @@ double InPopularityEffect::getEffect(ProcessState* processState, int actorIndex)
 
 double InPopularityEffect::getEffectContribution(ProcessState* processState,
 		int actorIndex1, int actorIndex2) {
+	MemoryOneModeNetwork * net =
+			dynamic_cast<MemoryOneModeNetwork *>(processState->getNetwork(_networkIndex));
+	return net->getInDegree(actorIndex2);
+
 }
 
 std::string InPopularityEffect::getName() {
 	return "In-popularity";
 }
 
-OutPopularityEffect::OutPopularityEffect(size_t networkIndex)  : OneModeNetworkEffect(networkIndex){
+OutPopularityEffect::OutPopularityEffect(size_t networkIndex)  : NetworkEffect(networkIndex){
 }
 
 double OutPopularityEffect::getEffect(ProcessState* processState, int actorIndex) {
@@ -187,6 +203,10 @@ double OutPopularityEffect::getEffect(ProcessState* processState, int actorIndex
 
 double OutPopularityEffect::getEffectContribution(ProcessState* processState,
 		int actorIndex1, int actorIndex2) {
+	MemoryOneModeNetwork * net =
+			dynamic_cast<MemoryOneModeNetwork *>(processState->getNetwork(_networkIndex));
+	return net->getOutDegree(actorIndex2);
+
 }
 
 std::string OutPopularityEffect::getName() {
@@ -198,10 +218,10 @@ AttributeEffect::AttributeEffect(size_t attributeIndex) {
 }
 
 AttributeOneModeNetworkEffect::AttributeOneModeNetworkEffect(size_t attributeIndex, size_t networkIndex) :
-		AttributeEffect(attributeIndex), OneModeNetworkEffect(networkIndex){
+		AttributeEffect(attributeIndex), NetworkEffect(networkIndex){
 }
 
-std::string OneModeNetworkEffect::getClassName() {
+std::string NetworkEffect::getClassName() {
 	return "OneModeNetworkEffect";
 }
 
@@ -232,6 +252,10 @@ EgoXEffect::EgoXEffect(size_t attributeIndex, size_t networkIndex) :
 
 double EgoXEffect::getEffectContribution(ProcessState* processState,
 		int actorIndex1, int actorIndex2) {
+	AttributeContainer * attributeContainer =
+			processState->getAttributeContainer(_attributeIndex);
+	return attributeContainer->getValue(actorIndex1);
+
 }
 
 std::string EgoXEffect::getName() {
@@ -260,6 +284,10 @@ AltXEffect::AltXEffect(size_t attributeIndex, size_t networkIndex) :
 
 double AltXEffect::getEffectContribution(ProcessState* processState,
 		int actorIndex1, int actorIndex2) {
+	AttributeContainer * attributeContainer =
+			processState->getAttributeContainer(_attributeIndex);
+	return attributeContainer->getValue(actorIndex2);
+
 }
 
 std::string AltXEffect::getName() {
@@ -283,9 +311,6 @@ double LinearShapeAttributeEffect::getEffect(ProcessState* processState,
 	return attributeContainer->getValue(actorIndex);
 }
 
-double LinearShapeAttributeEffect::getEffectContribution(
-		ProcessState* processState, int actorIndex1, int actorIndex2) {
-}
 
 std::string LinearShapeAttributeEffect::getName() {
 	return "linear shape effect";
@@ -304,9 +329,6 @@ double QuadraticShapeAttributeEffect::getEffect(ProcessState* processState,
 
 }
 
-double QuadraticShapeAttributeEffect::getEffectContribution(
-		ProcessState* processState, int actorIndex1, int actorIndex2) {
-}
 
 std::string QuadraticShapeAttributeEffect::getName() {
 	return "Quadratic shape effect";
@@ -345,6 +367,18 @@ double TotalSimilarityEffect::getEffect(ProcessState* processState,
 
 double TotalSimilarityEffect::getEffectContribution(ProcessState* processState,
 		int actorIndex1, int actorIndex2) {
+	AttributeContainer * attributeContainer =
+			processState->getAttributeContainer(_attributeIndex);
+
+	double minAttributeValue = attributeContainer->getMin();
+	double maxAttributeValue = attributeContainer->getMax();
+	double egoValue = attributeContainer->getValue(actorIndex1);
+	double alterValue = attributeContainer->getValue(actorIndex2);
+	double range = maxAttributeValue - minAttributeValue;
+
+	// similarity_ij - mean similarity scores
+	double sim = (range - abs(alterValue - egoValue)) / range;
+	return sim = _meanSimilarityScores;
 }
 
 std::string TotalSimilarityEffect::getName() {

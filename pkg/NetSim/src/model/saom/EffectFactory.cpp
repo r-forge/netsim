@@ -25,7 +25,7 @@ std::string EffectFactory::getType(std::string name) {
 
 }
 
-OneModeNetworkEffect * EffectFactory::getOneModeNetworkEffect(
+NetworkEffect * EffectFactory::getOneModeNetworkEffect(
 		std::string name, size_t networkIndex) {
 
 	// effects ordered according to the SIENA manual

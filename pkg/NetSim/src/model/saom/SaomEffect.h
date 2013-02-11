@@ -23,6 +23,15 @@ class SaomEffect {
 public:
 	virtual ~SaomEffect() { }
 	virtual double getEffect(ProcessState * processState, int actorIndex) = 0;
+	virtual std::string getName() = 0;
+
+};
+
+class NetworkEffect : public SaomEffect{
+
+public:
+	NetworkEffect(size_t networkIndex);
+
 	/**
 	 * getEffectContribution is implemented as a fast lookup that
 	 * can be run after an initial getEffect().
@@ -34,14 +43,7 @@ public:
 	 */
 	virtual double getEffectContribution(ProcessState * processState,
 			int actorIndex1, int actorIndex2) = 0;
-	virtual std::string getName() = 0;
 
-};
-
-class OneModeNetworkEffect : public SaomEffect{
-
-public:
-	OneModeNetworkEffect(size_t networkIndex);
 
 	std::string getClassName();
 
@@ -51,7 +53,7 @@ protected:
 };
 
 
-class DensityEffect : public OneModeNetworkEffect{
+class DensityEffect : public NetworkEffect{
 
 public:
 	DensityEffect(size_t networkIndex);
@@ -65,7 +67,7 @@ public:
 
 };
 
-class ReciprocityEffect : public OneModeNetworkEffect{
+class ReciprocityEffect : public NetworkEffect{
 
 public:
 	ReciprocityEffect(size_t networkIndex);
@@ -81,7 +83,7 @@ public:
 };
 
 
-class TransitivityEffect : public OneModeNetworkEffect{
+class TransitivityEffect : public NetworkEffect{
 
 public:
 	TransitivityEffect(size_t networkIndex);
@@ -95,7 +97,7 @@ public:
 
 };
 
-class ThreeCycleEffect : public OneModeNetworkEffect{
+class ThreeCycleEffect : public NetworkEffect{
 
 public:
 	ThreeCycleEffect(size_t networkIndex);
@@ -110,7 +112,7 @@ public:
 };
 
 
-class TwoPathEffect : public OneModeNetworkEffect{
+class TwoPathEffect : public NetworkEffect{
 
 public:
 	TwoPathEffect(size_t networkIndex);
@@ -124,7 +126,7 @@ public:
 
 };
 
-class InPopularityEffect : public OneModeNetworkEffect{
+class InPopularityEffect : public NetworkEffect{
 
 public:
 	InPopularityEffect(size_t networkIndex);
@@ -138,7 +140,7 @@ public:
 
 };
 
-class OutPopularityEffect : public OneModeNetworkEffect{
+class OutPopularityEffect : public NetworkEffect{
 
 public:
 	OutPopularityEffect(size_t networkIndex);
@@ -196,7 +198,7 @@ public:
 };
 
 
-class AttributeOneModeNetworkEffect : public AttributeEffect, public OneModeNetworkEffect{
+class AttributeOneModeNetworkEffect : public AttributeEffect, public NetworkEffect{
 public:
 	AttributeOneModeNetworkEffect(size_t attributeIndex, size_t networkIndex);
 	std::string getClassName();
@@ -210,6 +212,7 @@ public:
 
 	double getEffect(ProcessState * processState, int actorIndex);
 
+	// TODO implement for network as dependent variable
 	double getEffectContribution(ProcessState * processState,
 				int actorIndex1, int actorIndex2);
 
@@ -227,6 +230,7 @@ public:
 
 	double getEffect(ProcessState * processState, int actorIndex);
 
+	// TODO implement for network as dependent variable
 	double getEffectContribution(ProcessState * processState,
 				int actorIndex1, int actorIndex2);
 

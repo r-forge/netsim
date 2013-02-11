@@ -301,6 +301,7 @@ void MemoryOneModeNetworkMemento::saveIncomingNeighborsMap(
 	for (std::map<int, std::set<int> *>::const_iterator it = incomingNeighborsMap.begin();
 			it != incomingNeighborsMap.end();
 			++it){
+		// TODO this does not free the linked sets!
 		delete _incomingNeighborsMap[(*it).first];
 		// copy set
 		_incomingNeighborsMap[(*it).first] = new std::set<int>();
@@ -319,6 +320,7 @@ void MemoryOneModeNetworkMemento::saveOutgoingNeighborsMap(
 		const std::map<int, std::set<int> *> outgoingNeighborsMap) {
 	for (std::map<int, std::set<int> *>::const_iterator it = outgoingNeighborsMap.begin();
 			it != outgoingNeighborsMap.end(); ++it){
+		// TODO this does not free the linked sets!
 		delete _outgoingNeighborsMap[(*it).first];
 		std::set<int> * nodes = new std::set<int>(*((*it).second));
 		_outgoingNeighborsMap[(*it).first] = nodes;

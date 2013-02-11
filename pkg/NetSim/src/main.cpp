@@ -23,7 +23,7 @@
 #include "model/TimeModel.h"
 #include "model/Updater.h"
 #include "model/MultinomialChoiceNetworkChangeModel.h"
-#include "model/saom/NetworkEffect.h"
+#include "model/saom/SaomEffect.h"
 #include "processstate/ProcessState.h"
 #include "simulator/Simulator.h"
 

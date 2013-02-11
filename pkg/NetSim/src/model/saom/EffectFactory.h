@@ -8,7 +8,7 @@
 #ifndef EFFECTFACTORY_H_
 #define EFFECTFACTORY_H_
 
-#include "NetworkEffect.h"
+#include "SaomEffect.h"
 #include <stdexcept>
 #include <string>
 
@@ -27,7 +27,7 @@ public:
 	 */
 	std::string getType(std::string name);
 
-	OneModeNetworkEffect * getOneModeNetworkEffect(
+	NetworkEffect * getOneModeNetworkEffect(
 			std::string name,
 			size_t networkIndex);
 

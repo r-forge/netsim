@@ -10,7 +10,7 @@
 
 #include "ChangeModel.h"
 #include "ModelResult.h"
-#include "saom/NetworkEffect.h"
+#include "saom/SaomEffect.h"
 #include "../utils/Random.h"
 #include "MultinomialChoiceUtils.h"
 #include <utility>

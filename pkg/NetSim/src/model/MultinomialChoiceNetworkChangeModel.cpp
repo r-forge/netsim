@@ -23,6 +23,40 @@ MultinomialChoiceNetworkChangeModel::MultinomialChoiceNetworkChangeModel(
 	init(actorIndex, dependentNetworkIndex, effectParameterPairs, updaters);
 }
 
+void MultinomialChoiceNetworkChangeModel::calculateTieContributionsWithMemento(
+		int nActors, const std::vector<double>& objectiveFunctions,
+		double denominator, ProcessState* processState) {
+/*
+
+	// save process state as memento
+	ProcessStateMemento* memento = processState->saveToMemento();
+
+	// iterate over all actors
+	for (int j = 0; j < nActors; j++) {
+		int i = _actorIndex;
+		// update tie.
+		for (std::vector<Updater*>::iterator it = _updaters->begin();
+				it != _updaters->end(); ++it) {
+			TieModelResult* result = new TieModelResult(i, j);
+			(*it)->update(processState, result);
+			delete result;
+		}
+		// calculate and save objective function
+		objectiveFunctions[j] =
+				MultinomialChoiceUtils::getValueObjectiveFunction(processState,
+						i, _effectParameterPairs, _debug);
+		// increase sum (denominator)
+		denominator += exp(objectiveFunctions[j]);
+		if (_debug)
+			std::cout << "" << objectiveFunctions[j] << std::endl;
+
+		// reset process state
+		processState->restoreFromMemento(memento);
+	} // iterate over all actors
+	delete memento;
+*/
+}
+
 ModelResult* MultinomialChoiceNetworkChangeModel::getChange(
 		ProcessState* processState) {
 
@@ -30,50 +64,79 @@ ModelResult* MultinomialChoiceNetworkChangeModel::getChange(
 	std::vector<double> objectiveFunctions(nActors, 0);
 	double denominator = 0;
 
+	// updates objectiveFunctions and denominators
+	// calculateTieContributionsWithMemento(nActors,
+	//		objectiveFunctions, denominator, processState);
 
-	// save process state as memento
-	ProcessStateMemento * memento = processState->saveToMemento();
+	// calculate effects for the current networks (un-unchanged)
+	int nEffects = _effectParameterPairs->size();
+	std::vector<std::pair<double, double> > statisticsAndParametersWithoutChange(
+			nEffects, std::pair<double, double>(0,0));
+	std::vector<std::vector<double> > statisticsWithoutTieContribution (nActors,
+			std::vector<double>(nEffects, 0));
 
-	// iterate over all actors
-	for (int j = 0; j < nActors; j++){
+
+	// calculate statistics
+	int effectIndex = 0;
+	std::set<std::pair<SaomEffect*, double> *>::iterator itEffects =
+			_effectParameterPairs->begin();
+	for (; itEffects != _effectParameterPairs->end(); ++itEffects){
 
 		int i = _actorIndex;
 
-		// update tie.
-		for (std::vector<Updater*>::iterator it =
-				_updaters->begin(); it != _updaters->end(); ++it){
+		// calculate effects without changes
+		// save effect statistic
+		double statistic = (*itEffects)->first->getEffect(processState, _actorIndex);
+		statisticsAndParametersWithoutChange[effectIndex].first += statistic;
 
-			TieModelResult * result = new TieModelResult(i,j);
-			(*it)->update(processState, result);
-			delete result;
-		}
+		// save effect parameter (beta)
+		double parameter = (*itEffects)->second;
+		statisticsAndParametersWithoutChange[effectIndex].second =
+				parameter;
 
-		// calculate and save objective function
-		objectiveFunctions[j] =
-				MultinomialChoiceUtils::getValueObjectiveFunction(processState, i, _effectParameterPairs, _debug);
+		// iterate over all actors
+		for (int j = 0; j < nActors; j++) {
 
-		// increase sum (denominator)
-		denominator += exp(objectiveFunctions[j]);
+			NetworkEffect * effect = dynamic_cast<NetworkEffect *>((*itEffects)->first);
+			double contribution =
+					effect->getEffectContribution(processState, i, j);
 
-		if (_debug) std::cout << "" << objectiveFunctions[j] << std::endl;
+			Network * net = processState->getNetwork(_dependentNetworkIndex);
+			// TODO: Here, we assume that an update is a tie swap!
+			if (net->hasTie(i, j)){
 
-		// COMMENTED OUT TO TEST MEMENTO
-		// reset process state
-		// So far, this is implemented as a swap back
-		// Performance can be improved by implementing a
-		// Memento mechanism in the process state
-/*		for (std::vector<Updater*>::iterator it = _updaters->begin(); it != _updaters->end(); ++it){
-			TieModelResult * result = new TieModelResult(i,j); // TODO check i, j
-			(*it)->undoUpdate(processState, result);
-			delete result;
-		}
-*/
-		// reset process state
-		processState->restoreFromMemento(memento);
+				statisticsWithoutTieContribution[j][effectIndex] =
+						statistic - contribution;
 
-	} // iterate over all actors
+			} else{
 
-	delete memento;
+				if (i != j){
+					statisticsWithoutTieContribution[j][effectIndex] =
+							statistic + contribution;
+				}
+				// choosing oneself means changing nothing
+				else{
+					statisticsWithoutTieContribution[j][effectIndex] =
+							statistic;
+				}
+
+
+			}
+
+			objectiveFunctions[j] +=
+					statisticsWithoutTieContribution[j][effectIndex] * parameter;
+
+
+		}  // iterate over all actors
+
+		++effectIndex;
+	}
+
+	for (int i = 0; i < objectiveFunctions.size(); i++){
+		if (_debug) std::cout << "o.f. of actor "<< i<< ": " <<
+				objectiveFunctions[i] << std::endl;
+		denominator += exp(objectiveFunctions[i]);
+	}
 
 
 	if (_debug) std::cout << "Active actor: " << _actorIndex << std::endl;

@@ -16,7 +16,7 @@
 #include "../model/MultinomialChoiceNetworkChangeModel.h"
 #include "../model/MultinomialChoiceBehaviorChangeModel.h"
 #include "../model/Updater.h"
-#include "../model/saom/NetworkEffect.h"
+#include "../model/saom/SaomEffect.h"
 #include "../model/saom/EffectContainerManager.h"
 #include "../model/saom/EffectFactory.h"
 

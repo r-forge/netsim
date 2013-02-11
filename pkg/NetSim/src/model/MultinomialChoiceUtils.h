@@ -10,7 +10,7 @@
 
 #include <utility>
 #include <set>
-#include "saom/NetworkEffect.h"
+#include "saom/SaomEffect.h"
 
 class MultinomialChoiceUtils{
 

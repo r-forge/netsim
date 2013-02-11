@@ -13,7 +13,7 @@
 #include <iostream>
 #include "MultinomialChoiceUtils.h"
 #include "ChangeModel.h"
-#include "saom/NetworkEffect.h"
+#include "saom/SaomEffect.h"
 #include "Updater.h"
 #include "ModelResult.h"
 #include "../utils/Random.h"
@@ -61,8 +61,9 @@ private:
 			size_t dependentNetworkIndex,
 			std::set<std::pair<SaomEffect*, double> *> * effectParameterPairs,
 			std::vector<Updater*>* updaters);
-
-
+	void calculateTieContributionsWithMemento(int nActors,
+			const std::vector<double>& objectiveFunctions, double denominator,
+			ProcessState* processState);
 };
 
 class EmptyMultinomialChoiceNetworkChangeModel : public ChangeModel{
