@@ -137,6 +137,81 @@ void densityChoiceTest(){
 
 }
 
+void transitivityChoiceTest(){
+
+	int networkIndex = 0;
+	int actorIndex = 0; // focal actor
+	int nSimulations = 10000;
+	double parameter = 1.0;
+	std::vector<double> estimatedValues(5,0.0);
+	std::vector<double> expectedValues(5,0.0);
+	double allowedDeviation = 0.01;
+
+
+	MemoryOneModeNetwork network(5);
+	network.addTie(0,1);
+	network.addTie(1,0);
+	network.addTie(0,2);
+	network.addTie(0,3);
+	network.addTie(2,1);
+	network.addTie(2,4);
+	network.addTie(3,4);
+	network.addTie(4,3);
+	// has on transitive triad 0, 1, 2
+
+	double denominator =
+			exp(parameter * 1) + // doing nothing
+			exp(parameter * 0) + // removing tie to 1
+			exp(parameter * 0) + // removing tie to 2
+			exp(parameter * 1) + // removing tie to 3
+			exp(parameter * 4);  // adding tie to 4
+	expectedValues[0] = exp(parameter * 1) / denominator;
+	expectedValues[1] = exp(parameter * 0) / denominator;
+	expectedValues[2] = exp(parameter * 0) / denominator;
+	expectedValues[3] = exp(parameter * 1) / denominator;
+	expectedValues[4] = exp(parameter * 4) / denominator;
+
+
+	std::set<std::pair<SaomEffect*, double> *> effects;
+	effects.insert(new std::pair<SaomEffect*, double>(
+			new TransitivityEffect(networkIndex), parameter));
+
+	MultinomialChoiceNetworkChangeModel saom(
+			actorIndex,
+			networkIndex,
+			&effects,
+			new std::vector<Updater*>(1,new TieSwapUpdater(networkIndex)));
+
+	for (int iSim = 0; iSim < nSimulations; iSim++){
+
+		ProcessState processState;
+		processState.addNetwork(&network);
+
+		saom.setDebugMode(false);
+
+		ModelResult * result = saom.getChange(&processState);
+
+		TieModelResult * tieResult = dynamic_cast<TieModelResult*>(result);
+
+		estimatedValues[tieResult->getActorIndex2()] += 1 / ((double) nSimulations);
+
+	}
+
+	std::cout << "denominator: " << denominator << std::endl;
+	std::cout << "i: " << "expected" << " / " << "estimated" << std:: endl;
+	for (int i = 0; i < 5; i++){
+		std::cout << i << ": " << expectedValues[i] << " / " << estimatedValues[i] << std:: endl;
+	}
+
+	ASSERT(fabs(expectedValues[0] - estimatedValues[0]) < allowedDeviation);
+	ASSERT(fabs(expectedValues[1] - estimatedValues[1]) < allowedDeviation);
+	ASSERT(fabs(expectedValues[2] - estimatedValues[2]) < allowedDeviation);
+	ASSERT(fabs(expectedValues[3] - estimatedValues[3]) < allowedDeviation);
+	ASSERT(fabs(expectedValues[4] - estimatedValues[4]) < allowedDeviation);
+
+
+}
+
 /*
  * E-Mail Christian Steglich, Jan. 28
 Jeweils n=100.
@@ -312,7 +387,7 @@ Sollte simulierte Netzwerke liefern, wo
  */
 void steglichParameterTest1(){
 
-	double poissonParameter1 = 1000; // was 1000
+	double poissonParameter1 = 10; // was 1000
 	double poissonParameter2 = 8.81;
 	double densityParameter = -2.18;
 	double reciprocityParameter = 2.39;
@@ -320,7 +395,7 @@ void steglichParameterTest1(){
 	double expectedReciprocity = 240;
 	double expectedHammingDistance = 400;
 	double allowedDeviation = 10;
-	int nSimulations = 300; // was: 300
+	int nSimulations = 1; // was: 300
 
 	steglichParameterTest(
 			poissonParameter1,
@@ -485,6 +560,7 @@ cute::suite getTestSaomSuite(){
 
 	s.push_back(CUTE(poissonparameterTest));
 	s.push_back(CUTE(densityChoiceTest));
+	s.push_back(CUTE(transitivityChoiceTest));
 	s.push_back(CUTE(densityParameterSaomTest));
 	// commented out as very time consuming (in original specification)
 	s.push_back(CUTE(steglichParameterTest1));

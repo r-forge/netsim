@@ -64,6 +64,7 @@ ModelResult* MultinomialChoiceNetworkChangeModel::getChange(
 	std::vector<double> objectiveFunctions(nActors, 0);
 	double denominator = 0;
 
+	// DEPRECATED
 	// updates objectiveFunctions and denominators
 	// calculateTieContributionsWithMemento(nActors,
 	//		objectiveFunctions, denominator, processState);
@@ -108,11 +109,20 @@ ModelResult* MultinomialChoiceNetworkChangeModel::getChange(
 				statisticsWithoutTieContribution[j][effectIndex] =
 						statistic - contribution;
 
+				if (_debug)
+					std::cout << "Tie removal from " << i << " to " << j <<
+					" contributes " << contribution << std::endl;
+
 			} else{
 
 				if (i != j){
 					statisticsWithoutTieContribution[j][effectIndex] =
 							statistic + contribution;
+
+					if (_debug)
+						std::cout << "Tie insertion from " << i << " to " << j <<
+						" contributes " << contribution << std::endl;
+
 				}
 				// choosing oneself means changing nothing
 				else{
@@ -133,9 +143,11 @@ ModelResult* MultinomialChoiceNetworkChangeModel::getChange(
 	}
 
 	for (int i = 0; i < objectiveFunctions.size(); i++){
-		if (_debug) std::cout << "o.f. of actor "<< i<< ": " <<
-				objectiveFunctions[i] << std::endl;
+
 		denominator += exp(objectiveFunctions[i]);
+
+		if (_debug) std::cout << "o.f. of actor choice "<< i<< ": " <<
+				objectiveFunctions[i] << std::endl;
 	}
 
 

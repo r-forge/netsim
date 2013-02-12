@@ -77,8 +77,12 @@ double TransitivityEffect::getEffectContribution(ProcessState* processState,
 		int actorIndex1, int actorIndex2) {
 	MemoryOneModeNetwork * net =
 			dynamic_cast<MemoryOneModeNetwork *>(processState->getNetwork(_networkIndex));
-	return net->getIntermediateNodesForward(actorIndex1, actorIndex2).size();
+	double triadsClosedByTie =
+			net->getIntermediateNodesForward(actorIndex1, actorIndex2).size();
+	double triadsStartedByTie =
+			net->getIntermediateNodesUp(actorIndex2, actorIndex1).size();
 
+	return triadsClosedByTie + triadsStartedByTie;
 }
 
 std::string TransitivityEffect::getName() {
