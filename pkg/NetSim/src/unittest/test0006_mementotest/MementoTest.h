@@ -8,8 +8,8 @@
 #ifndef MEMENTOTEST_H_
 #define MEMENTOTEST_H_
 
-#include "MemoryOneModeNetwork.h"
 #include "cute.h"
+#include "MemoryOneModeNetwork.h"
 #include "ProcessState.h"
 #include "NetworkUtils.h"
 

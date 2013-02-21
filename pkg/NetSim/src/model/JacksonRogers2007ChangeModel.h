@@ -10,10 +10,11 @@
 
 #include "ModelResult.h"
 #include "ChangeModel.h"
+#include "NetworkUtils.h"
 
 /**
  * Implementation of the change model from
- * Jackson, Matthew O. AND Rogers, Brian W.
+ * Jackson, Matthew O. AND Rogers, Brian W. (J&R)
  * "Meeting strangers and friends of friends:
  *  How random are social networks?"
  * American Economic Review 97, 2007
@@ -23,17 +24,15 @@ class JacksonRogers2007ChangeModel : public ChangeModel{
 public:
 	JacksonRogers2007ChangeModel(
 			int networkIndex,
-			int actorIndex,
 			double pLinkToParentNode,
 			double pLinkToNeigborNode,
 			int nParentNodes,
 			int nNeighborNodes);
 
-	ModelResult* getChange(ProcessState processState);
+	ModelResult * getChange(ProcessState * processState);
 
 private:
 	int _networkIndex;
-	int _actorIndex;
 	// p_r on page 894
 	double _pLinkToParentNode;
 	// p_n on page 894

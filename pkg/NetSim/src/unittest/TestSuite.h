@@ -17,6 +17,7 @@
 #include "test0004_effects/EffectTest.h"
 #include "test0005_rwrapper/RWrapperTest.h"
 #include "test0006_mementotest/MementoTest.h"
+#include "test0007_jacksonrogers/JacksonRogersTest.h"
 
 
 
@@ -27,6 +28,7 @@ void runUnitTestSuite(){
 	cute::suite s0004 = getTestSaomEffectsSuite();
 	cute::suite s0005 = getRWrapperTestSuite();
 	cute::suite s0006 = getMementoTests();
+	cute::suite s0007 = getJacksonRogersTests();
 	cute::ide_listener idl;
 	cute::makeRunner(idl)(s0001, "Network tests");
 	cute::makeRunner(idl)(s0002, "Attribute Container tests");
@@ -34,7 +36,7 @@ void runUnitTestSuite(){
 	cute::makeRunner(idl)(s0004, "SAOM Effect tests");
 	cute::makeRunner(idl)(s0005, "R wrapper tests");
 	cute::makeRunner(idl)(s0006, "Memento tests");
-
+	cute::makeRunner(idl)(s0007, "Jackson Rogers model tests");
 }
 
 

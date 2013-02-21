@@ -26,7 +26,7 @@ public:
 			int attributeIndex,
 			std::set<std::pair<SaomEffect*, double> *> * effectParameterPairs);
 
-	virtual ModelResult * getChange(ProcessState * processState);
+	ModelResult * getChange(ProcessState * processState);
 
 private:
 	ValueModelResult * _valueModelResult;

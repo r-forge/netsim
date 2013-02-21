@@ -55,6 +55,7 @@ double ValueModelResult::getValue() {
 }
 
 ActorSetModelResult::ActorSetModelResult(std::set<int> actorSet) {
+	_actorSet = actorSet;
 }
 
 std::set<int> ActorSetModelResult::getActorSet() {
