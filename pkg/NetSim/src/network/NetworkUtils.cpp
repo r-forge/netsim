@@ -138,6 +138,29 @@ void NetworkUtils::dumpInternalObjects(MemoryOneModeNetwork* network) {
 	std::cout << "-------------------" << std::endl;
 }
 
+std::set<int> NetworkUtils::getNRandomNodes(Network* network, int n) {
+
+	std::set<int> nodes;
+
+	if (network->getSize() < n) return nodes;
+
+	int nNodes = network->getSize();
+
+	while (nodes.size() < n){
+
+		double rand = Random::getInstance().getRandom();
+		double interval = 1.0 / (double) nNodes;
+
+		// the compiler truncates when casting double to int
+		nodes.insert(rand / interval);
+
+	}
+
+	return nodes;
+
+
+}
+
 int NetworkUtils::countTies(MemoryOneModeNetwork * network,
 		bool reciprocal) {
 

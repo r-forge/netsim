@@ -222,7 +222,6 @@ public:
 
 
 
-
 class AltXEffect : public AttributeOneModeNetworkEffect{
 
 public:
@@ -236,6 +235,21 @@ public:
 
 	std::string getName();
 };
+
+class SameXTransitivity : public AttributeOneModeNetworkEffect{
+public:
+	SameXTransitivity(size_t attributeIndex, size_t networkIndex);
+
+	double getEffect(ProcessState * processState, int actorIndex);
+
+	double getEffectContribution(ProcessState * processState,
+			int actorIndex1, int actorIndex2);
+
+	std::string getName();
+
+
+};
+
 
 /**
  * All similarity related effects share empirical

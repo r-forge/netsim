@@ -179,3 +179,39 @@ void ActorAttributeSetUpdater::undoUpdate(ProcessState* processState,
 	attributeContainer->setValue(_indexActor, _oldValue);
 
 }
+
+AddTiesFromNewbornActor::AddTiesFromNewbornActor(int networkIndex) {
+	_networkIndex = networkIndex;
+}
+
+void AddTiesFromNewbornActor::update(ProcessState* processState,
+		ModelResult* result) {
+
+	ActorSetModelResult * actorSetModelResult =
+			dynamic_cast<ActorSetModelResult*>(result);
+
+	int focalActor = processState->getNewestActorIndex();
+	Network * network = processState->getNetwork(_networkIndex);
+
+	std::set<int>::iterator itNodes = actorSetModelResult->getActorSet().begin();
+	for (; itNodes != actorSetModelResult->getActorSet().end(); ++itNodes){
+		network->addTie(focalActor, (*itNodes));
+	}
+
+}
+
+// not very precise
+void AddTiesFromNewbornActor::undoUpdate(ProcessState* processState,
+		ModelResult* result) {
+	ActorSetModelResult * actorSetModelResult =
+			dynamic_cast<ActorSetModelResult*>(result);
+
+	int focalActor = processState->getNewestActorIndex();
+	Network * network = processState->getNetwork(_networkIndex);
+
+	std::set<int>::iterator itNodes = actorSetModelResult->getActorSet().begin();
+	for (; itNodes != actorSetModelResult->getActorSet().end(); ++itNodes){
+		network->removeTie(focalActor, (*itNodes));
+	}
+
+}

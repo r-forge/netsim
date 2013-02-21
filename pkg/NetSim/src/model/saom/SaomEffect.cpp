@@ -388,3 +388,51 @@ double TotalSimilarityEffect::getEffectContribution(ProcessState* processState,
 std::string TotalSimilarityEffect::getName() {
 	return "Total similarity";
 }
+
+SameXTransitivity::SameXTransitivity(size_t attributeIndex, size_t networkIndex) :
+					AttributeOneModeNetworkEffect(attributeIndex, networkIndex){
+}
+
+double SameXTransitivity::getEffect(ProcessState* processState, int actorIndex) {
+	AttributeContainer * attributeContainer =
+			processState->getAttributeContainer(_attributeIndex);
+	MemoryOneModeNetwork * network =
+			dynamic_cast<MemoryOneModeNetwork *>(processState->getNetwork(_networkIndex));
+
+	double focalActorValue = attributeContainer->getValue(actorIndex);
+	double value = 0;
+
+	// get all neighbors
+	std::set<int> neighbors = network->getOutgoingNeighbors(actorIndex);
+	// for each neighbor count the number of two-paths also leading there
+	for (std::set<int>::iterator itNeighbors = neighbors.begin(); itNeighbors != neighbors.end(); ++itNeighbors){
+		// for each neighbor with the same attribute
+		if (focalActorValue ==
+				attributeContainer->getValue((*itNeighbors))){
+
+			std::set<int>::iterator itIntermediate = network->getIntermediateNodesForward(actorIndex, (*itNeighbors)).begin();
+			for (; itIntermediate != network->getIntermediateNodesForward(actorIndex, (*itNeighbors)).end(); ++itIntermediate){
+
+				// for each in-between node with the same attribute
+				if (focalActorValue ==
+						attributeContainer->getValue((*itIntermediate))){
+					value += 1;
+				}
+			}
+
+		}
+	}
+
+	return value;
+
+}
+
+double SameXTransitivity::getEffectContribution(ProcessState* processState,
+		int actorIndex1, int actorIndex2) {
+	// TODO implement
+	return 0.0;
+}
+
+std::string SameXTransitivity::getName() {
+	return "SameXTransitivity";
+}

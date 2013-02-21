@@ -123,6 +123,14 @@ ProcessStateMemento* ProcessState::saveToMemento() {
 	return memento;
 }
 
+int ProcessState::addActor() {
+	return -1;
+}
+
+int ProcessState::getNewestActorIndex() {
+	return -1;
+}
+
 void ProcessState::restoreFromMemento(ProcessStateMemento* memento) {
 
 	// restore networks

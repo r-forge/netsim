@@ -10,6 +10,7 @@
 
 #include "OneModeNetwork.h"
 #include "MemoryOneModeNetwork.h"
+#include "Random.h"
 #include <iostream>
 #include <cstdio>
 #include <set>
@@ -31,6 +32,8 @@ public:
 	static int getNumberOfReciprocalTies(MemoryOneModeNetwork* network);
 
 	static int getHammingDistance(MemoryOneModeNetwork* network1, MemoryOneModeNetwork * network2);
+
+	static std::set<int> getNRandomNodes(Network * network, int n);
 
 private:
 	static int countTies(MemoryOneModeNetwork* network, bool reciprocal);

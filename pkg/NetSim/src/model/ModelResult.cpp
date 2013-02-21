@@ -53,3 +53,10 @@ ValueModelResult::ValueModelResult(double value) {
 double ValueModelResult::getValue() {
 	return _value;
 }
+
+ActorSetModelResult::ActorSetModelResult(std::set<int> actorSet) {
+}
+
+std::set<int> ActorSetModelResult::getActorSet() {
+	return _actorSet;
+}

@@ -76,6 +76,16 @@ public:
 	 */
 	int getNumberOfActors();
 
+	// TODO: getActorIterator
+
+	// TODO: implement
+	int addActor();
+
+	// TODO: remove actor
+
+	// TODO: implement
+	int getNewestActorIndex();
+
 	/**
 	 * get number of networks
 	 */
@@ -90,6 +100,7 @@ public:
 	 * get number of global attributes
 	 */
 	int getNumberOfGlobalAttributes();
+
 
 	/**
 	 * save process state as memento
@@ -110,6 +121,8 @@ private:
 	size_t _nAttributeContainers;
 	size_t _nGlobalAttributes;
 	size_t _nActors;
+
+	int _newestActorIndex;
 
 };
 

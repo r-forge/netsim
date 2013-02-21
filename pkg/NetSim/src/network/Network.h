@@ -32,6 +32,12 @@ public:
 	virtual bool removeTie(int i, int j) = 0;
 	virtual int getSize() = 0;
 
+	// virtual bool hasActor(int i) = 0;
+	// virtual bool removeActor(int i) = 0;
+	// virtual bool includeActor(int i) = 0;
+	// virtual int includeActor() = 0;
+	// virtual iterator getActorIterator() = 0;
+
 };
 
 

@@ -166,5 +166,18 @@ private:
 
 };
 
+class AddTiesFromNewbornActor : public Updater{
+
+	public:
+	AddTiesFromNewbornActor(int networkIndex);
+
+	void update(ProcessState* processState, ModelResult* result);
+	void undoUpdate(ProcessState* processState, ModelResult* result);
+
+	private:
+	int _networkIndex;
+
+};
+
 
 #endif /* UPDATER_H_ */

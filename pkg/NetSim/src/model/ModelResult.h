@@ -9,6 +9,7 @@
 #define MODELRESULT_H_
 
 #include <string>
+#include <set>
 
 /**
  * A ModelResult object saves result information about a time or change model.
@@ -36,6 +37,20 @@ private:
 
 
 };
+
+class ActorSetModelResult : public ModelResult{
+
+public:
+	ActorSetModelResult(std::set<int> actorSet);
+
+	std::set<int> getActorSet();
+
+private:
+	std::set<int> _actorSet;
+
+
+};
+
 
 class TieModelResult : public ModelResult{
 public:

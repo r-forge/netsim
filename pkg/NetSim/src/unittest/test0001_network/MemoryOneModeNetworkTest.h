@@ -303,6 +303,45 @@ void testNetworkUtilsHammingDistance(){
 	delete network4;
 }
 
+void testNetworkUtilsGetNRandomNodes(){
+
+	int nIterations = 100000;
+	int networkSize = 5;
+	int nNodesToSelect = 3;
+	double allowedDeviation = 0.01;
+
+	std::vector<double> ratios(networkSize, 0);
+	std::vector<double> expectations(networkSize, 1.0 / (double) networkSize);
+
+
+	MemoryOneModeNetwork * network = new MemoryOneModeNetwork(networkSize);
+	NetworkUtils utils;
+
+	for (int i = 0; i < nIterations; i++){
+
+		std::set<int> nodes = utils.getNRandomNodes(network, nNodesToSelect);
+		ASSERT_EQUAL(nodes.size(), nNodesToSelect);
+
+		std::set<int>::iterator itNodes = nodes.begin();
+
+		for (; itNodes != nodes.end(); ++itNodes){
+			ratios[*itNodes] += 1.0 / ((double)nNodesToSelect * (double)nIterations);
+		}
+
+	}
+
+	for (int i = 0; i < ratios.size(); i++){
+		std::cout << "Ratio of node " << i << " selections: " << ratios[i] <<
+				" (" << expectations[i] << " +- " <<
+				fabs(expectations[i] - ratios[i]) << ")"<< std::endl;
+		ASSERT(fabs(expectations[i] - ratios[i]) < allowedDeviation);
+	}
+
+
+
+	delete network;
+}
+
 cute::suite getTestSuiteMemoryOneModeNetwork(){
 	cute::suite s;
 
@@ -317,6 +356,7 @@ cute::suite getTestSuiteMemoryOneModeNetwork(){
 	// s.push_back(CUTE(thresholdValueTest));
 	s.push_back(CUTE(testNetworkUtilsCountTiesAndDensity));
 	s.push_back(CUTE(testNetworkUtilsHammingDistance));
+	s.push_back(CUTE(testNetworkUtilsGetNRandomNodes));
 
 	return s;
 }
