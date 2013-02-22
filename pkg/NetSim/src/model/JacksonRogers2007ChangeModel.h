@@ -31,6 +31,8 @@ public:
 
 	ModelResult * getChange(ProcessState * processState);
 
+	void setDebugMode(bool debug);
+
 private:
 	int _networkIndex;
 	// p_r on page 894
@@ -41,6 +43,8 @@ private:
 	int _nParentNodes;
 	// m_n on page 894
 	int _nNeighborNodes;
+
+	double _debug;
 
 };
 

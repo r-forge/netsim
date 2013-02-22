@@ -161,6 +161,20 @@ std::set<int> NetworkUtils::getNRandomNodes(Network* network, int n) {
 
 }
 
+void NetworkUtils::addRandomTiesToNetwork(Network* network, double p) {
+	int size = network->getSize();
+
+	for (int i = 0; i < size; i++){
+		for (int j = 0; j < size; j++){
+			double rand = Random::getInstance().getRandom();
+
+			if (rand < p)
+				network->addTie(i, j);
+
+		}
+	}
+}
+
 int NetworkUtils::countTies(MemoryOneModeNetwork * network,
 		bool reciprocal) {
 

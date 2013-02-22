@@ -322,6 +322,9 @@ void testNetworkUtilsGetNRandomNodes(){
 		std::set<int> nodes = utils.getNRandomNodes(network, nNodesToSelect);
 		ASSERT_EQUAL(nodes.size(), nNodesToSelect);
 
+		// should not be possible in a set
+		ASSERT(*(++nodes.begin()) != *(++(++nodes.begin())));
+
 		std::set<int>::iterator itNodes = nodes.begin();
 
 		for (; itNodes != nodes.end(); ++itNodes){

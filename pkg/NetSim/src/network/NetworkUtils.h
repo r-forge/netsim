@@ -35,6 +35,12 @@ public:
 
 	static std::set<int> getNRandomNodes(Network * network, int n);
 
+	/**
+	 * add ties with a probability p to an existing network.
+	 * Currently existing ties are ignored
+	 */
+	static void addRandomTiesToNetwork(Network * network, double p);
+
 private:
 	static int countTies(MemoryOneModeNetwork* network, bool reciprocal);
 
