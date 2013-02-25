@@ -82,6 +82,7 @@ public:
 	int addActor();
 
 	// TODO: remove actor
+	void deleteActor(int id);
 
 	// TODO: implement
 	int getNewestActorIndex();
@@ -122,7 +123,8 @@ private:
 	size_t _nGlobalAttributes;
 	size_t _nActors;
 
-	int _newestActorIndex;
+	int _maxActorID;
+	std::set<int> _ids;
 
 };
 

@@ -47,36 +47,14 @@ int MemoryOneModeNetwork::getInDegree(int i) {
 
 void MemoryOneModeNetwork::init(int size, bool directed, bool reflexive){
 
-	_size = size;
+	// _size = size; // updated by addActor function
 	_directed = directed;
 	_reflexive = reflexive;
 
 	// initialize lookup maps
-	for (int i = 0; i < _size; i++){
-		// initialize degree counts with zero
-		_inDegreeMap.insert(
-				std::map<int,int>::value_type(i,0)
-				);
-		_outDegreeMap.insert(
-				std::map<int,int>::value_type(i,0)
-				);
-		// initialize neighbor maps with empty sets
-		_outgoingNeighborsMap.insert(
-				std::map<int, std::set<int>* >::value_type(i,new std::set<int>())
-				);
-		_incomingNeighborsMap.insert(
-				std::map<int, std::set<int>* >::value_type(i,new std::set<int>())
-				);
+	for (int i = 0; i < size; i++){
+		addActor(i); // updates the size (_size)
 	}
-
-/*
-	// TODO remove. This is redundant, right?
-	for (int i = 0; i < _size; i++){
-		for (int j = 0; j < _size; j++){
-			updateInternalRepresentation(i, j, 0, getTieValue(i,j));
-		}
-	}
-*/
 
 }
 
@@ -160,8 +138,8 @@ bool MemoryOneModeNetwork::addTie(int i, int j) {
 
 bool MemoryOneModeNetwork::setTie(int i, int j, double newValue) {
 	// check validity of index
-	if (!isIndexValid(i)) return false;
-	if (!isIndexValid(j)) return false;
+	// if (!isIndexValid(i)) return false;
+	// if (!isIndexValid(j)) return false;
 
 	double oldValue = getTieValue(i, j);
 
@@ -201,6 +179,45 @@ bool MemoryOneModeNetwork::isReflexive() const {
 
 bool MemoryOneModeNetwork::isIndexValid(int i) {
 	return((i >= 0) & (i < _size));
+}
+
+void MemoryOneModeNetwork::addActor(size_t id) {
+
+	_inDegreeMap.insert(
+			std::map<int,int>::value_type(id,0)
+			);
+	_outDegreeMap.insert(
+			std::map<int,int>::value_type(id,0)
+			);
+	// initialize neighbor maps with empty sets
+	_outgoingNeighborsMap.insert(
+			std::map<int, std::set<int>* >::value_type(id,new std::set<int>())
+			);
+	_incomingNeighborsMap.insert(
+			std::map<int, std::set<int>* >::value_type(id,new std::set<int>())
+			);
+
+	_size++;
+}
+
+void MemoryOneModeNetwork::deleteActor(size_t id) {
+	std::set<int>::iterator itNeighbor = _outgoingNeighborsMap[id]->begin();
+	for (; itNeighbor != _outgoingNeighborsMap[id]->end(); ++itNeighbor){
+		int j = (*itNeighbor);
+		_incomingNeighborsMap[j]->erase(id);
+		_inDegreeMap[j]--;
+	}
+
+
+	itNeighbor = _incomingNeighborsMap[id]->begin();
+	for (; itNeighbor != _incomingNeighborsMap[id]->end(); ++itNeighbor){
+		int j = (*itNeighbor);
+		_outgoingNeighborsMap[j]->erase(id);
+		_outDegreeMap[j]--;
+	}
+
+	_size--;
+
 }
 
 std::set<int> MemoryOneModeNetwork::intersectSets(std::set<int>* set1,

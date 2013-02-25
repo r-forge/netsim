@@ -8,6 +8,8 @@
 #ifndef NETWORK_H_
 #define NETWORK_H_
 
+#include <stdlib.h>
+
 class NetworkMemento{
 public:
 	virtual ~NetworkMemento(){ }
@@ -31,6 +33,8 @@ public:
 	virtual double getTieValue(int i, int j) = 0;
 	virtual bool removeTie(int i, int j) = 0;
 	virtual int getSize() = 0;
+	virtual void addActor(size_t id) = 0;
+	virtual void deleteActor(size_t id) = 0;
 
 	// virtual bool hasActor(int i) = 0;
 	// virtual bool removeActor(int i) = 0;

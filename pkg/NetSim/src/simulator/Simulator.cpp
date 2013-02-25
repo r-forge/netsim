@@ -36,7 +36,7 @@ void Simulator::simulateOLD() {
 
 	while (_time < _periodLength){
 
-		//simple progress bar
+		// simple progress bar
 		if (nextPercentageToPrint <= (_time / _periodLength)){
 			if (nextPercentageToPrint == 0 && _verbose) std::cout << "Progress (in 10%) [";
 			if (_verbose) std::cout << "=" << std::flush;

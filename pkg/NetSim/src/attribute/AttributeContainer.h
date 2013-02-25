@@ -26,9 +26,9 @@ class AttributeContainer{
 
 public:
 	AttributeContainer(std::vector<double> values,
-			double min = 0.0, double max = 1.0, double by = 1.0);
+			double min = 0.0, double max = 1.0, double by = 1.0, double defaultValue =  0.0);
 	AttributeContainer(int n, double value,
-				double min = 0.0, double max = 1.0, double by = 1.0);
+				double min = 0.0, double max = 1.0, double by = 1.0, double defaultValue =  0.0);
 
 	virtual ~AttributeContainer();
 
@@ -94,6 +94,31 @@ public:
 	double getBy();
 
 	/**
+	 * get default value for new actor inclusion
+	 */
+	double getDefaultValue();
+
+	/**
+	 * set default value
+	 */
+	void setDefaultValue(double defaultValue);
+
+	/**
+	 * add actor with a particular value
+	 */
+	void addActor(size_t id, double value);
+
+	/**
+	 * add actor with default value
+	 */
+	void addActor(size_t id);
+
+	/**
+	 * delete actor with given id
+	 */
+	void deleteActor(size_t id);
+
+	/**
 	 * save to Memento
 	 */
 	AttributeContainerMemento * saveToMemento();
@@ -109,12 +134,14 @@ private:
 	double _min;
 	double _max;
 	double _by;
+	double _defaultValue;
 	// TODO test additional utility of boost
 	// boost::unordered_map<int, double> _actorValueMap;
 	std::map<int, double> _actorValueMap;
 
 	void init(std::vector<double> values,
-			double min = 0.0, double max = 1.0, double by = 1.0);
+			double min = 0.0, double max = 1.0,
+			double by = 1.0, double defaultValue = 0.0);
 };
 
 class AttributeContainerMemento{

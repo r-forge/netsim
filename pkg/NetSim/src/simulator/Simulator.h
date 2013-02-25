@@ -73,7 +73,7 @@ private:
 	double getTimeUntilPeriodEnd();
 
 	/*
-	 * Deprecated simuation routine
+	 * Deprecated simulation routine
 	 */
 	void simulateOLD();
 

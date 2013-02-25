@@ -149,10 +149,20 @@ public:
 	 */
 	void restoreFromMemento(NetworkMemento * memento);
 
-	/*
+	/**
 	 * Accessor 2d vector representation of the network
 	 */
 	std::vector<std::vector<double> > getGraph();
+
+	/**
+	 * Add actor with ID id to the network. It has in- and out-degree of zero
+	 */
+	void addActor(size_t id);
+
+	/**
+	 * delete actor with given id
+	 */
+	void deleteActor(size_t id);
 
 
 
@@ -178,6 +188,7 @@ protected:
 
 	/*
 	 * checks whether an index i is in the range [0, size-1]
+	 * TODO: is this deprecated as IDs can be anything?
 	 */
 	bool isIndexValid(int i);
 

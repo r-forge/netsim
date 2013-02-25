@@ -8,15 +8,15 @@
 #include "AttributeContainer.h"
 
 AttributeContainer::AttributeContainer(std::vector<double> values,
-		double min, double max, double by) {
-	init(values, min, max, by);
+		double min, double max, double by, double defaultValue) {
+	init(values, min, max, by, defaultValue);
 
 }
 
 AttributeContainer::AttributeContainer(int n, double value, double min,
-		double max, double by) {
+		double max, double by, double defaultValue) {
 	std::vector<double> v(n, value);
-	init(v, min, max, by);
+	init(v, min, max, by, defaultValue);
 }
 
 
@@ -39,7 +39,9 @@ bool AttributeContainer::setValue(int i, double value) {
 	bool r = false;
 
 	// check that value is a multiple of the by attribute + the min value
-	double checkedValue = (round((value - _min) / _by) * _by) + _min;
+	double checkedValue = value;
+	if (_by >0 )
+		checkedValue = (round((value - _min) / _by) * _by) + _min;
 
 	if (value != checkedValue)
 		std::cout << "Incorrect attribute value: " << value << std::endl;
@@ -103,8 +105,31 @@ void AttributeContainer::restroreFromMemento(
 	_actorValueMap = memento->getActorValueMap();
 }
 
+double AttributeContainer::getDefaultValue() {
+	return _defaultValue;
+}
+
+void AttributeContainer::setDefaultValue(double defaultValue) {
+	_defaultValue = defaultValue;
+}
+
+void AttributeContainer::addActor(size_t id, double value) {
+	if (_actorValueMap.find(id) != _actorValueMap.end())
+		throw std::invalid_argument(
+				"ID already exists. (inclusion in attribute container)");
+	_actorValueMap[id] = value;
+}
+
+void AttributeContainer::addActor(size_t id) {
+	return addActor(id, _defaultValue);
+}
+
+void AttributeContainer::deleteActor(size_t id) {
+	_actorValueMap.erase(id);
+}
+
 void AttributeContainer::init(std::vector<double> values, double min,
-	double max, double by) {
+	double max, double by, double defaultValue) {
 	// check validity of values
 	if (by < 0 )
 		throw std::invalid_argument("'by' argument cannot be < 0");
@@ -115,11 +140,13 @@ void AttributeContainer::init(std::vector<double> values, double min,
 	if ( (by > 0) & (fmod( (max - min), by ) != 0.0) )
 		throw std::invalid_argument("'max - min' is not a multiple of 'by' argument");
 
+
 	// initialize variables
 	_min = min;
 	_max = max;
 	_by = by;
-	for (int i = 0; i < values.size(); i++){
+	_defaultValue = defaultValue;
+	for (size_t i = 0; i < values.size(); i++){
 		if ( (values[i] < _min) | (values[i] > _max) ){
 			throw std::invalid_argument("initial value out of range");
 		}

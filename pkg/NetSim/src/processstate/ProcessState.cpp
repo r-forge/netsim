@@ -12,14 +12,17 @@ ProcessState::ProcessState() {
 	_nNetworks = 0;
 	_nAttributeContainers = 0;
 	_nGlobalAttributes = 0;
+	_maxActorID = -1;
 	// vectors are initialized automatically
 }
 
 
 size_t ProcessState::addNetwork(Network* network) {
 
-	if (network->getSize() > _nActors)
+	if (network->getSize() > _nActors){
 		_nActors = network->getSize();
+		_maxActorID = _nActors - 1;
+	}
 
 	_networks[_nNetworks] = network;
 	return _nNetworks++;
@@ -29,8 +32,10 @@ size_t ProcessState::addNetwork(Network* network) {
 }
 
 size_t ProcessState::addAttributeContainer(AttributeContainer* attributeContainer) {
-	if (attributeContainer->getSize() > _nActors)
+	if (attributeContainer->getSize() > _nActors){
 		_nActors = attributeContainer->getSize();
+		_maxActorID = _nActors - 1;
+	}
 
 	_attributeContainers[_nAttributeContainers] = attributeContainer;
 	return _nAttributeContainers++;
@@ -49,6 +54,7 @@ size_t ProcessState::addGlobalAttribute(double attribute) {
 }
 
 void ProcessState::setGlobalAttribute(size_t index, double attribute) {
+	_globalAttributes[index] = attribute;
 }
 
 Network* ProcessState::getNetwork(size_t index) {
@@ -124,11 +130,55 @@ ProcessStateMemento* ProcessState::saveToMemento() {
 }
 
 int ProcessState::addActor() {
-	return -1;
+	int newID = _maxActorID + 1;
+	_maxActorID = newID;
+	_ids.insert(newID);
+	_nActors++;
+
+	std::map<int, Network*>::iterator itNetworks =  _networks.begin();
+	for (; itNetworks != _networks.end(); ++itNetworks){
+		(*itNetworks).second->addActor(newID);
+	}
+
+
+	std::map<int, AttributeContainer*>::iterator itAttributes =
+			_attributeContainers.begin();
+	for (; itAttributes != _attributeContainers.end(); ++itAttributes){
+		(*itAttributes).second->addActor(newID);
+	}
+
+
+	return newID;
 }
 
 int ProcessState::getNewestActorIndex() {
-	return -1;
+	return _maxActorID;
+}
+
+void ProcessState::deleteActor(int id) {
+
+	// delete from all attribute containers and networks
+	std::map<int, Network*>::iterator itNetworks =  _networks.begin();
+	for (; itNetworks != _networks.end(); ++itNetworks){
+		(*itNetworks).second->deleteActor(id);
+	}
+
+
+	std::map<int, AttributeContainer*>::iterator itAttributes =
+			_attributeContainers.begin();
+	for (; itAttributes != _attributeContainers.end(); ++itAttributes){
+		(*itAttributes).second->deleteActor(id);
+	}
+
+
+	_ids.erase(id);
+	int newMaxID = -1;
+	if(!_ids.empty())
+		newMaxID = *(_ids.rbegin()); // sets are ordered
+
+	_maxActorID = newMaxID;
+	_nActors--;
+
 }
 
 void ProcessState::restoreFromMemento(ProcessStateMemento* memento) {
