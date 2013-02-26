@@ -198,14 +198,26 @@ private:
 
 };
 
-class AddNewActorUpdater : public Updater{
+class AddActorUpdater : public Updater{
 public:
-	AddNewActorUpdater();
+	AddActorUpdater();
 
 	void update(ProcessState* processState, ModelResult* result);
 	void undoUpdate(ProcessState* processState, ModelResult* result);
 
 };
+
+class RemoveActorUpdater: public Updater{
+public:
+	RemoveActorUpdater();
+
+	void update(ProcessState* processState, ModelResult* result);
+	void undoUpdate(ProcessState* processState, ModelResult* result);
+
+
+};
+
+
 
 
 /**

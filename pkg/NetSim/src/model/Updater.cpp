@@ -230,10 +230,10 @@ void AddTiesFromNewbornActorUpdater::undoUpdate(ProcessState* processState,
 
 }
 
-AddNewActorUpdater::AddNewActorUpdater() : Updater(){
+AddActorUpdater::AddActorUpdater() : Updater(){
 }
 
-void AddNewActorUpdater::update(ProcessState* processState,
+void AddActorUpdater::update(ProcessState* processState,
 		ModelResult* result) {
 	// ignore result
 	int id = processState->addActor();
@@ -241,7 +241,7 @@ void AddNewActorUpdater::update(ProcessState* processState,
 	if (_debug) std::cout << "Added actor " << id << std::endl;
 }
 
-void AddNewActorUpdater::undoUpdate(ProcessState* processState,
+void AddActorUpdater::undoUpdate(ProcessState* processState,
 		ModelResult* result) {
 	processState->deleteActor(processState->getNewestActorIndex());
 }
@@ -292,4 +292,20 @@ Updater::Updater() {
 
 void Updater::setDebug(bool debug) {
 	_debug = debug;
+}
+
+RemoveActorUpdater::RemoveActorUpdater() {
+}
+
+void RemoveActorUpdater::update(ProcessState* processState,
+		ModelResult* result) {
+
+	ActorModelResult * actorResult = dynamic_cast<ActorSetModelResult*>(result);
+	processState->deleteActor(actorResult->getActorIndex());
+
+}
+
+void RemoveActorUpdater::undoUpdate(ProcessState* processState,
+		ModelResult* result) {
+	// TODO implement
 }

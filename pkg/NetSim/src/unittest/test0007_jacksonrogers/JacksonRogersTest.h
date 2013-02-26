@@ -158,7 +158,7 @@ void jacksonRogersBirthModelSimulationTest(){
 			(nInitialActors + nJoiningActors - 1));
 	double averageDensity = 0;
 
-	for (int i = 0; i < nSimulations; i++){
+	for (int iSim = 0; iSim < nSimulations; iSim++){
 		MemoryOneModeNetwork * network = new MemoryOneModeNetwork(nInitialActors);
 		NetworkUtils utils;
 		utils.addRandomTiesToNetwork(network, pRandomTie);
@@ -186,7 +186,7 @@ void jacksonRogersBirthModelSimulationTest(){
 		modelManager->addChangeModel(roundModel, jrModel);
 
 		// updaters
-		modelManager->addUpdater(jrModel, new AddNewActorUpdater());
+		modelManager->addUpdater(jrModel, new AddActorUpdater());
 		modelManager->addUpdater(jrModel, new AddTiesFromNewbornActorUpdater(networkIndex));
 
 
@@ -196,11 +196,15 @@ void jacksonRogersBirthModelSimulationTest(){
 		simulator.simulate();
 
 		averageDensity += NetworkUtils::getDensity(network) / (double) nSimulations;
+
+		// if (iSim == 0)
+		// 	NetworkUtils::dumpNetwork(network);
 	}
 
 	std::cout << "Average  density: " << averageDensity << std::endl;
 	std::cout << "Expected density: " << expectedDensity << std::endl;
 	ASSERT(fabs(averageDensity - expectedDensity) < allowedDeviation);
+
 
 }
 
