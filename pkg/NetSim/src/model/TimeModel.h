@@ -41,6 +41,19 @@ private:
 
 };
 
+class RoundBasedTimeModel : public TimeModel{
+
+public:
+	RoundBasedTimeModel(size_t timerIndex, double intervalLength, double startTime = 0);
+
+	double getTimeSpan(ProcessState * processState);
+
+private:
+	size_t _timerIndex;
+	double _intervalLength;
+	double _startTime;
+};
+
 
 
 #endif /* TIMEMODEL_H_ */

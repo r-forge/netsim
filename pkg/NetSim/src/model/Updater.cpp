@@ -24,13 +24,16 @@ void TieUpdater::update(ProcessState* processState, ModelResult* result) {
 			else std::cout << "problem with type conversion in TieUpdater.tieResult";
 }
 
+TieUpdater::TieUpdater() : Updater(){
+}
+
 void TieUpdater::undoUpdate(ProcessState* processState, ModelResult* result) {
 	TieModelResult* tieResult = dynamic_cast<TieModelResult*>(result);
 	if (tieResult != 0) undoUpdateTie(processState, tieResult);
 }
 
-ActorAttributeIncreaseUpdater::ActorAttributeIncreaseUpdater(
-		size_t indexAttribute, size_t indexActor) {
+ActorAttributeIncreaseUpdater::ActorAttributeIncreaseUpdater (
+		size_t indexAttribute, size_t indexActor) : Updater(){
 	_indexAttribute = indexAttribute;
 	_indexActor = indexActor;
 }
@@ -45,7 +48,7 @@ void ActorAttributeIncreaseUpdater::undoUpdate(ProcessState* processState,
 	processState->getAttributeContainer(_indexAttribute)->decreaseValue(_indexActor);
 }
 
-GlobalCountUpdater::GlobalCountUpdater(size_t indexGlobalVariableToUpdate) {
+GlobalCountUpdater::GlobalCountUpdater(size_t indexGlobalVariableToUpdate) : Updater(){
 	_indexGlobalVariable = indexGlobalVariableToUpdate;
 }
 
@@ -74,6 +77,7 @@ ExponentialDecayTimeUpdater::ExponentialDecayTimeUpdater(size_t networkIndex,
 	init(networkIndex, halfLife);
 }
 
+/*
 void ExponentialDecayTimeUpdater::update(ProcessState* processState,
 		ModelResult* modelResult) {
 	// TODO write exception
@@ -85,6 +89,7 @@ void ExponentialDecayTimeUpdater::update(ProcessState* processState,
 	double timeSpan = timeModelResult->getDoubleResult();
 	update(processState, timeSpan);
 }
+*/
 
 void ExponentialDecayTimeUpdater::update(ProcessState* processState,
 		double timeSpan) {
@@ -121,7 +126,7 @@ double ExponentialDecayTimeUpdater::getTimeSpan(double valueBefore,
 	return timeSpan;
 }
 
-TieSwapUpdater::TieSwapUpdater(size_t networkIndex) {
+TieSwapUpdater::TieSwapUpdater(size_t networkIndex) : TieUpdater(){
 	_networkIndex = networkIndex;
 	_tieValuePreviousUpdate = 0;
 }
@@ -154,7 +159,7 @@ void TieSwapUpdater::swapTie(Network* network, int i, int j) {
 }
 
 ActorAttributeSetUpdater::ActorAttributeSetUpdater(size_t indexAttribute,
-		size_t indexActor) {
+		size_t indexActor) : Updater(){
 	_indexAttribute = indexAttribute;
 	_indexActor = indexActor;
 	_oldValue = -1;
@@ -180,28 +185,37 @@ void ActorAttributeSetUpdater::undoUpdate(ProcessState* processState,
 
 }
 
-AddTiesFromNewbornActor::AddTiesFromNewbornActor(int networkIndex) {
+AddTiesFromNewbornActorUpdater::AddTiesFromNewbornActorUpdater(int networkIndex) : Updater(){
 	_networkIndex = networkIndex;
 }
 
-void AddTiesFromNewbornActor::update(ProcessState* processState,
+void AddTiesFromNewbornActorUpdater::update(ProcessState* processState,
 		ModelResult* result) {
 
 	ActorSetModelResult * actorSetModelResult =
 			dynamic_cast<ActorSetModelResult*>(result);
 
+	std::set<int> neighborsSet = actorSetModelResult->getActorSet();
+
 	int focalActor = processState->getNewestActorIndex();
 	Network * network = processState->getNetwork(_networkIndex);
 
-	std::set<int>::iterator itNodes = actorSetModelResult->getActorSet().begin();
-	for (; itNodes != actorSetModelResult->getActorSet().end(); ++itNodes){
+	std::set<int>::iterator itNodes = neighborsSet.begin();
+	for (; itNodes != neighborsSet.end(); ++itNodes){
+		if (_debug) std::cout << "Adding tie from " << focalActor << " to " <<
+				*itNodes << std::endl;
+
 		network->addTie(focalActor, (*itNodes));
 	}
+
+	if (_debug) std::cout << "Added " << actorSetModelResult->getActorSet().size() <<
+			" ties." << std::endl;
+
 
 }
 
 // not very precise
-void AddTiesFromNewbornActor::undoUpdate(ProcessState* processState,
+void AddTiesFromNewbornActorUpdater::undoUpdate(ProcessState* processState,
 		ModelResult* result) {
 	ActorSetModelResult * actorSetModelResult =
 			dynamic_cast<ActorSetModelResult*>(result);
@@ -214,4 +228,68 @@ void AddTiesFromNewbornActor::undoUpdate(ProcessState* processState,
 		network->removeTie(focalActor, (*itNodes));
 	}
 
+}
+
+AddNewActorUpdater::AddNewActorUpdater() : Updater(){
+}
+
+void AddNewActorUpdater::update(ProcessState* processState,
+		ModelResult* result) {
+	// ignore result
+	int id = processState->addActor();
+
+	if (_debug) std::cout << "Added actor " << id << std::endl;
+}
+
+void AddNewActorUpdater::undoUpdate(ProcessState* processState,
+		ModelResult* result) {
+	processState->deleteActor(processState->getNewestActorIndex());
+}
+
+AddFixedAttributeToNewActorUpdater::AddFixedAttributeToNewActorUpdater(
+		size_t attributeIndex,
+		double value) : Updater(){
+	_attributeIndex = attributeIndex;
+	_value = value;
+}
+
+void AddFixedAttributeToNewActorUpdater::update(ProcessState* processState,
+		ModelResult* result) {
+	AttributeContainer * attributeContainer =
+			processState->getAttributeContainer(_attributeIndex);
+	int actorID = processState->getNewestActorIndex();
+	attributeContainer->setValue(actorID, _value);
+
+}
+
+void AddFixedAttributeToNewActorUpdater::undoUpdate(ProcessState* processState,
+		ModelResult* result) {
+	AttributeContainer * attributeContainer =
+			processState->getAttributeContainer(_attributeIndex);
+	int actorID = processState->getNewestActorIndex();
+	attributeContainer->setDefaultValue(actorID);
+}
+
+TimerUpdater::TimerUpdater(size_t timerIndex) {
+	_timerIndex = timerIndex;
+}
+
+void TimerUpdater::update(ProcessState * processState, double timeSpan) {
+	double time = processState->getGlobalAttribute(_timerIndex);
+
+	processState->setGlobalAttribute(_timerIndex, time + timeSpan);
+}
+
+void TimerUpdater::undoUpdate(ProcessState * processState, double timeSpan) {
+	double time = processState->getGlobalAttribute(_timerIndex);
+
+	processState->setGlobalAttribute(_timerIndex, time + timeSpan);
+}
+
+Updater::Updater() {
+	_debug = false;
+}
+
+void Updater::setDebug(bool debug) {
+	_debug = debug;
 }

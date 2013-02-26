@@ -55,11 +55,14 @@ public:
 
 	void setVerbose(bool verbose = true);
 
+	void setDebug(bool debug = true);
+
 private:
 	double _time;
 	double _periodLength;
 	int _iterationSteps;
 	bool _verbose;
+	bool _debug;
 	SimulationResult _result;
 	ProcessState* _processState;
 	ModelManager* _modelManager;

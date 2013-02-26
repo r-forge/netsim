@@ -42,24 +42,8 @@ double NetworkUtils::getDensity(MemoryOneModeNetwork* network) {
 	if (!isDirected && isReflexive) possibleTies = (size * (size -1) / 2) + size;
 	if (!isDirected && !isReflexive) possibleTies = size * (size -1) / 2;
 
-	for (int i = 0; i < size; i++){
-		for (int j = 0; j < size; j++){
+	nTies = countTies(network, false);
 
-			if (isDirected){
-				if (i != j)
-					if (network->hasTie(i,j)) nTies += 1;
-				if (isReflexive && i == j)
-					if (network->hasTie(i,j)) nTies += 1;
-			}
-
-			if (!isDirected){
-				if (i < j)
-					if (network->hasTie(i,j)) nTies += 1;
-				if (isReflexive && i == j)
-					if (network->hasTie(i,j)) nTies += 1;
-			}
-		}
-	}
 	return nTies / (double) possibleTies;
 
 }
@@ -181,9 +165,17 @@ int NetworkUtils::countTies(MemoryOneModeNetwork * network,
 	int nActors = network->getSize();
 	int nTies = 0;
 	int nReciprocalTies = 0;
+	std::set<int> actorIDs = network->getActorIDs();
 
-	for (int i = 0; i < nActors; i++){
-		for (int j = 0; j< nActors; j++){
+	// TODO: This is DEPRECATED as IDs are unique OVER TIME;
+	// nodes may get born and may die (and even get reborn)
+	// or: I keep this and change the network internally
+	std::set<int>::iterator itActorI = actorIDs.begin();
+	for (; itActorI != actorIDs.end(); ++itActorI){
+		int i = *itActorI;
+		std::set<int>::iterator itActorJ = actorIDs.begin();
+		for (; itActorJ != actorIDs.end(); ++itActorJ){
+			int j = *itActorJ;
 			if ( !network->isReflexive() && (i < j) ){
 				if (network->hasTie(i,j))
 					nTies++; // TODO: wrong count for reflexive networks

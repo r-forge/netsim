@@ -42,7 +42,7 @@ public:
 	/**
 	 * get actor for which the change is to be applied.
 	 */
-	ModelResult * getChange(ProcessState * processState);
+	ModelResult* getChange(ProcessState* processState);
 
 	/**
 	 * If set, extra debug messages will be sent to the console

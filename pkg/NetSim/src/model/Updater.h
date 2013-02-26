@@ -21,9 +21,15 @@
 
 class Updater{
 public:
+	Updater();
 	virtual ~Updater() { }
 	virtual void update(ProcessState* processState, ModelResult* result) = 0;
 	virtual void undoUpdate(ProcessState* processState, ModelResult* result) = 0;
+
+	void setDebug(bool debug = true);
+
+protected:
+	bool _debug;
 
 };
 
@@ -41,6 +47,9 @@ protected:
 
 class TieUpdater : public Updater{
 public:
+
+	TieUpdater();
+
 	virtual void update(ProcessState * processState, ModelResult * result);
 
 	virtual void undoUpdate(ProcessState * processState, ModelResult * result);
@@ -93,22 +102,36 @@ private:
 
 };
 
-class TimeUpdater : public Updater, public TimeModel {
+class TimeUpdater {
 
 public:
 	virtual ~TimeUpdater(){ }
 
-	virtual double getTimeSpan(ProcessState * processState) = 0;
-	virtual void update(ProcessState* processState, TimeModelResult* timeModelResult) = 0;
+	// virtual double getTimeSpan(ProcessState * processState) = 0;
 	virtual void update(ProcessState* processState, double timeSpan) = 0;
 	// TODO implement with a proper exception
-	void undoUpdate(ProcessState* processState, TimeModelResult* timeModelResult){
+	void undoUpdate(ProcessState* processState, double timeSpan){
 		std::cout << "Undo not implemented for TimeUpdaters.";
 	}
 
 };
 
-class ExponentialDecayTimeUpdater : public TimeUpdater {
+class TimerUpdater : public TimeUpdater {
+
+public:
+	TimerUpdater(size_t timerIndex);
+
+	void update(ProcessState * processState, double timeSpan);
+	void undoUpdate(ProcessState * processState, double timeSpan);
+
+
+private:
+	size_t _timerIndex;
+
+
+};
+
+class ExponentialDecayTimeUpdater : public TimeUpdater, TimeModel {
 
 public:
 	ExponentialDecayTimeUpdater(size_t networkIndex, double halfLife, double resetValue);
@@ -116,10 +139,6 @@ public:
 	ExponentialDecayTimeUpdater(size_t networkIndex, double halfLife);
 
 	~ExponentialDecayTimeUpdater(){ }
-
-	void update(ProcessState* processState, ModelResult* modelResult);
-
-	void update(ProcessState* processState, TimeModelResult* timeModelResult);
 
 	void update(ProcessState* processState, double timeSpan);
 
@@ -166,16 +185,43 @@ private:
 
 };
 
-class AddTiesFromNewbornActor : public Updater{
+class AddTiesFromNewbornActorUpdater : public Updater{
 
-	public:
-	AddTiesFromNewbornActor(int networkIndex);
+public:
+	AddTiesFromNewbornActorUpdater(int networkIndex);
 
 	void update(ProcessState* processState, ModelResult* result);
 	void undoUpdate(ProcessState* processState, ModelResult* result);
 
-	private:
+private:
 	int _networkIndex;
+
+};
+
+class AddNewActorUpdater : public Updater{
+public:
+	AddNewActorUpdater();
+
+	void update(ProcessState* processState, ModelResult* result);
+	void undoUpdate(ProcessState* processState, ModelResult* result);
+
+};
+
+
+/**
+ * can be used to assign a non-random behavior variable to
+ * a newborn actor
+ */
+class AddFixedAttributeToNewActorUpdater : public Updater{
+public:
+	AddFixedAttributeToNewActorUpdater(size_t attributeIndex, double value);
+
+	void update(ProcessState* processState, ModelResult* result);
+	void undoUpdate(ProcessState* processState, ModelResult* result);
+
+private:
+	size_t _attributeIndex;
+	double _value;
 
 };
 

@@ -22,6 +22,8 @@ size_t ProcessState::addNetwork(Network* network) {
 	if (network->getSize() > _nActors){
 		_nActors = network->getSize();
 		_maxActorID = _nActors - 1;
+		for (int i = 0; i < _nActors; i++)
+			_ids.insert(i);
 	}
 
 	_networks[_nNetworks] = network;
@@ -35,6 +37,8 @@ size_t ProcessState::addAttributeContainer(AttributeContainer* attributeContaine
 	if (attributeContainer->getSize() > _nActors){
 		_nActors = attributeContainer->getSize();
 		_maxActorID = _nActors - 1;
+		for (int i = 0; i < _nActors; i++)
+			_ids.insert(i);
 	}
 
 	_attributeContainers[_nAttributeContainers] = attributeContainer;
@@ -173,12 +177,19 @@ void ProcessState::deleteActor(int id) {
 
 	_ids.erase(id);
 	int newMaxID = -1;
+
+	// sets are ordered
+	// use right-most id as maximum ID
 	if(!_ids.empty())
-		newMaxID = *(_ids.rbegin()); // sets are ordered
+		newMaxID = *(_ids.rbegin());
 
 	_maxActorID = newMaxID;
 	_nActors--;
 
+}
+
+std::set<int> ProcessState::getActorIds() {
+	return _ids;
 }
 
 void ProcessState::restoreFromMemento(ProcessStateMemento* memento) {

@@ -164,6 +164,11 @@ public:
 	 */
 	void deleteActor(size_t id);
 
+	/**
+	 * get actor IDs
+	 * TODO: copies the set - would a pointer be better?
+	 */
+	const std::set<int> getActorIDs();
 
 
 private:
@@ -175,6 +180,7 @@ private:
 	std::map<int,std::set<int>* > _outgoingNeighborsMap;
 	std::map<int,std::set<int>* > _incomingNeighborsMap;
 
+	std::set<int> _actorIDs;
 
 protected:
 

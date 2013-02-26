@@ -18,83 +18,7 @@ Simulator::Simulator(ProcessState * processState, ModelManager * modelManager,
 	_processState = processState;
 	_modelManager = modelManager;
 	_verbose = true;
-	//_nextTimeModels = new std::vector<TimeModel>();
-	//_nextChangeModels = new std::vector<ChangeModel>();
-	//_nextChangeModelResults = new std::vector<ModelResult*>();
-	//_nextUpdaters = new std::vector<Updater *>();
-}
-
-
-void Simulator::simulateOLD() {
-
-	if(_verbose)
-		std::cout << "Starting OLD simulation. Length = " << _periodLength << ", Time = " << _time <<std::endl;
-	clock_t timeStart = clock();
-
-	double nextPercentageToPrint = 0;
-	int nChanges = 0;
-
-	while (_time < _periodLength){
-
-		// simple progress bar
-		if (nextPercentageToPrint <= (_time / _periodLength)){
-			if (nextPercentageToPrint == 0 && _verbose) std::cout << "Progress (in 10%) [";
-			if (_verbose) std::cout << "=" << std::flush;
-			nextPercentageToPrint += 0.1;
-		}
-
-		// maximum possible time span
-		double nextTimeSpan = _periodLength - _time;
-
-		// choose TIME MODELS and determine timeSpan
-		std::vector<TimeModel*> * timeModels = _modelManager->getTimeModels();
-		std::pair<double, std::set<TimeModel *> > timeResult = chooseTimeModels(
-				timeModels,
-				nextTimeSpan);
-		nextTimeSpan = timeResult.first;
-		std::set<TimeModel * > nextTimeModels = timeResult.second;
-
-		// TIME UPDATES based on timeSpan
-		std::vector<TimeUpdater*> * timeUpdaters = _modelManager->getTimeUpdater();
-		applyTimeUpdates(timeUpdaters, nextTimeSpan);
-
-		if (!nextTimeModels.empty()){
-
-			_time += nextTimeSpan;
-			nChanges++;
-
-			// apply CHANGE MODELS if at least one time model was chosen
-			std::vector<ChangeModel * > * changeModels =
-					_modelManager->getChangeModels(nextTimeModels);
-			std::vector< std::pair<ModelResult*, Updater*> > resultUpdaterPairs =
-					applyChangeModels(changeModels);
-
-			// apply CHANGE UPDATES
-			applyChangeUpdates(resultUpdaterPairs);
-		} // if at least one time model was chosen
-
-		// No time model was chosen.
-		// This means the remaining time is shorter than any TimeResult
-		else {
-			_time = _periodLength; // terminates loop
-
-		}
-
-	} // while loop
-
-	if (_verbose) std::cout << "] done." << std::endl;
-
-
-	_iterationSteps = nChanges;
-
-	// report time and iteration steps
-	if(_verbose){
-		double duration = (double)(clock() - timeStart)/CLOCKS_PER_SEC;
-		printf("Iteration steps: %d\n", nChanges);
-		printf("Simulation time: %.2fs\n", duration);
-		printf("Time per iteration: %.6fs\n", duration / ((double) nChanges));
-	}
-
+	_debug = false;
 }
 
 void Simulator::simulate() {
@@ -111,7 +35,11 @@ void Simulator::simulate() {
 		//simple progress bar
 		if (nextPercentageToPrint <= (_time / _periodLength)){
 			if (nextPercentageToPrint == 0 && _verbose) std::cout << "Progress (in 10%) [";
-			if (_verbose) std::cout << "=" << std::flush;
+
+			if (_verbose & !_debug) std::cout << "=" << std::flush;
+			if (_debug) std::cout << std::endl << nextPercentageToPrint <<
+					" % reached." << std::endl;
+
 			nextPercentageToPrint += 0.1;
 		}
 
@@ -121,6 +49,8 @@ void Simulator::simulate() {
 		_nextTimeModels.clear();
 		// maximum time span
 		double timeSpan = (_periodLength - _time);
+		if (_debug) std::cout << "Remaining time = " << timeSpan << std::endl;
+
 		for (std::vector<TimeModel*>::iterator it = timeModels->begin();
 				it != timeModels->end(); ++it){
 			double newTimeSpan = (*it)->getTimeSpan(_processState);
@@ -135,12 +65,17 @@ void Simulator::simulate() {
 		}
 		_time += timeSpan;
 
+		if (_debug) std::cout << _nextTimeModels.size() <<
+				" TimeModel(s) chosen with timespan " << timeSpan << std::endl;
+
 		// TIME UPDATES
 		std::vector<TimeUpdater *> * timeUpdaters = _modelManager->getTimeUpdater();
 		for (std::vector<TimeUpdater *>::iterator it = timeUpdaters->begin();
 				it != timeUpdaters->end(); ++it){
 			(*it)->update(_processState, timeSpan);
 		}
+		if (_debug) std::cout << "Time updates done." << std::endl;
+
 
 		// CHANGE MODELS
 		// get change models from time models
@@ -163,16 +98,23 @@ void Simulator::simulate() {
 
 		}
 
+		if (_debug) std::cout << "Change models done." << std::endl;
+
+
 		// UPDATES
 		if (_nextChangeResults.size() != _nextUpdaters.size())
 			return; // throw error
 		for (size_t i = 0; i < _nextChangeResults.size(); i++){
 			for (std::vector<Updater *>::iterator it = (*_nextUpdaters[i]).begin();
 					it != (*_nextUpdaters[i]).end(); ++it){
+
+				if (_debug) (*it)->setDebug();
 				(*it)->update(_processState,
 						_nextChangeResults[i]);
 			}
 		}
+
+		if (_debug) std::cout << "Change updates done." << std::endl;
 
 		// delete result pointers
 		// TODO maybe replace with boost::ptr_vector
@@ -261,16 +203,14 @@ void Simulator::applyTimeUpdates(std::vector<TimeUpdater*> * timeUpdaters,
 		double timeSpan) {
 	if (timeUpdaters->empty()) return;
 	else {
-		TimeModelResult* timeModelResult = new TimeModelResult(timeSpan);
 
 		for (std::vector<TimeUpdater*>::iterator it = timeUpdaters->begin();
 				it != timeUpdaters->end(); ++it){
 
 			(*it)->update(_processState,
-					timeModelResult);
+					timeSpan);
 		}
 
-		delete timeModelResult;
 	}
 
 }
@@ -295,6 +235,10 @@ std::vector< std::pair<ModelResult*, Updater*> > Simulator::applyChangeModels(
 	} // changeModels
 
 	return resultUpdaterPairs;
+}
+
+void Simulator::setDebug(bool debug) {
+	_debug = debug;
 }
 
 void Simulator::applyChangeUpdates(

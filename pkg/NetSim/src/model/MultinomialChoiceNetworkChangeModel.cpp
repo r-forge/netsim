@@ -23,6 +23,124 @@ MultinomialChoiceNetworkChangeModel::MultinomialChoiceNetworkChangeModel(
 	init(actorIndex, dependentNetworkIndex, effectParameterPairs, updaters);
 }
 
+ModelResult* MultinomialChoiceNetworkChangeModel::getChange(
+		ProcessState* processState) {
+	// TODO this part can be more flexible
+	// e.g. only use "active" actors as potential receivers
+	std::set<int> actorIDs = processState->getActorIds();
+	std::set<int>::iterator itActors;
+	std::map<int, int> indexIdMap;
+	int nActors = actorIDs.size();
+
+	std::vector<double> objectiveFunctions(nActors, 0);
+	double denominator = 0;
+	// DEPRECATED
+	// updates objectiveFunctions and denominators
+	// calculateTieContributionsWithMemento(nActors,
+	//		objectiveFunctions, denominator, processState);
+	// calculate effects for the current networks (un-unchanged)
+	int nEffects = _effectParameterPairs->size();
+	std::vector<std::pair<double, double> > statisticsAndParametersWithoutChange(
+			nEffects, std::pair<double, double>(0, 0));
+	std::vector<std::vector<double> > statisticsWithoutTieContribution(
+			nActors, std::vector<double>(nEffects, 0));
+	// calculate statistics
+	int effectIndex = 0;
+	std::set<std::pair<SaomEffect*, double> *>::iterator itEffects =
+			_effectParameterPairs->begin();
+	for (; itEffects != _effectParameterPairs->end(); ++itEffects) {
+		int i = _actorIndex;
+		// calculate effects without changes
+		// save effect statistic
+		double statistic = (*itEffects)->first->getEffect(processState,
+				_actorIndex);
+		statisticsAndParametersWithoutChange[effectIndex].first +=
+				statistic;
+		// save effect parameter (beta)
+		double parameter = (*itEffects)->second;
+		statisticsAndParametersWithoutChange[effectIndex].second =
+				parameter;
+
+		// iterate over all actors
+		itActors = actorIDs.begin();
+		int actorIndex = 0; // the internal array index pointing to  the actor ID
+		for (; itActors != actorIDs.end(); ++itActors) {
+			int j = *itActors;
+			// in the first iteration do create the map
+			if (effectIndex == 0)
+				indexIdMap[actorIndex] = j;
+
+			NetworkEffect* effect =
+					dynamic_cast<NetworkEffect*>((*itEffects)->first);
+			double contribution = effect->getEffectContribution(
+					processState, i, j);
+			Network* net = processState->getNetwork(_dependentNetworkIndex);
+			// TODO: Here, we assume that an update is a tie swap!
+			if (net->hasTie(i, j)) {
+				statisticsWithoutTieContribution[actorIndex][effectIndex] =
+						statistic - contribution;
+				if (_debug)
+					std::cout << "Tie removal from " << i << " to " << j
+							<< " contributes " << contribution << std::endl;
+			} else {
+				// i->j does not exist or i == j
+				if (i != j) {
+					statisticsWithoutTieContribution[actorIndex][effectIndex] =
+							statistic + contribution;
+					if (_debug)
+						std::cout << "Tie insertion from " << i << " to "
+								<< j << " contributes " << contribution
+								<< std::endl;
+				} else // choosing oneself means changing nothing
+				{
+					statisticsWithoutTieContribution[actorIndex][effectIndex] =
+							statistic;
+				}
+			}
+			objectiveFunctions[actorIndex] +=
+					statisticsWithoutTieContribution[actorIndex][effectIndex]
+							* parameter;
+			actorIndex++;
+		} // iterate over all actors
+		++effectIndex;
+	}
+
+	// denominator
+	for (size_t i = 0; i < objectiveFunctions.size(); i++) {
+		denominator += exp(objectiveFunctions[i]);
+		if (_debug)
+			std::cout << "o.f. of actor choice " << i << ": "
+					<< objectiveFunctions[i] << std::endl;
+	}
+
+	if (_debug)
+		std::cout << "Active actor: " << _actorIndex << std::endl;
+
+	if (_debug)
+		std::cout << "calculated denominator: " << denominator << std::endl;
+
+	// draw random number
+	double randomNumber = Random::getInstance().getRandom();
+	// iterate over objective functions until actor is found
+	double cumProbability = 0;
+	for (int actorIndex = 0; actorIndex < nActors; actorIndex++) {
+		double probability = exp(objectiveFunctions[actorIndex]) / denominator;
+		cumProbability += probability;
+		// indexIdMap[k] is the randomly chosen actor
+		// create and return ActorModelResult
+		if (cumProbability >= randomNumber) {
+			// TieModelResult result(_actorIndex,j);
+			return new TieModelResult(_actorIndex, indexIdMap[actorIndex]);
+			// return &_tieModelResult;
+		}
+	}
+	// Should never be reached except an error occurs
+	std::cout
+			<< "Should not be here MultinomialChoiceModel wrong return type";
+	return new TieModelResult(-1, -1);
+}
+
+
 void MultinomialChoiceNetworkChangeModel::calculateTieContributionsWithMemento(
 		int nActors, const std::vector<double>& objectiveFunctions,
 		double denominator, ProcessState* processState) {
@@ -55,128 +173,6 @@ void MultinomialChoiceNetworkChangeModel::calculateTieContributionsWithMemento(
 	} // iterate over all actors
 	delete memento;
 */
-}
-
-ModelResult* MultinomialChoiceNetworkChangeModel::getChange(
-		ProcessState* processState) {
-
-	int nActors = processState->getNumberOfActors();
-	std::vector<double> objectiveFunctions(nActors, 0);
-	double denominator = 0;
-
-	// DEPRECATED
-	// updates objectiveFunctions and denominators
-	// calculateTieContributionsWithMemento(nActors,
-	//		objectiveFunctions, denominator, processState);
-
-	// calculate effects for the current networks (un-unchanged)
-	int nEffects = _effectParameterPairs->size();
-	std::vector<std::pair<double, double> > statisticsAndParametersWithoutChange(
-			nEffects, std::pair<double, double>(0,0));
-	std::vector<std::vector<double> > statisticsWithoutTieContribution (nActors,
-			std::vector<double>(nEffects, 0));
-
-
-	// calculate statistics
-	int effectIndex = 0;
-	std::set<std::pair<SaomEffect*, double> *>::iterator itEffects =
-			_effectParameterPairs->begin();
-	for (; itEffects != _effectParameterPairs->end(); ++itEffects){
-
-		int i = _actorIndex;
-
-		// calculate effects without changes
-		// save effect statistic
-		double statistic = (*itEffects)->first->getEffect(processState, _actorIndex);
-		statisticsAndParametersWithoutChange[effectIndex].first += statistic;
-
-		// save effect parameter (beta)
-		double parameter = (*itEffects)->second;
-		statisticsAndParametersWithoutChange[effectIndex].second =
-				parameter;
-
-		// iterate over all actors
-		for (int j = 0; j < nActors; j++) {
-
-			NetworkEffect * effect = dynamic_cast<NetworkEffect *>((*itEffects)->first);
-			double contribution =
-					effect->getEffectContribution(processState, i, j);
-
-			Network * net = processState->getNetwork(_dependentNetworkIndex);
-			// TODO: Here, we assume that an update is a tie swap!
-			if (net->hasTie(i, j)){
-
-				statisticsWithoutTieContribution[j][effectIndex] =
-						statistic - contribution;
-
-				if (_debug)
-					std::cout << "Tie removal from " << i << " to " << j <<
-					" contributes " << contribution << std::endl;
-
-			} else{
-
-				if (i != j){
-					statisticsWithoutTieContribution[j][effectIndex] =
-							statistic + contribution;
-
-					if (_debug)
-						std::cout << "Tie insertion from " << i << " to " << j <<
-						" contributes " << contribution << std::endl;
-
-				}
-				// choosing oneself means changing nothing
-				else{
-					statisticsWithoutTieContribution[j][effectIndex] =
-							statistic;
-				}
-
-
-			}
-
-			objectiveFunctions[j] +=
-					statisticsWithoutTieContribution[j][effectIndex] * parameter;
-
-
-		}  // iterate over all actors
-
-		++effectIndex;
-	}
-
-	for (int i = 0; i < objectiveFunctions.size(); i++){
-
-		denominator += exp(objectiveFunctions[i]);
-
-		if (_debug) std::cout << "o.f. of actor choice "<< i<< ": " <<
-				objectiveFunctions[i] << std::endl;
-	}
-
-
-	if (_debug) std::cout << "Active actor: " << _actorIndex << std::endl;
-	if (_debug) std::cout << "calculated denominator: " << denominator << std::endl;
-
-	// draw random number
-	double randomNumber = Random::getInstance().getRandom();
-
-	// iterate over objective functions until actor is found
-	double cumProbability = 0;
-	for (int j = 0; j < nActors; j++){
-		double probability = exp(objectiveFunctions[j]) / denominator;
-		cumProbability += probability;
-
-		// j is the randomly chosen actor
-		// create and return ActorModelResult
-		if (cumProbability >= randomNumber){
-			// TieModelResult result(_actorIndex,j);
-			return new TieModelResult(_actorIndex,j);
-			// return &_tieModelResult;
-		}
-	}
-
-	// Should never be reached except an error occurs
-	std::cout << "Should not be here MultinomialChoiceModel wrong return type";
-	return new TieModelResult(-1,-1);
-
-
 }
 
 void MultinomialChoiceNetworkChangeModel::setDebugMode(bool verbose) {

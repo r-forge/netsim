@@ -11,6 +11,7 @@
 #include "cute.h"
 #include "ModelResult.h"
 #include "JacksonRogers2007ChangeModel.h"
+#include "NetworkUtils.h"
 
 void jacksonRogersParentSearchTest(){
 
@@ -138,20 +139,69 @@ void jacksonRogersNeighborsSearchTest(){
 }
 
 void jacksonRogersBirthModelSimulationTest(){
-	MemoryOneModeNetwork * network = new MemoryOneModeNetwork(20);
-	NetworkUtils utils;
-	utils.addRandomTiesToNetwork(network, 0.25);
+	double pLinkParent = 0.5;
+	double pLinkNeighbor = 0.5;
+	int nParents = 2;
+	int nNeighbors = 2;
+	int nInitialActors = 20;
+	double pRandomTie = 0.25;
+	int nJoiningActors = 20;
+	int nSimulations = 1000;
+	double allowedDeviation = 0.01;
 
-	// process state
-	ProcessState * processState = new ProcessState;
-	int networkIndex = processState->addNetwork(network);
-	// timer
-	int timerIndex = processState->addGlobalAttribute(0);
+	double expectedDensity =
+			(nInitialActors * (nInitialActors - 1) * pRandomTie +
+			nJoiningActors * nParents * pLinkParent +
+			nJoiningActors * nNeighbors * pLinkNeighbor) /
+			// all possible ties:
+			((nInitialActors + nJoiningActors) *
+			(nInitialActors + nJoiningActors - 1));
+	double averageDensity = 0;
 
-	// model manager
-	ModelManager * modelManager = new ModelManager;
+	for (int i = 0; i < nSimulations; i++){
+		MemoryOneModeNetwork * network = new MemoryOneModeNetwork(nInitialActors);
+		NetworkUtils utils;
+		utils.addRandomTiesToNetwork(network, pRandomTie);
 
-	// TODO method stub
+		// process state
+		ProcessState * processState = new ProcessState;
+		int networkIndex = processState->addNetwork(network);
+		// timer
+		int timerIndex = processState->addGlobalAttribute(0);
+
+		// model manager
+		ModelManager * modelManager = new ModelManager;
+
+		// round based inclusion of new nodes
+		// first inclusion at time 1.0.
+		RoundBasedTimeModel * roundModel = new RoundBasedTimeModel(timerIndex, 1.0, 0.0);
+		modelManager->addTimeModel(roundModel);
+
+		// updater timer
+		modelManager->addTimeUpdater(new TimerUpdater(timerIndex));
+
+		// jackson rogers
+		JacksonRogers2007ChangeModel * jrModel = new JacksonRogers2007ChangeModel(
+				networkIndex, pLinkParent, pLinkNeighbor, nParents, nNeighbors);
+		modelManager->addChangeModel(roundModel, jrModel);
+
+		// updaters
+		modelManager->addUpdater(jrModel, new AddNewActorUpdater());
+		modelManager->addUpdater(jrModel, new AddTiesFromNewbornActorUpdater(networkIndex));
+
+
+		Simulator simulator(processState, modelManager, nJoiningActors);
+		simulator.setVerbose(false);
+		simulator.setDebug(false);
+		simulator.simulate();
+
+		averageDensity += NetworkUtils::getDensity(network) / (double) nSimulations;
+	}
+
+	std::cout << "Average  density: " << averageDensity << std::endl;
+	std::cout << "Expected density: " << expectedDensity << std::endl;
+	ASSERT(fabs(averageDensity - expectedDensity) < allowedDeviation);
+
 }
 
 cute::suite getJacksonRogersTests(){
@@ -159,7 +209,7 @@ cute::suite getJacksonRogersTests(){
 
 	s.push_back(CUTE(jacksonRogersParentSearchTest));
 	s.push_back(CUTE(jacksonRogersNeighborsSearchTest));
-
+	s.push_back(CUTE(jacksonRogersBirthModelSimulationTest));
 
 	return s;
 }

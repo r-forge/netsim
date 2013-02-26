@@ -84,7 +84,10 @@ public:
 	// TODO: remove actor
 	void deleteActor(int id);
 
-	// TODO: implement
+	/**
+	 * returns the newest actor ID (maximum id)
+	 * or -1 of the process state has no actors
+	 */
 	int getNewestActorIndex();
 
 	/**
@@ -101,6 +104,11 @@ public:
 	 * get number of global attributes
 	 */
 	int getNumberOfGlobalAttributes();
+
+	/**
+	 * get all actor ids
+	 */
+	std::set<int> getActorIds();
 
 
 	/**
@@ -124,6 +132,8 @@ private:
 	size_t _nActors;
 
 	int _maxActorID;
+
+	// assumed to be an ordered container in some sub functions
 	std::set<int> _ids;
 
 };

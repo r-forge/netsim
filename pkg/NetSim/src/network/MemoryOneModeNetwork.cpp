@@ -59,6 +59,8 @@ void MemoryOneModeNetwork::init(int size, bool directed, bool reflexive){
 }
 
 void MemoryOneModeNetwork::initActor(int id) {
+	_actorIDs.insert(id);
+
 	// addActor(i); // updates the size (_size)
 	_inDegreeMap.insert(
 			std::map<int,int>::value_type(id,0)
@@ -225,8 +227,14 @@ void MemoryOneModeNetwork::deleteActor(size_t id) {
 	_outgoingNeighborsMap.erase(id);
 	_incomingNeighborsMap.erase(id);
 
+	_actorIDs.erase(id);
+
 	_size--;
 
+}
+
+const std::set<int> MemoryOneModeNetwork::getActorIDs() {
+	return _actorIDs;
 }
 
 std::set<int> MemoryOneModeNetwork::intersectSets(std::set<int>* set1,

@@ -284,6 +284,22 @@ void testNetworkUtilsCountTiesAndDensity(){
 	ASSERT_EQUAL(4,NetworkUtils::getNumberOfReciprocalTies(network));
 	ASSERT_EQUAL(5.0/6.0, NetworkUtils::getDensity(network));
 
+	// adding and deleting actors
+	network->deleteActor(0);
+	network->addActor(0); // now has nor more ties
+	ASSERT_EQUAL(1,NetworkUtils::getNumberOfTies(network));
+	ASSERT_EQUAL(0,NetworkUtils::getNumberOfReciprocalTies(network));
+	ASSERT_EQUAL(1.0/6.0, NetworkUtils::getDensity(network));
+
+	network->deleteActor(0); // death
+	network->addActor(3); // birth
+	network->addTie(3,1);
+	network->addTie(3,2);
+	ASSERT_EQUAL(3,NetworkUtils::getNumberOfTies(network));
+	ASSERT_EQUAL(0,NetworkUtils::getNumberOfReciprocalTies(network));
+	ASSERT_EQUAL(3.0/6.0, NetworkUtils::getDensity(network));
+
+
 	delete network;
 }
 
@@ -345,6 +361,10 @@ void testNetworkUtilsGetNRandomNodes(){
 
 
 	delete network;
+}
+
+void deathAndBirthOfNodesTest(){
+
 }
 
 cute::suite getTestSuiteMemoryOneModeNetwork(){

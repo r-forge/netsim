@@ -20,3 +20,22 @@ double PoissonTimeModel::getTimeSpan(ProcessState* processState) {
 double PoissonTimeModel::getParameter() {
 	return _poissonParameter;
 }
+
+RoundBasedTimeModel::RoundBasedTimeModel(size_t timerIndex,
+		double intervalLength,
+		double startTime) {
+	_intervalLength = intervalLength;
+	_timerIndex = timerIndex;
+	_startTime = startTime;
+}
+
+double RoundBasedTimeModel::getTimeSpan(ProcessState* processState) {
+	double time = processState->getGlobalAttribute(_timerIndex);
+
+	if (time < _startTime) return (_startTime - time);
+
+	else {
+		double timeSinceLast = fmod(time - _startTime, _intervalLength);
+		return _intervalLength - timeSinceLast;
+	}
+}
