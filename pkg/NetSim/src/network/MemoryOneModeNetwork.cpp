@@ -47,14 +47,32 @@ int MemoryOneModeNetwork::getInDegree(int i) {
 
 void MemoryOneModeNetwork::init(int size, bool directed, bool reflexive){
 
-	// _size = size; // updated by addActor function
+	_size = size; // updated by addActor function
 	_directed = directed;
 	_reflexive = reflexive;
 
 	// initialize lookup maps
 	for (int i = 0; i < size; i++){
-		addActor(i); // updates the size (_size)
+		initActor(i);
 	}
+
+}
+
+void MemoryOneModeNetwork::initActor(int id) {
+	// addActor(i); // updates the size (_size)
+	_inDegreeMap.insert(
+			std::map<int,int>::value_type(id,0)
+			);
+	_outDegreeMap.insert(
+			std::map<int,int>::value_type(id,0)
+			);
+	// initialize neighbor maps with empty sets
+	_outgoingNeighborsMap.insert(
+			std::map<int, std::set<int>* >::value_type(id,new std::set<int>())
+			);
+	_incomingNeighborsMap.insert(
+			std::map<int, std::set<int>* >::value_type(id,new std::set<int>())
+			);
 
 }
 
@@ -182,21 +200,7 @@ bool MemoryOneModeNetwork::isIndexValid(int i) {
 }
 
 void MemoryOneModeNetwork::addActor(size_t id) {
-
-	_inDegreeMap.insert(
-			std::map<int,int>::value_type(id,0)
-			);
-	_outDegreeMap.insert(
-			std::map<int,int>::value_type(id,0)
-			);
-	// initialize neighbor maps with empty sets
-	_outgoingNeighborsMap.insert(
-			std::map<int, std::set<int>* >::value_type(id,new std::set<int>())
-			);
-	_incomingNeighborsMap.insert(
-			std::map<int, std::set<int>* >::value_type(id,new std::set<int>())
-			);
-
+	initActor(id);
 	_size++;
 }
 
@@ -215,6 +219,11 @@ void MemoryOneModeNetwork::deleteActor(size_t id) {
 		_outgoingNeighborsMap[j]->erase(id);
 		_outDegreeMap[j]--;
 	}
+
+	delete _outgoingNeighborsMap[id];
+	delete _incomingNeighborsMap[id];
+	_outgoingNeighborsMap.erase(id);
+	_incomingNeighborsMap.erase(id);
 
 	_size--;
 

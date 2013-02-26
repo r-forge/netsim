@@ -26,7 +26,7 @@ ValuedMemoryOneModeNetwork * getTwoStarNetwork(int size){
 
 	// set ties from actor 1 and to actor 2 to value 1.0
 	std::vector<std::vector<double> > graph(size, std::vector<double>(size));
-	for (int i = 0; i <size; i++){
+	for (int i = 0; i < size; i++){
 		for (int j = 0; j <size; j++){
 			if (i == 0) // actor 1
 				graph[i][j] = 1.0;
@@ -198,9 +198,11 @@ void neighborSetTestWithMultipleChanges(){
 
 void overlappingNeighborsTest(){
 	int size = 20;
+
 	MemoryOneModeNetwork* net = getTwoStarNetwork(size);
 
 	std::set<int> nodeSet1 = net->getIntermediateNodesForward(0,1);
+
 	ASSERT(nodeSet1.size() == (size - 2) );
 	ASSERT(nodeSet1.find(2) != nodeSet1.end()); // 2 is in the set
 	ASSERT(nodeSet1.find(1) == nodeSet1.end()); // 1 is not

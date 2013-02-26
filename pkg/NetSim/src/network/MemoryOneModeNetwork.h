@@ -184,7 +184,9 @@ protected:
 
 
 	void init(int size, bool directed, bool reflexive);
+	void initActor(int id);
 	void updateInternalRepresentation(int i, int j, double oldValue, double newValue);
+
 
 	/*
 	 * checks whether an index i is in the range [0, size-1]
