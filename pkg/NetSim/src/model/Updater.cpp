@@ -300,7 +300,7 @@ RemoveActorUpdater::RemoveActorUpdater() {
 void RemoveActorUpdater::update(ProcessState* processState,
 		ModelResult* result) {
 
-	ActorModelResult * actorResult = dynamic_cast<ActorSetModelResult*>(result);
+	ActorModelResult * actorResult = dynamic_cast<ActorModelResult*>(result);
 	processState->deleteActor(actorResult->getActorIndex());
 
 }
@@ -308,4 +308,24 @@ void RemoveActorUpdater::update(ProcessState* processState,
 void RemoveActorUpdater::undoUpdate(ProcessState* processState,
 		ModelResult* result) {
 	// TODO implement
+}
+
+RemoveTieUpdater::RemoveTieUpdater(size_t networkIndex) {
+	_networkIndex = networkIndex;
+}
+
+void RemoveTieUpdater::update(ProcessState* processState, ModelResult* result) {
+
+	TieModelResult * tieResult = dynamic_cast<TieModelResult *>(
+		result);
+
+	Network * network = processState->getNetwork(_networkIndex);
+
+	network->removeTie(tieResult->getActorIndex1(),
+			tieResult->getActorIndex2());
+
+}
+
+void RemoveTieUpdater::undoUpdate(ProcessState* processState,
+		ModelResult* result) {
 }

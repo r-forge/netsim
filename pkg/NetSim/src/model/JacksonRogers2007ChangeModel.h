@@ -31,7 +31,7 @@ public:
 
 	ModelResult * getChange(ProcessState * processState);
 
-	void setDebugMode(bool debug);
+	void setDebug(bool debug = true);
 
 private:
 	int _networkIndex;

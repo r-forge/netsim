@@ -111,7 +111,8 @@ int main(int argc, char *argv[]){
 
 
 
-	mySimulator.setVerbose(true);
+	mySimulator.setVerbose();
+	mySimulator.setDebug(false);
 	mySimulator.simulate();
 
 	// mySimulator.setVerbose(true);

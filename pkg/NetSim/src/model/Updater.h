@@ -185,6 +185,30 @@ private:
 
 };
 
+class RemoveTieUpdater : public Updater{
+
+public:
+	RemoveTieUpdater(size_t networkIndex);
+	void update(ProcessState* processState, ModelResult* result);
+	void undoUpdate(ProcessState* processState, ModelResult* result);
+
+private:
+	size_t _networkIndex;
+
+};
+
+class RemoveTieAddTieUpdater : public Updater{
+
+public:
+	RemoveTieAddTieUpdater(size_t networkIndex);
+
+	void update(ProcessState* processState, ModelResult* result);
+	void undoUpdate(ProcessState* processState, ModelResult* result);
+
+private:
+	size_t _networkIndex;
+};
+
 class AddTiesFromNewbornActorUpdater : public Updater{
 
 public:

@@ -51,6 +51,27 @@ private:
 
 };
 
+class TwoTiesModelResult : public ModelResult{
+
+public:
+	TwoTiesModelResult(int actorIndex1,
+			int actorIndex2,
+			int actorIndex3,
+			int actorIndex4);
+
+	int getActorIndex1();
+	int getActorIndex2();
+	int getActorIndex3();
+	int getActorIndex4();
+
+private:
+	int _actorIndex1;
+	int _actorIndex2;
+	int _actorIndex3;
+	int _actorIndex4;
+
+};
+
 
 class TieModelResult : public ModelResult{
 public:

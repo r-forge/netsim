@@ -52,6 +52,7 @@ int NetworkUtils::getNumberOfTies(MemoryOneModeNetwork* network) {
 	return countTies(network, false);
 }
 
+
 int NetworkUtils::getNumberOfReciprocalTies(MemoryOneModeNetwork* network) {
 	return countTies(network, true);
 }
@@ -157,6 +158,37 @@ void NetworkUtils::addRandomTiesToNetwork(Network* network, double p) {
 
 		}
 	}
+}
+
+std::pair<int, int> NetworkUtils::getRandomTie(MemoryOneModeNetwork* network) {
+
+	std::set<int> actorIDs = network->getActorIDs();
+	double randDissolve = Random::getInstance().getRandom();
+
+	int nTies = getNumberOfTies(network);
+	int chosenTieNumber = randDissolve * (double) nTies; // automatically rounding down
+	int tieNumber = 0;
+
+	std::set<int>::iterator itActor1 = actorIDs.begin();
+	for(; itActor1 != actorIDs.end(); ++itActor1){
+		int i = *itActor1;
+		std::set<int>::iterator itActor2 = actorIDs.begin();
+		for(; itActor2 != actorIDs.end(); ++itActor2){
+			int j = *itActor2;
+			if (network->hasTie(i, j)){
+				if (tieNumber == chosenTieNumber){
+
+					return std::make_pair(i, j);
+
+				}
+				tieNumber++;
+			}
+
+		}
+	}
+
+	// error
+	return std::make_pair(-1, -1);
 }
 
 int NetworkUtils::countTies(MemoryOneModeNetwork * network,

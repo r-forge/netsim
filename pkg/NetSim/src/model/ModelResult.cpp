@@ -61,3 +61,27 @@ ActorSetModelResult::ActorSetModelResult(std::set<int> actorSet) {
 std::set<int> ActorSetModelResult::getActorSet() {
 	return _actorSet;
 }
+
+TwoTiesModelResult::TwoTiesModelResult(int actorIndex1, int actorIndex2,
+		int actorIndex3, int actorIndex4) {
+	_actorIndex1 = actorIndex1;
+	_actorIndex2 = actorIndex2;
+	_actorIndex3 = actorIndex3;
+	_actorIndex4 = actorIndex4;
+}
+
+int TwoTiesModelResult::getActorIndex1() {
+	return _actorIndex1;
+}
+
+int TwoTiesModelResult::getActorIndex2() {
+	return _actorIndex2;
+}
+
+int TwoTiesModelResult::getActorIndex3() {
+	return _actorIndex3;
+}
+
+int TwoTiesModelResult::getActorIndex4() {
+	return _actorIndex4;
+}

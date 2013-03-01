@@ -19,7 +19,7 @@
 #include "test0006_mementotest/MementoTest.h"
 #include "test0007_jacksonrogers/JacksonRogersTest.h"
 #include "test0008_timemodel/TimeModelTest.h"
-
+#include"test0009_wattsstrogatz/WattsStrogatzTest.h"
 
 
 void runUnitTestSuite(){
@@ -31,6 +31,7 @@ void runUnitTestSuite(){
 	cute::suite s0006 = getMementoTests();
 	cute::suite s0007 = getJacksonRogersTests();
 	cute::suite s0008 = getTimeModelTests();
+	cute::suite s0009 = getWattsStrogatzTests();
 	cute::ide_listener idl;
 	cute::makeRunner(idl)(s0001, "Network tests");
 	cute::makeRunner(idl)(s0002, "Attribute Container tests");
@@ -40,6 +41,7 @@ void runUnitTestSuite(){
 	cute::makeRunner(idl)(s0006, "Memento tests");
 	cute::makeRunner(idl)(s0007, "Jackson Rogers model tests");
 	cute::makeRunner(idl)(s0008, "Time Model tests");
+	cute::makeRunner(idl)(s0009, "Watts Strogatz tests");
 
 }
 

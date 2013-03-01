@@ -14,6 +14,7 @@
 #include <iostream>
 #include <cstdio>
 #include <set>
+#include <utility>
 
 class NetworkUtils{
 
@@ -34,6 +35,12 @@ public:
 	static int getHammingDistance(MemoryOneModeNetwork* network1, MemoryOneModeNetwork * network2);
 
 	static std::set<int> getNRandomNodes(Network * network, int n);
+
+	/**
+	 * returns a random tie of network as an integer pair.
+	 * If no tie can be chosen it returns a (-1, -1) pair
+	 */
+	static std::pair<int, int> getRandomTie(MemoryOneModeNetwork * network);
 
 	/**
 	 * add ties with a probability p to an existing network.

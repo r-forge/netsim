@@ -173,6 +173,6 @@ ModelResult * JacksonRogers2007ChangeModel::getChange(ProcessState * processStat
 
 }
 
-void JacksonRogers2007ChangeModel::setDebugMode(bool debug) {
+void JacksonRogers2007ChangeModel::setDebug(bool debug) {
 	_debug = debug;
 }

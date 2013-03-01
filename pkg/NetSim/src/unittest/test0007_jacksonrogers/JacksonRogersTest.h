@@ -109,7 +109,7 @@ void jacksonRogersNeighborsSearchTest(){
 	processState->addNetwork(network);
 
 	JacksonRogers2007ChangeModel jrModel(0, pLinkParent, pLinkNeighbor, nParents, nNeighbors);
-	jrModel.setDebugMode(false);
+	jrModel.setDebug(false);
 
 	for (int i = 0; i < nSimulations; i++){
 

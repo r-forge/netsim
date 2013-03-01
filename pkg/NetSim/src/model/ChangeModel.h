@@ -9,7 +9,9 @@
 #define CHANGEMODEL_H_
 
 #include "ModelResult.h"
+#include "../network/NetworkUtils.h"
 #include "../processstate/ProcessState.h"
+#include <utility>
 
 class ChangeModel{
 
@@ -20,6 +22,14 @@ public:
 
 class NullChangeModel : public ChangeModel{
 	ModelResult * getChange(ProcessState * processState);
+};
+
+class ChooseRandomTieChangeModel : public ChangeModel{
+public:
+	ChooseRandomTieChangeModel(size_t networkIndex);
+	ModelResult * getChange(ProcessState * processState);
+private:
+	size_t _networkIndex;
 };
 
 
