@@ -351,8 +351,19 @@ SEXP create_add_actor_updater() {
 
 	AddActorUpdater * addActorUpdater = new AddActorUpdater;
 
-	return Rcpp::XPtr<AddActorUpdater>(addActorUpdater);
+	return Rcpp::XPtr<AddActorUpdater>(addActorUpdater, false);
 
 	END_RCPP
 }
 
+SEXP create_rewire_tie_updater(SEXP networkId_) {
+	BEGIN_RCPP
+
+	int networkId = Rcpp::as<int>(networkId_);
+
+	RewireTieUpdater * rewireTieUpdater = new RewireTieUpdater(networkId);
+
+	return Rcpp::XPtr<RewireTieUpdater>(rewireTieUpdater, false);
+
+	END_RCPP
+}

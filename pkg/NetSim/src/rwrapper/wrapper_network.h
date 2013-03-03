@@ -21,4 +21,6 @@ RcppExport SEXP set_tie(SEXP network, SEXP i, SEXP j, SEXP value);
 
 RcppExport SEXP add_random_ties_to_network(SEXP network, SEXP probability);
 
+RcppExport SEXP add_ring_lattice_to_network(SEXP network, SEXP nReciprocalTies);
+
 #endif /* WRAPPER_NETWORK_H_ */

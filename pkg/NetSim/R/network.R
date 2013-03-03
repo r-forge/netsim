@@ -21,5 +21,7 @@ add_random_ties_to_network <- function(network, probability = 0.5){
 	.Call("add_random_ties_to_network", network, probability, PACKAGE = "NetSim")
 }
 
-
-
+# RcppExport SEXP add_ring_lattice_to_network(SEXP network, SEXP nReciprocalTies);
+add_ring_lattice_to_network <- function(network, nReciprocalTies = 2){
+	.Call("add_ring_lattice_to_network", network, nReciprocalTies, PACKAGE = "NetSim")
+}

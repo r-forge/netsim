@@ -71,6 +71,8 @@ RcppExport SEXP create_jackson_rogers_change_model(
 
 RcppExport SEXP create_watts_strogatz_change_model(SEXP networkId);
 
+RcppExport SEXP create_rewire_tie_updater(SEXP networkId);
+
 RcppExport SEXP create_round_based_time_model(
 		SEXP timerIndex, SEXP intervalLength, SEXP startTime);
 

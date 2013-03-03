@@ -89,6 +89,10 @@ create_watts_strogatz_change_model <- function(networkId){
 	.Call("create_watts_strogatz_change_model", networkId, PACKAGE = "NetSim")
 }
 
+# RcppExport SEXP create_rewire_tie_updater(SEXP networkId_)
+create_rewire_tie_updater <- function(networkId){
+	.Call("create_rewire_tie_updater", networkId, PACKAGE = "NetSim");
+}
 
 #RcppExport SEXP create_round_based_time_model(
 #		SEXP timerIndex, SEXP intervalLength, SEXP startTime);

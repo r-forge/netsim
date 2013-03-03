@@ -93,3 +93,16 @@ SEXP add_random_ties_to_network(SEXP network_, SEXP probability_) {
 
 		END_RCPP
 }
+
+SEXP add_ring_lattice_to_network(SEXP network_, SEXP nReciprocalTies_) {
+	BEGIN_RCPP
+
+	Rcpp::XPtr<MemoryOneModeNetwork> network(network_);
+	int nReciprocalTies = Rcpp::as<int>(nReciprocalTies_);
+
+	NetworkUtils::addRingLatticeTiesToNetwork(network, nReciprocalTies);
+
+	return Rcpp::XPtr<MemoryOneModeNetwork>(network, false);
+
+	END_RCPP
+}

@@ -329,3 +329,24 @@ void RemoveTieUpdater::update(ProcessState* processState, ModelResult* result) {
 void RemoveTieUpdater::undoUpdate(ProcessState* processState,
 		ModelResult* result) {
 }
+
+RewireTieUpdater::RewireTieUpdater(size_t networkIndex) {
+	_networkIndex = networkIndex;
+}
+
+void RewireTieUpdater::update(ProcessState* processState, ModelResult* result) {
+	TwoTiesModelResult * twoTiesResult = dynamic_cast<TwoTiesModelResult*>(result);
+
+	Network * network = processState->getNetwork(_networkIndex);
+	network->removeTie(twoTiesResult->getActorIndex1(), twoTiesResult->getActorIndex2());
+	network->addTie(twoTiesResult->getActorIndex3(), twoTiesResult->getActorIndex4());
+}
+
+void RewireTieUpdater::undoUpdate(ProcessState* processState,
+		ModelResult* result) {
+	TwoTiesModelResult * twoTiesResult = dynamic_cast<TwoTiesModelResult*>(result);
+
+	Network * network = processState->getNetwork(_networkIndex);
+	network->removeTie(twoTiesResult->getActorIndex3(), twoTiesResult->getActorIndex4());
+	network->addTie(twoTiesResult->getActorIndex1(), twoTiesResult->getActorIndex2());
+}

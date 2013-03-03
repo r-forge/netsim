@@ -219,16 +219,13 @@ void NetworkUtils::addRingLatticeTiesToNetwork(MemoryOneModeNetwork * network,
 		for (size_t i = 0; i < lastNodes.size(); i++){
 			network->addTie(*itNodes, lastNodes[i]);
 			network->addTie(lastNodes[i], *itNodes);
-			std::cout << *itNodes << " " << lastNodes[i] << std::endl;
 		}
 
 		// update list of previous nodes
 		for (size_t i = 0 ; i < lastNodes.size() - 1; i++){
 			lastNodes[i+1] = lastNodes[i];
-			std::cout << lastNodes[i] << " | ";
 		}
 		lastNodes[0] = *itNodes;
-		std::cout << *itNodes << std::endl;
 
 		itNodes++;
 		nSteps--;
