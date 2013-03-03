@@ -10,7 +10,7 @@
 
 #include "ModelResult.h"
 #include "ChangeModel.h"
-#include "NetworkUtils.h"
+#include "../network/NetworkUtils.h"
 
 /**
  * Implementation of the change model from

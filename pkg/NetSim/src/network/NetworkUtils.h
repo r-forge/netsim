@@ -10,7 +10,7 @@
 
 #include "OneModeNetwork.h"
 #include "MemoryOneModeNetwork.h"
-#include "Random.h"
+#include "../utils/Random.h"
 #include <iostream>
 #include <cstdio>
 #include <set>

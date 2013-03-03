@@ -35,6 +35,69 @@ create_poisson_model <- function(param = 1){
 
 # change models
 
+create_change_model <- function(type, ...){
+	UseMethod("create_change_model")
+}
+
+# simple model factory
+create_change_model.character <- function(name, ...){
+	
+	# TODO make this working for all change models
+	# and make factories also for time models and all updaters
+	
+	if (name == "jacksonRogers"){
+		type <- structure(name, class="jacksonRogersChangeModel")
+	}
+	else if (name == "netSaom"){
+		type <- structure(name, class="networkMChoice")
+	}
+	else{
+		stop(paste("Unknown change model: ", name, sep=""))
+	}
+	create_change_model(type, ...)
+}
+
+#RcppExport SEXP create_jackson_rogers_change_model(
+#		SEXP networkName, SEXP pLinkToParentNode, SEXP pLinkToNeighborNode,
+#		SEXP nParentNodes, SEXP nNeighborNodes);
+#
+create_change_model.jacksonRogersChangeModel <- function(
+		type,
+		networkId,
+		pLinkToParentNode = 1.0,
+		pLinkToNeigborNode = 1.0,
+		nParentNodes = 1,
+		nNeighborNodes = 1){
+	.Call("create_jackson_rogers_change_model", networkId, pLinkToParentNode, 
+			pLinkToNeigborNode, nParentNodes, nNeighborNodes, PACKAGE = "NetSim")
+	
+}
+
+#RcppExport SEXP create_round_based_time_model(
+#		SEXP timerIndex, SEXP intervalLength, SEXP startTime);
+#
+create_round_based_time_model <- function(
+		timerIndex, intervalLength = 1.0, startTime = 0.0){
+	
+	.Call("create_round_based_time_model", timerIndex, 
+			intervalLength, startTime, PACKAGE = "NetSim")
+}
+
+#RcppExport SEXP create_add_ties_from_newborn_actor_updater(
+#		SEXP networkIndex);
+#};
+create_add_ties_from_newborn_actor_updater <- function(
+		networkIndex){
+	.Call("create_add_ties_from_newborn_actor_updater", networkIndex, 
+			PACKAGE = "NetSim")
+			
+}
+
+#RcppExport SEXP create_timer_updater(SEXP timerIndex);
+create_timer_updater <- function(timerIndex){
+	.Call("create_timer_updater", timerIndex, PACKAGE = "NetSim")
+}
+		
 create_effect_container <- function(){
 	.Call("create_effect_container", PACKAGE = "NetSim")
 }

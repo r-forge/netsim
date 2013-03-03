@@ -19,6 +19,8 @@
 #include "../model/saom/SaomEffect.h"
 #include "../model/saom/EffectContainerManager.h"
 #include "../model/saom/EffectFactory.h"
+#include "../model/JacksonRogers2007ChangeModel.h"
+#include "../model/WattsStrogatzRandomRewiringChangeModel.h"
 
 RcppExport SEXP create_model_manager();
 
@@ -60,4 +62,18 @@ RcppExport SEXP create_multinomial_choice_behavior_change_model(
 RcppExport SEXP create_tie_swap_updater(SEXP networkIndex);
 
 RcppExport SEXP create_actor_attribute_set_updater(SEXP attributeIndex, SEXP actorIndex);
+
+RcppExport SEXP create_jackson_rogers_change_model(
+		SEXP networkId, SEXP pLinkToParentNode, SEXP pLinkToNeighborNode,
+		SEXP nParentNodes, SEXP nNeighborNodes);
+
+RcppExport SEXP create_round_based_time_model(
+		SEXP timerIndex, SEXP intervalLength, SEXP startTime);
+
+RcppExport SEXP create_add_ties_from_newborn_actor_updater(
+		SEXP networkIndex);
+
+RcppExport SEXP create_timer_updater(SEXP timerIndex);
+
+
 #endif /* WRAPPER_MODEL_H_ */

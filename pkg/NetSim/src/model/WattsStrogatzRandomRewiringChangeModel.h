@@ -10,8 +10,9 @@
 
 #include "ChangeModel.h"
 #include "ModelResult.h"
-#include "MemoryOneModeNetwork.h"
-#include "Random.h"
+#include "../network/MemoryOneModeNetwork.h"
+#include "../utils/Random.h"
+#include "../network/NetworkUtils.h"
 #include <stdexcept>
 
 class WattsStrogatzRandomRewiringChangeModel : public ChangeModel{

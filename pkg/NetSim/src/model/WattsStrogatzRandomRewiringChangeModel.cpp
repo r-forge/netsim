@@ -6,7 +6,6 @@
  */
 
 #include "WattsStrogatzRandomRewiringChangeModel.h"
-#include "NetworkUtils.h"
 
 WattsStrogatzRandomRewiringChangeModel::WattsStrogatzRandomRewiringChangeModel(
 		size_t networkIndex) {

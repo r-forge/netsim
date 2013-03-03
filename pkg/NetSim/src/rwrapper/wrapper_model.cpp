@@ -258,3 +258,63 @@ SEXP create_actor_attribute_set_updater(SEXP attributeIndex_, SEXP actorIndex_) 
 
 	END_RCPP
 }
+
+SEXP create_jackson_rogers_change_model(SEXP networkId_,
+		SEXP pLinkToParentNode_, SEXP pLinkToNeighborNode_, SEXP nParentNodes_,
+		SEXP nNeighborNodes_) {
+	BEGIN_RCPP
+
+	int networkId = Rcpp::as<int>(networkId_);
+	double pLinkToParentNode = Rcpp::as<double>(pLinkToParentNode_);
+	double pLinkToNeighborNode = Rcpp::as<double>(pLinkToNeighborNode_);
+	int nParentNodes = Rcpp::as<int>(nParentNodes_);
+	int nNeighborNodes = Rcpp::as<int>(nNeighborNodes_);
+
+	JacksonRogers2007ChangeModel * jrModel = new JacksonRogers2007ChangeModel(networkId,
+			pLinkToParentNode, pLinkToNeighborNode, nParentNodes, nNeighborNodes);
+
+	return Rcpp::XPtr<JacksonRogers2007ChangeModel>(jrModel, false);
+
+	END_RCPP
+}
+
+SEXP create_round_based_time_model(SEXP timerIndex_, SEXP intervalLength_,
+		SEXP startTime_) {
+
+	BEGIN_RCPP
+
+	int timerIndex = Rcpp::as<int>(timerIndex_);
+	double intervalLength = Rcpp::as<double>(intervalLength_);
+	double startTime = Rcpp::as<int>(startTime_);
+
+	RoundBasedTimeModel * rbTimeModel = new RoundBasedTimeModel(timerIndex, intervalLength, startTime);
+
+	return Rcpp::XPtr<RoundBasedTimeModel>(rbTimeModel, false);
+
+	END_RCPP
+}
+
+SEXP create_add_ties_from_newborn_actor_updater(SEXP networkIndex_) {
+	BEGIN_RCPP
+
+	int networkIndex = Rcpp::as<int>(networkIndex_);
+
+	AddTiesFromNewbornActorUpdater * updater =
+			new AddTiesFromNewbornActorUpdater(networkIndex);
+
+	return Rcpp::XPtr<AddTiesFromNewbornActorUpdater>(updater, false);
+
+	END_RCPP
+}
+
+SEXP create_timer_updater(SEXP timerIndex_) {
+	BEGIN_RCPP
+
+	int timerIndex = Rcpp::as<int>(timerIndex_);
+
+	TimerUpdater * timerUpdater = new TimerUpdater(timerIndex);
+
+	return Rcpp::XPtr<TimerUpdater>(timerUpdater, false);
+
+	END_RCPP
+}
