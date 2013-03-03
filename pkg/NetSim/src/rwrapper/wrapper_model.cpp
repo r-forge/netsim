@@ -58,6 +58,20 @@ SEXP add_updater(SEXP modelManager_, SEXP changeModel_, SEXP updater_) {
 	END_RCPP
 }
 
+SEXP add_time_updater(SEXP modelManager_, SEXP timeUpdater_) {
+	BEGIN_RCPP
+
+	ModelManager * modelManager = Rcpp::XPtr<ModelManager>(modelManager_);
+	TimeUpdater * timeUpdater = Rcpp::XPtr<TimeUpdater>(timeUpdater_);
+
+	modelManager->addTimeUpdater(timeUpdater);
+
+	return Rcpp::XPtr<ModelManager>(modelManager, false);
+
+	END_RCPP
+}
+
+
 SEXP create_poisson_model(SEXP param_) {
 	BEGIN_RCPP
 
@@ -278,6 +292,19 @@ SEXP create_jackson_rogers_change_model(SEXP networkId_,
 	END_RCPP
 }
 
+SEXP create_watts_strogatz_change_model(SEXP networkId_) {
+	BEGIN_RCPP
+
+	int networkId = Rcpp::as<int>(networkId_);
+
+	WattsStrogatzRandomRewiringChangeModel * wsModel = new WattsStrogatzRandomRewiringChangeModel(networkId);
+
+	return Rcpp::XPtr<WattsStrogatzRandomRewiringChangeModel>(wsModel, false);
+
+	END_RCPP
+}
+
+
 SEXP create_round_based_time_model(SEXP timerIndex_, SEXP intervalLength_,
 		SEXP startTime_) {
 
@@ -318,3 +345,14 @@ SEXP create_timer_updater(SEXP timerIndex_) {
 
 	END_RCPP
 }
+
+SEXP create_add_actor_updater() {
+	BEGIN_RCPP
+
+	AddActorUpdater * addActorUpdater = new AddActorUpdater;
+
+	return Rcpp::XPtr<AddActorUpdater>(addActorUpdater);
+
+	END_RCPP
+}
+

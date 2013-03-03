@@ -37,7 +37,7 @@ void Simulator::simulate() {
 			if (nextPercentageToPrint == 0 && _verbose) std::cout << "Progress (in 10%) [";
 
 			if (_verbose & !_debug) std::cout << "=" << std::flush;
-			if (_debug) std::cout << std::endl << nextPercentageToPrint <<
+			if (_debug) std::cout << std::endl << nextPercentageToPrint *100 <<
 					" % reached." << std::endl;
 
 			nextPercentageToPrint += 0.1;

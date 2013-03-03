@@ -8,7 +8,7 @@
 #include "rwrapper_simulator.h"
 
 SEXP create_simulator(SEXP processStateManager_, SEXP modelManager_,
-		SEXP periodLength_, SEXP verbose_) {
+		SEXP periodLength_, SEXP verbose_, SEXP debug_) {
 	BEGIN_RCPP
 
 	ProcessStateManager * processStateManager =
@@ -18,9 +18,11 @@ SEXP create_simulator(SEXP processStateManager_, SEXP modelManager_,
 			Rcpp::XPtr<ModelManager>(modelManager_);
 	double periodLength = Rcpp::as<double>(periodLength_);
 	bool verbose = Rcpp::as<bool>(verbose_);
+	bool debug = Rcpp::as<bool>(debug_);
 
 	Simulator * simulator = new Simulator(processState, modelManager, periodLength);
 	simulator->setVerbose(verbose);
+	simulator->setDebug(debug);
 
 	return Rcpp::XPtr<Simulator>(simulator, false);
 

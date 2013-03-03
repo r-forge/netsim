@@ -364,7 +364,37 @@ void testNetworkUtilsGetNRandomNodes(){
 }
 
 void deathAndBirthOfNodesTest(){
+	// TODO implement
+}
 
+void regularLatticeNetworkUtilsTest(){
+	MemoryOneModeNetwork * network = new MemoryOneModeNetwork(10);
+
+	NetworkUtils::addRingLatticeTiesToNetwork(network, 4);
+
+	NetworkUtils::dumpNetwork(network);
+
+	ASSERT(network->hasTie(0,1));
+	ASSERT(network->hasTie(0,2));
+	ASSERT(network->hasTie(1,0));
+	ASSERT(network->hasTie(2,0));
+	ASSERT(network->hasTie(0,9));
+	ASSERT(network->hasTie(0,8));
+	ASSERT(network->hasTie(9,0));
+	ASSERT(network->hasTie(8,0));
+	ASSERT(network->hasTie(5,4));
+	ASSERT(network->hasTie(5,3));
+	ASSERT(network->hasTie(3,5));
+	ASSERT(network->hasTie(9,8));
+	ASSERT(network->hasTie(9,7));
+
+	ASSERT(!network->hasTie(5,2));
+	ASSERT(!network->hasTie(0,3));
+	ASSERT(!network->hasTie(0,4));
+	ASSERT(!network->hasTie(3,0));
+	ASSERT(!network->hasTie(4,0));
+	ASSERT(!network->hasTie(9,6));
+	ASSERT(!network->hasTie(6,9));
 }
 
 cute::suite getTestSuiteMemoryOneModeNetwork(){
@@ -382,6 +412,7 @@ cute::suite getTestSuiteMemoryOneModeNetwork(){
 	s.push_back(CUTE(testNetworkUtilsCountTiesAndDensity));
 	s.push_back(CUTE(testNetworkUtilsHammingDistance));
 	s.push_back(CUTE(testNetworkUtilsGetNRandomNodes));
+	s.push_back(CUTE(regularLatticeNetworkUtilsTest));
 
 	return s;
 }

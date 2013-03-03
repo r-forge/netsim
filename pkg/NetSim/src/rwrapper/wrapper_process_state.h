@@ -29,5 +29,10 @@ RcppExport SEXP get_attribute_container_index(SEXP processStateManager, SEXP nam
 
 RcppExport SEXP get_attribute_container(SEXP processStateManager, SEXP name);
 
+RcppExport SEXP add_global_attribute(SEXP processStateManager, SEXP value, SEXP name);
+
+RcppExport SEXP get_global_attribute_index(SEXP processStateManager, SEXP name);
+
+RcppExport SEXP get_global_attribute(SEXP processStateManager, SEXP name);
 
 #endif /* CREATE_PROCESS_STATE_H_ */

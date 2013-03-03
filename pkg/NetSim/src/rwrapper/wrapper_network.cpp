@@ -78,3 +78,18 @@ SEXP set_tie(SEXP network_, SEXP i_, SEXP j_, SEXP value_) {
 
 		END_RCPP
 }
+
+SEXP add_random_ties_to_network(SEXP network_, SEXP probability_) {
+	BEGIN_RCPP
+
+		Rcpp::XPtr<MemoryOneModeNetwork> network(network_);
+
+		double probabilty = Rcpp::as<double>(probability_);
+
+		NetworkUtils::addRandomTiesToNetwork(network, probabilty);
+
+		Rcpp::XPtr<MemoryOneModeNetwork> pointer(network, false);
+		return pointer;
+
+		END_RCPP
+}

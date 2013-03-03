@@ -48,6 +48,8 @@ public:
 	 */
 	static void addRandomTiesToNetwork(Network * network, double p);
 
+	static void addRingLatticeTiesToNetwork(MemoryOneModeNetwork * network, int nReciprocalEdges = 4);
+
 private:
 	static int countTies(MemoryOneModeNetwork* network, bool reciprocal);
 

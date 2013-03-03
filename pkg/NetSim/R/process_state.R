@@ -31,6 +31,21 @@ get_attribute_container <- function(processState, name = "defaultAttribute"){
 	.Call("get_attribute_container", processState, name, PACKAGE = "NetSim")
 } 
 
+#RcppExport SEXP add_global_attribute(SEXP processStateManager, SEXP value, SEXP name);
+add_global_attribute <- function(processState, value = 0, name = "defaultGlobalAttribute"){
+	.Call("add_global_attribute", processState, value, name, PACKAGE = "NetSim")
+}
+
+#RcppExport SEXP get_global_attribute_index(SEXP processStateManager, SEXP name);
+get_global_attribute_index <- function(processState, name = "defaultGlobalAttribute"){
+	.Call("get_global_attribute_index", processState, name, PACKAGE = "NetSim")
+}
+
+#RcppExport SEXP get_global_attribute(SEXP processStateManager, SEXP name);
+get_global_attribute <- function(processState, name = "defaultGlobalAttribute"){
+	.Call("get_global_attribute", processState, name, PACKAGE = "NetSim")
+}
+
 # for testing
 print.processState <- function(x){
 	print(network_as_matrix(get_network("default")));

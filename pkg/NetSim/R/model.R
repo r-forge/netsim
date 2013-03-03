@@ -15,14 +15,18 @@ add_time_model <- function(modelManager, timeModel){
 }
 
 add_change_model <- function(modelManager, timeModel, changeModel){
-	.Call("add_change_model",modelManager, timeModel, changeModel, package = "NetSim")
+	.Call("add_change_model", modelManager, timeModel, changeModel, package = "NetSim")
 	
 }
 
 add_updater <- function(modelManager, changeModel, updater){
-	.Call("add_updater",modelManager, changeModel, updater, package = "NetSim")
+	.Call("add_updater", modelManager, changeModel, updater, package = "NetSim")
 }
 
+# RcppExport SEXP add_time_updater(SEXP modelManager, SEXP timeUpdater);
+add_time_updater <- function(modelManager, timeUpdater){
+	.Call("add_time_updater", modelManager, timeUpdater, PACKAGE = "NetSim")
+}
 
 ##############################
 # Create particular models
@@ -73,6 +77,19 @@ create_change_model.jacksonRogersChangeModel <- function(
 	
 }
 
+create_jackson_rogers_change_model <- function(networkId, pLinkToParentNode, 
+		pLinkToNeigborNode, nParentNodes, nNeighborNodes){
+	.Call("create_jackson_rogers_change_model", networkId, pLinkToParentNode, 
+			pLinkToNeigborNode, nParentNodes, nNeighborNodes, PACKAGE = "NetSim")
+	
+}
+
+# RcppExport SEXP create_watts_strogatz_change_model(SEXP networkId);
+create_watts_strogatz_change_model <- function(networkId){
+	.Call("create_watts_strogatz_change_model", networkId, PACKAGE = "NetSim")
+}
+
+
 #RcppExport SEXP create_round_based_time_model(
 #		SEXP timerIndex, SEXP intervalLength, SEXP startTime);
 #
@@ -81,6 +98,11 @@ create_round_based_time_model <- function(
 	
 	.Call("create_round_based_time_model", timerIndex, 
 			intervalLength, startTime, PACKAGE = "NetSim")
+}
+
+#RcppExport SEXP create_add_actor_updater();
+create_add_actor_updater <- function(){
+	.Call("create_add_actor_updater", package = "NetSim")
 }
 
 #RcppExport SEXP create_add_ties_from_newborn_actor_updater(

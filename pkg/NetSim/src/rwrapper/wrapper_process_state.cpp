@@ -128,3 +128,44 @@ SEXP get_attribute_container(SEXP processStateManager_, SEXP name_) {
 
 	END_RCPP
 }
+
+SEXP add_global_attribute(SEXP processStateManager_, SEXP value_, SEXP name_) {
+	BEGIN_RCPP
+
+	ProcessStateManager * processStateManager =
+			Rcpp::XPtr<ProcessStateManager>(processStateManager_);
+	double value = Rcpp::as<double>(value_);
+	std::string name = Rcpp::as<std::string>(name_);
+
+	processStateManager->addGlobalAttribute(value, name);
+
+	return Rcpp::XPtr<ProcessStateManager>(processStateManager, false);
+
+
+	END_RCPP
+}
+
+SEXP get_global_attribute_index(SEXP processStateManager_, SEXP name_) {
+	BEGIN_RCPP
+
+	ProcessStateManager * processStateManager =
+			Rcpp::XPtr<ProcessStateManager>(processStateManager_);
+	std::string name = Rcpp::as<std::string>(name_);
+
+	return Rcpp::wrap(processStateManager->getGlobalAttributeIndex(name));
+
+	END_RCPP
+}
+
+SEXP get_global_attribute(SEXP processStateManager_, SEXP name_) {
+	BEGIN_RCPP
+
+	ProcessStateManager * processStateManager =
+			Rcpp::XPtr<ProcessStateManager>(processStateManager_);
+	std::string name = Rcpp::as<std::string>(name_);
+
+	double v = processStateManager->getGlobalAttribute(name);
+	return Rcpp::wrap(v);
+
+	END_RCPP
+}

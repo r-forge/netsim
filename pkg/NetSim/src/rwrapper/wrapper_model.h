@@ -30,6 +30,8 @@ RcppExport SEXP add_change_model(SEXP modelManager, SEXP timeModel, SEXP changeM
 
 RcppExport SEXP add_updater(SEXP modelManager, SEXP changeModel, SEXP updater);
 
+RcppExport SEXP add_time_updater(SEXP modelManager, SEXP timeUpdater);
+
 RcppExport SEXP create_poisson_model(SEXP param);
 
 RcppExport SEXP create_effect_container();
@@ -67,8 +69,12 @@ RcppExport SEXP create_jackson_rogers_change_model(
 		SEXP networkId, SEXP pLinkToParentNode, SEXP pLinkToNeighborNode,
 		SEXP nParentNodes, SEXP nNeighborNodes);
 
+RcppExport SEXP create_watts_strogatz_change_model(SEXP networkId);
+
 RcppExport SEXP create_round_based_time_model(
 		SEXP timerIndex, SEXP intervalLength, SEXP startTime);
+
+RcppExport SEXP create_add_actor_updater();
 
 RcppExport SEXP create_add_ties_from_newborn_actor_updater(
 		SEXP networkIndex);

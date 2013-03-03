@@ -101,7 +101,7 @@ int main(int argc, char *argv[]){
 			new std::set<std::pair<SaomEffect*, double> *>(),
 			new std::vector<Updater*>(1, new TieSwapUpdater(indexNetwork)));
 
-	saom->setDebugMode();
+	// saom->setDebugMode();
 
 	myModelManager.addTimeModel(poissonModel);
 	myModelManager.addChangeModel(poissonModel, saom);

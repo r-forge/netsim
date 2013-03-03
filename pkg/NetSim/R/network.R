@@ -16,3 +16,10 @@ set_tie <- function(network, i, j, value){
 	.Call("set_tie", network, i, j, value, PACKAGE = "NetSim")
 }
 
+#RcppExport SEXP add_random_ties_to_network(SEXP network, SEXP probability);
+add_random_ties_to_network <- function(network, probability = 0.5){
+	.Call("add_random_ties_to_network", network, probability, PACKAGE = "NetSim")
+}
+
+
+

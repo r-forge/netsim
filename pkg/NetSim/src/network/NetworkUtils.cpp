@@ -191,6 +191,52 @@ std::pair<int, int> NetworkUtils::getRandomTie(MemoryOneModeNetwork* network) {
 	return std::make_pair(-1, -1);
 }
 
+void NetworkUtils::addRingLatticeTiesToNetwork(MemoryOneModeNetwork * network,
+		int nReciprocalEdges) {
+	// TODO check correctness of this exception statement
+	if (nReciprocalEdges % 2 != 0)
+		throw std::invalid_argument("A ring lattice needs an even number of reciprocal ties");
+
+	int tiesToAddFromNode = nReciprocalEdges / 2;
+	int nSteps = network->getSize() + tiesToAddFromNode - 1;
+	std::set<int> ids = network->getActorIDs();
+	std::set<int>::iterator itNodes = ids.begin();
+
+	std::vector<int> lastNodes(tiesToAddFromNode, -1);
+	for (size_t i = 0; i < lastNodes.size(); i++){
+		if (itNodes == ids.end())
+			throw std::invalid_argument("Too many edges to be included");
+		// the closest node has to be on [0]
+		lastNodes[lastNodes.size() - 1 - i] = *itNodes;
+		++itNodes;
+	}
+
+
+	while(nSteps > 0){
+		if (itNodes == ids.end()) itNodes = ids.begin();
+
+		// add ties
+		for (size_t i = 0; i < lastNodes.size(); i++){
+			network->addTie(*itNodes, lastNodes[i]);
+			network->addTie(lastNodes[i], *itNodes);
+			std::cout << *itNodes << " " << lastNodes[i] << std::endl;
+		}
+
+		// update list of previous nodes
+		for (size_t i = 0 ; i < lastNodes.size() - 1; i++){
+			lastNodes[i+1] = lastNodes[i];
+			std::cout << lastNodes[i] << " | ";
+		}
+		lastNodes[0] = *itNodes;
+		std::cout << *itNodes << std::endl;
+
+		itNodes++;
+		nSteps--;
+	}
+
+
+}
+
 int NetworkUtils::countTies(MemoryOneModeNetwork * network,
 		bool reciprocal) {
 
