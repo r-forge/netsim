@@ -7,6 +7,17 @@
 
 #include "AttributeContainer.h"
 
+
+AttributeContainer::AttributeContainer(std::vector<double> values) {
+	init(values, - DBL_MAX, DBL_MAX, 0, 0.0);
+}
+
+AttributeContainer::AttributeContainer(int n, double value) {
+	std::vector<double> v(n, value);
+	init(v, - DBL_MAX, DBL_MAX, 0, 0.0);
+}
+
+
 AttributeContainer::AttributeContainer(std::vector<double> values,
 		double min, double max, double by, double defaultValue) {
 	init(values, min, max, by, defaultValue);

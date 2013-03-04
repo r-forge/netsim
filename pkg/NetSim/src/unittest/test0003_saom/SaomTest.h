@@ -553,6 +553,133 @@ void densityParameterSaomTest(){
 
 }
 
+void attributeMultinomialChoiceNetworkChangeModelTest(){
+
+	// Parameters
+
+	int nSimuations = 10000;
+	double allowedDeviation = 0.01;
+
+	std::vector<double> poissonParameters(3,0);
+	poissonParameters[0] = 1;
+	poissonParameters[1] = 2;
+	poissonParameters[2] = 3;
+	double sumPoisson =
+			poissonParameters[0] + poissonParameters[1]+ poissonParameters[2];
+
+	std::vector<double> densityParameters(3,0);
+	densityParameters[0] = 1;
+	densityParameters[1] = 2;
+	densityParameters[2] = -1;
+
+	// Define Process State
+
+	MemoryOneModeNetwork * network = new MemoryOneModeNetwork(3);
+	network->addTie(0,1);
+	network->addTie(1,2);
+	network->addTie(2,0);
+
+	AttributeContainer * poissonParameterContainer =
+			new AttributeContainer(poissonParameters);
+	AttributeContainer * densityParameterContainer =
+			new AttributeContainer(densityParameters);
+
+	ProcessState * processState = new ProcessState();
+	size_t networkIndex = processState->addNetwork(network);
+	size_t poissonIndex = processState->addAttributeContainer(poissonParameterContainer);
+	size_t densityIndex = processState->addAttributeContainer(densityParameterContainer);
+
+
+	// Calculate expected probabilities
+
+	std::vector<double> denominators(3,0);
+	for(int i = 0; i < 3; i++){
+		denominators[0] += exp(i *densityParameters[0]);
+		denominators[1] += exp(i *densityParameters[1]);
+		denominators[2] += exp(i *densityParameters[2]);
+	}
+
+	std::vector<std::vector<double> > choiceProbabilities(3, std::vector<double>(3,0));
+	for(int i = 0; i < 3; i++){
+		for(int j = 0; j < 3; j++){
+			if (i == j)
+				choiceProbabilities[i][j] = exp(densityParameters[i]) / denominators[i];
+			else if (network->hasTie(i, j)) // remove tie
+				choiceProbabilities[i][j] = 1 / denominators[i];
+			else // add tie
+				choiceProbabilities[i][j] = exp(2* densityParameters[i]) / denominators[i];
+			std::cout << choiceProbabilities[i][j] << " ";
+		}
+		std::cout << std::endl;
+	}
+
+	std::vector<double> activityProbabilities(3,0);
+	for(int i = 0; i < 3; i++){
+		activityProbabilities[i] = poissonParameters[i] / sumPoisson;
+	}
+
+	// test the expected values (test the test)
+	for(int i = 0; i < 3; i++){
+		ASSERT_EQUAL(1.0 ,choiceProbabilities[i][0] +
+				choiceProbabilities[i][1] + choiceProbabilities[i][2]);
+	}
+	ASSERT_EQUAL(1.0, activityProbabilities[0] +
+			activityProbabilities[1] + activityProbabilities[2]);
+	ASSERT_EQUAL(1.0 / (1.0 + 2.0 + 3.0), activityProbabilities[0]);
+
+	std::vector<std::vector<double> > tieProbabilities(3, std::vector<double>(3,0));
+	double sumProbs = 0;
+	for(int i = 0; i < 3; i++){
+		for(int j = 0; j < 3; j++){
+			tieProbabilities[i][j] =
+					activityProbabilities[i] * choiceProbabilities[i][j];
+			sumProbs += tieProbabilities[i][j];
+		}
+	}
+	ASSERT_EQUAL(1.0, sumProbs);
+
+	// Simulate Probabilities with Change Model
+
+	std::vector<std::vector<double> > averageTies(3, std::vector<double>(3,0));
+	
+	AttributeMultinomialChoiceNetworkChangeModel attributeSaom(networkIndex,
+			poissonIndex,
+			std::vector<SaomEffect*>(1, new DensityEffect(networkIndex)),
+			std::vector<size_t>(1, densityIndex),
+			std::vector<Updater*>(1, new TieSwapUpdater(networkIndex))
+			);
+
+	attributeSaom.setDebugMode(false);
+
+
+	for (int iSim = 0; iSim < nSimuations; iSim++){
+		TieModelResult * result =
+				dynamic_cast<TieModelResult *>(attributeSaom.getChange(processState));
+		averageTies[result->getActorIndex1()][result->getActorIndex2()] +=
+				1.0 / (double) nSimuations;
+	}
+
+	// print results
+	for (int i = 0; i < 3; i++){
+		for (int j = 0; j < 3; j++){
+
+			std::cout << i << "->" << j << ": " <<
+					averageTies[i][j] << " (" <<
+					tieProbabilities[i][j] << ")" << std::endl;
+
+		}
+	}
+
+	// test results
+	for (int i = 0; i < 3; i++){
+		for (int j = 0; j < 3; j++){
+			ASSERT(fabs(tieProbabilities[i][j] - averageTies[i][j]) < allowedDeviation);
+		}
+	}
+
+
+}
+
 
 
 cute::suite getTestSaomSuite(){
@@ -565,6 +692,8 @@ cute::suite getTestSaomSuite(){
 	// commented out as very time consuming (in original specification)
 	s.push_back(CUTE(steglichParameterTest1));
 	// s.push_back(CUTE(steglichParameterTest2));
+	s.push_back(CUTE(attributeMultinomialChoiceNetworkChangeModelTest));
+
 
 	return s;
 }

@@ -66,6 +66,38 @@ private:
 			ProcessState* processState);
 };
 
+class AttributeMultinomialChoiceNetworkChangeModel : public ChangeModel{
+
+public:
+	AttributeMultinomialChoiceNetworkChangeModel(
+			size_t dependentNetworkIndex,
+			size_t poissonAttributeIndex, // to determine focal actor
+			std::vector<SaomEffect*> saomEffects,
+			std::vector<size_t> individualSaomParameters,
+			std::vector<Updater*> updaters);
+
+
+	/**
+	 * get focal actor and actor for
+	 * which the change is to be applied.
+	 */
+	ModelResult* getChange(ProcessState* processState);
+
+	/**
+	 * If set, extra debug messages will be sent to the console
+	 */
+	void setDebugMode(bool debug = true);
+
+private:
+	bool _debug;
+	size_t _poissonAttributeIndex;// to determine focal actor
+	size_t _dependentNetworkIndex;
+	std::vector<SaomEffect*> _saomEffects;
+	std::vector<size_t> _individualSaomParameters;
+	std::vector<Updater*> _updaters;
+
+};
+
 class EmptyMultinomialChoiceNetworkChangeModel : public ChangeModel{
 
 public:

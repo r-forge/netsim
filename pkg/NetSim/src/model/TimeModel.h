@@ -41,6 +41,23 @@ private:
 
 };
 
+/**
+ * This class is to be used if actors join the simulation or
+ * change their behavior stochstically.
+ * It needs to be linked to a change model also determining
+ * the "active" actor and not just her choices.
+ */
+class JointAttributePoissonTimeModel : public TimeModel{
+public:
+	JointAttributePoissonTimeModel(size_t attributeContainerIndex);
+
+	double getTimeSpan(ProcessState * processState);
+
+private:
+	size_t _attributeContainerIndex;
+
+};
+
 class RoundBasedTimeModel : public TimeModel{
 
 public:

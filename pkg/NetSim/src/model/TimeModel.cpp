@@ -39,3 +39,26 @@ double RoundBasedTimeModel::getTimeSpan(ProcessState* processState) {
 		return _intervalLength - timeSinceLast;
 	}
 }
+
+JointAttributePoissonTimeModel::JointAttributePoissonTimeModel(
+		size_t attributeContainerIndex) {
+	_attributeContainerIndex = attributeContainerIndex;
+}
+
+double JointAttributePoissonTimeModel::getTimeSpan(ProcessState* processState) {
+
+	AttributeContainer * container = processState->getAttributeContainer(
+			_attributeContainerIndex);
+
+	std::set<int> ids = processState->getActorIds();
+
+	double jointPoissonParameter = 0;
+
+	std::set<int>::iterator itIds = ids.begin();
+	for(; itIds != ids.end(); ++itIds)
+		jointPoissonParameter += container->getValue(*itIds);
+
+	double randomNumber = Random::getInstance().getRandom();
+	double timeSpan = -1 * log(1 - randomNumber) / jointPoissonParameter;
+	return timeSpan;
+}

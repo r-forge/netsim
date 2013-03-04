@@ -14,6 +14,7 @@
 #include <iostream>
 #include <math.h>
 #include <boost/unordered_map.hpp>
+#include <float.h>
 
 // forward declation
 class AttributeContainerMemento;
@@ -25,10 +26,12 @@ class AttributeContainerMemento;
 class AttributeContainer{
 
 public:
+	AttributeContainer(std::vector<double> values);
+	AttributeContainer(int n, double value);
 	AttributeContainer(std::vector<double> values,
-			double min = 0.0, double max = 1.0, double by = 1.0, double defaultValue =  0.0);
+			double min, double max, double by, double defaultValue = 0.0);
 	AttributeContainer(int n, double value,
-				double min = 0.0, double max = 1.0, double by = 1.0, double defaultValue =  0.0);
+				double min, double max, double by, double defaultValue = 0.0);
 
 	virtual ~AttributeContainer();
 

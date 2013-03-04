@@ -28,7 +28,7 @@ void attributeConstructorTest(){
 	double by = 1.0;
 
 	// should throw invalid argument exception as initialValue is not in range
-	ASSERT_THROWS(AttributeContainer a1(nActors, initialValue),
+	ASSERT_THROWS(AttributeContainer a1(nActors, initialValue, 0.0, 1.0, 1.0, 0.0),
 			std::invalid_argument);
 	ASSERT_THROWS(AttributeContainer a1(nActors, 1.0, 0.0, 2.0, 2.1),
 			std::invalid_argument);

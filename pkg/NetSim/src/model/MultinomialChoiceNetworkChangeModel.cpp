@@ -199,3 +199,94 @@ ModelResult* EmptyMultinomialChoiceNetworkChangeModel::getChange(
 		ProcessState* processState) {
 	return new ActorModelResult(-1);
 }
+
+AttributeMultinomialChoiceNetworkChangeModel::AttributeMultinomialChoiceNetworkChangeModel(
+		size_t dependentNetworkIndex,
+		size_t jointPoissonAttributeIndex,
+		std::vector<SaomEffect*> saomEffects,
+		std::vector<size_t> individualSaomParameters,
+		std::vector<Updater*> updaters) {
+
+	if (saomEffects.size() != individualSaomParameters.size())
+		throw std::invalid_argument(
+				"saomEffects and individualSaomParameters not of same length");
+
+	_poissonAttributeIndex = jointPoissonAttributeIndex;
+	_dependentNetworkIndex = dependentNetworkIndex;
+	_saomEffects = saomEffects;
+	_individualSaomParameters = individualSaomParameters;
+	_updaters = updaters;
+	_debug = false;
+}
+
+ModelResult* AttributeMultinomialChoiceNetworkChangeModel::getChange(
+		ProcessState* processState) {
+
+	// determine focal actor using (individual) Poisson parameter
+
+	int focalActor = -1;
+
+	std::set<int> ids = processState->getActorIds();
+	AttributeContainer * poissonAttributeContainer =
+			processState->getAttributeContainer(_poissonAttributeIndex);
+
+	double sumPoissonParameters = 0;
+	std::set<int>::iterator itIds = ids.begin();
+	for(; itIds != ids.end(); ++itIds){
+		double poissonParameter = poissonAttributeContainer->getValue(*itIds);
+		sumPoissonParameters += poissonParameter;
+	}
+
+	double rand = Random::getInstance().getRandom();
+	double cumulatedProbability = 0;
+	itIds = ids.begin();
+	for(; itIds != ids.end(); ++itIds){
+		double poissonParameter = poissonAttributeContainer->getValue(*itIds);
+		cumulatedProbability += poissonParameter / sumPoissonParameters;
+
+		if (cumulatedProbability >= rand){
+			focalActor = *itIds;
+			break;
+		}
+	}
+
+	if (_debug) std::cout << "Actor " << focalActor << " chosen." << std::endl;
+
+
+	// prepare parameters for saom constructor
+
+	std::set<std::pair<SaomEffect*, double> *> effectParameterPairs;
+
+	for (int i = 0; i < _saomEffects.size(); i++){
+		size_t index = _individualSaomParameters[i];
+		AttributeContainer * paramContainer =
+				processState->getAttributeContainer(index);
+		double param = paramContainer->getValue(focalActor);
+		effectParameterPairs.insert(new std::pair<SaomEffect*, double>(
+				_saomEffects[i], param));
+	}
+
+	// create saom with individual parameters
+
+	MultinomialChoiceNetworkChangeModel * saom =
+			new MultinomialChoiceNetworkChangeModel(
+					focalActor, _dependentNetworkIndex,
+					&effectParameterPairs, &_updaters);
+	saom->setDebugMode(_debug);
+
+	// run get change function in new saom
+
+	ModelResult * result = saom->getChange(processState);
+
+	// delete saom
+
+	delete saom;
+
+	// return model result
+
+	return result;
+}
+
+void AttributeMultinomialChoiceNetworkChangeModel::setDebugMode(bool debug) {
+	_debug = debug;
+}
