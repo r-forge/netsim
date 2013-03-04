@@ -140,6 +140,11 @@ ModelResult* MultinomialChoiceNetworkChangeModel::getChange(
 	return new TieModelResult(-1, -1);
 }
 
+void MultinomialChoiceNetworkChangeModel::addEffectParameterPair(
+		SaomEffect* effect, double parameter) {
+	_effectParameterPairs->insert(
+			new std::pair<SaomEffect*, double>(effect, parameter));
+}
 
 void MultinomialChoiceNetworkChangeModel::calculateTieContributionsWithMemento(
 		int nActors, const std::vector<double>& objectiveFunctions,
@@ -203,18 +208,18 @@ ModelResult* EmptyMultinomialChoiceNetworkChangeModel::getChange(
 AttributeMultinomialChoiceNetworkChangeModel::AttributeMultinomialChoiceNetworkChangeModel(
 		size_t dependentNetworkIndex,
 		size_t jointPoissonAttributeIndex,
-		std::vector<SaomEffect*> saomEffects,
-		std::vector<size_t> individualSaomParameters,
+		// std::vector<SaomEffect*> saomEffects,
+		// std::vector<size_t> individualSaomParameters,
 		std::vector<Updater*> updaters) {
 
-	if (saomEffects.size() != individualSaomParameters.size())
-		throw std::invalid_argument(
-				"saomEffects and individualSaomParameters not of same length");
+	//if (saomEffects.size() != individualSaomParameters.size())
+	//	throw std::invalid_argument(
+	//			"saomEffects and individualSaomParameters not of same length");
 
 	_poissonAttributeIndex = jointPoissonAttributeIndex;
 	_dependentNetworkIndex = dependentNetworkIndex;
-	_saomEffects = saomEffects;
-	_individualSaomParameters = individualSaomParameters;
+	// std::vector<SaomEffect*> _saomEffects;
+	// std::vector<size_t> _saomParameterIndexes;
 	_updaters = updaters;
 	_debug = false;
 }
@@ -258,7 +263,7 @@ ModelResult* AttributeMultinomialChoiceNetworkChangeModel::getChange(
 	std::set<std::pair<SaomEffect*, double> *> effectParameterPairs;
 
 	for (int i = 0; i < _saomEffects.size(); i++){
-		size_t index = _individualSaomParameters[i];
+		size_t index = _saomParameterIndexes[i];
 		AttributeContainer * paramContainer =
 				processState->getAttributeContainer(index);
 		double param = paramContainer->getValue(focalActor);
@@ -285,6 +290,12 @@ ModelResult* AttributeMultinomialChoiceNetworkChangeModel::getChange(
 	// return model result
 
 	return result;
+}
+
+void AttributeMultinomialChoiceNetworkChangeModel::addEffectParameterIndexPair(
+		SaomEffect* effect, size_t index) {
+	_saomEffects.push_back(effect);
+	_saomParameterIndexes.push_back(index);
 }
 
 void AttributeMultinomialChoiceNetworkChangeModel::setDebugMode(bool debug) {

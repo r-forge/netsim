@@ -644,10 +644,12 @@ void attributeMultinomialChoiceNetworkChangeModelTest(){
 	
 	AttributeMultinomialChoiceNetworkChangeModel attributeSaom(networkIndex,
 			poissonIndex,
-			std::vector<SaomEffect*>(1, new DensityEffect(networkIndex)),
-			std::vector<size_t>(1, densityIndex),
+			// std::vector<SaomEffect*>(1, new DensityEffect(networkIndex)),
+			// std::vector<size_t>(1, densityIndex),
 			std::vector<Updater*>(1, new TieSwapUpdater(networkIndex))
 			);
+
+	attributeSaom.addEffectParameterIndexPair(new DensityEffect(networkIndex), densityIndex);
 
 	attributeSaom.setDebugMode(false);
 

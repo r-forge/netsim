@@ -34,6 +34,12 @@ RcppExport SEXP add_time_updater(SEXP modelManager, SEXP timeUpdater);
 
 RcppExport SEXP create_poisson_model(SEXP param);
 
+// for pre-defined SAOMs
+RcppExport SEXP add_effect_with_parameter(SEXP saom, SEXP effect, SEXP parameter);
+
+// for saoms that use actor attributes
+RcppExport SEXP add_effect_with_index(SEXP saom, SEXP effect, SEXP index);
+
 RcppExport SEXP create_effect_container();
 
 RcppExport SEXP create_one_mode_effect(SEXP name, SEXP networkIndex);
@@ -57,6 +63,9 @@ RcppExport SEXP add_to_effect_container(SEXP effectContainer, SEXP effect, SEXP 
  */
 RcppExport SEXP create_multinomial_choice_network_change_model(
 		SEXP focalActorIndex, SEXP networkIndex, SEXP effectContainer, SEXP updater);
+
+RcppExport SEXP create_multinomial_choice_network_change_model()
+
 
 RcppExport SEXP create_multinomial_choice_behavior_change_model(
 		SEXP focalActorIndex, SEXP attributeIndex, SEXP effectContainer);

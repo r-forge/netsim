@@ -49,6 +49,8 @@ public:
 	 */
 	void setDebugMode(bool verbose = true);
 
+	void addEffectParameterPair(SaomEffect* effect, double parameter);
+
 
 private:
 	int _actorIndex;
@@ -72,8 +74,8 @@ public:
 	AttributeMultinomialChoiceNetworkChangeModel(
 			size_t dependentNetworkIndex,
 			size_t poissonAttributeIndex, // to determine focal actor
-			std::vector<SaomEffect*> saomEffects,
-			std::vector<size_t> individualSaomParameters,
+			// std::vector<SaomEffect*> saomEffects,
+			// std::vector<size_t> individualSaomParameters,
 			std::vector<Updater*> updaters);
 
 
@@ -82,6 +84,8 @@ public:
 	 * which the change is to be applied.
 	 */
 	ModelResult* getChange(ProcessState* processState);
+
+	void addEffectParameterIndexPair(SaomEffect* effect, size_t index);
 
 	/**
 	 * If set, extra debug messages will be sent to the console
@@ -93,7 +97,7 @@ private:
 	size_t _poissonAttributeIndex;// to determine focal actor
 	size_t _dependentNetworkIndex;
 	std::vector<SaomEffect*> _saomEffects;
-	std::vector<size_t> _individualSaomParameters;
+	std::vector<size_t> _saomParameterIndexes;
 	std::vector<Updater*> _updaters;
 
 };

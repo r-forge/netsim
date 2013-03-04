@@ -367,3 +367,34 @@ SEXP create_rewire_tie_updater(SEXP networkId_) {
 
 	END_RCPP
 }
+
+SEXP add_effect_with_parameter(SEXP saom_, SEXP effect_, SEXP parameter_) {
+	BEGIN_RCPP
+
+	MultinomialChoiceNetworkChangeModel * saom =
+			Rcpp::XPtr<MultinomialChoiceNetworkChangeModel>(saom);
+	SaomEffect * effect = Rcpp::XPtr<SaomEffect>(effect);
+	double parameter = Rcpp::as<double>(parameter_);
+
+	saom->addEffectParameterPair(effect, parameter);
+
+
+	return Rcpp::XPtr<MultinomialChoiceNetworkChangeModel>(saom, false);
+
+	END_RCPP
+}
+
+SEXP add_effect_with_index(SEXP saom_, SEXP effect_, SEXP index_) {
+	BEGIN_RCPP
+
+	AttributeMultinomialChoiceNetworkChangeModel * saom =
+			Rcpp::XPtr<AttributeMultinomialChoiceNetworkChangeModel>(saom);
+	SaomEffect * effect = Rcpp::XPtr<SaomEffect>(effect);
+	int index = Rcpp::as<int>(index_);
+
+	saom->addEffectParameterIndexPair(effect, index);
+
+	return Rcpp::XPtr<AttributeMultinomialChoiceNetworkChangeModel>(saom, false);
+
+	END_RCPP
+}

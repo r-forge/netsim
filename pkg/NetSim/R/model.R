@@ -132,6 +132,26 @@ create_effect <- function(x, ...){
 	UseMethod("create_effect")
 }
 
+add_effect <- function(x, ...){
+	UseMethod("add_effect")
+}
+
+add_effect.externalptr <- function(x, ...){
+	# TODO make a proper case distinction	
+}
+
+#RcppExport SEXP add_effect_with_parameter(SEXP saom, SEXP effect, SEXP parameter);
+add_effect_with_parameter <- function(saom, effect, parameter){
+	.Call("add_effect_with_parameter", saom, effect, paramter, PACKAGE = "NetSim")
+}
+
+
+#RcppExport SEXP add_effect_with_index(SEXP saom, SEXP effect, SEXP index);
+add_effect_with_index <- function(saom, effect, index){
+	.Call("add_effect_with_index", saom, effect, index, PACKAGE = "NetSim")
+}
+
+
 create_effect.character <- function(name, ...){
 	typedName = get_effect_type(name);
 	create_effect(typedName, name, ...)
