@@ -21,6 +21,10 @@ std::string EffectFactory::getType(std::string name) {
 	if(NULL != getAttributeEffect(name, -1))
 		return "AttributeEffect";
 
+	if(NULL != getMultiplexNetworkEffect(name, -1, -1))
+		return "MultiplexNetworkEffect";
+
+
 	return "UnknownType";
 
 }
@@ -104,4 +108,13 @@ AttributeEffect * EffectFactory::getAttributeEffect(std::string name,
 
 	return NULL;
 
+}
+
+MultiplexNetworkEffect* EffectFactory::getMultiplexNetworkEffect(
+		std::string name, size_t networkIndex, size_t secondNetworkIndex) {
+
+	if(name == "crprod")
+		return new DyadicCovariateXEffect(networkIndex, secondNetworkIndex, 0);
+
+	return NULL;
 }

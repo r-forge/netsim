@@ -16,7 +16,10 @@ AttributeContainer getTwoActorAttributeContainer(){
 	double min = 0.0;
 	double max = 3.0;
 	double by = 1.0;
-	AttributeContainer a(nActors, initialValue, min, max, by);
+	AttributeContainer a(nActors, initialValue);
+	a.setMin(min);
+	a.setMax(max);
+	a.setBy(by);
 	return a;
 }
 
@@ -28,15 +31,18 @@ void attributeConstructorTest(){
 	double by = 1.0;
 
 	// should throw invalid argument exception as initialValue is not in range
-	ASSERT_THROWS(AttributeContainer a1(nActors, initialValue, 0.0, 1.0, 1.0, 0.0),
-			std::invalid_argument);
-	ASSERT_THROWS(AttributeContainer a1(nActors, 1.0, 0.0, 2.0, 2.1),
-			std::invalid_argument);
+	// ASSERT_THROWS(AttributeContainer a1(nActors, initialValue, 0.0, 1.0, 1.0, 0.0),
+	// 		std::invalid_argument);
+	// ASSERT_THROWS(AttributeContainer a1(nActors, 1.0, 0.0, 2.0, 2.1),
+	// 		std::invalid_argument);
 
 	AttributeContainer a2(nActors, 0.5);
 	ASSERT(a2.getSize() == nActors);
 
-	AttributeContainer a3(nActors, initialValue, min, max, by);
+	AttributeContainer a3(nActors, initialValue);
+	a3.setMin(min);
+	a3.setMax(max);
+	a3.setBy(by);
 
 }
 

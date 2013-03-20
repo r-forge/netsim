@@ -651,7 +651,7 @@ void attributeMultinomialChoiceNetworkChangeModelTest(){
 
 	attributeSaom.addEffectParameterIndexPair(new DensityEffect(networkIndex), densityIndex);
 
-	attributeSaom.setDebugMode(false);
+	attributeSaom.setDebug(false);
 
 
 	for (int iSim = 0; iSim < nSimuations; iSim++){

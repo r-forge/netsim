@@ -24,3 +24,7 @@ ModelResult* ChooseRandomTieChangeModel::getChange(ProcessState* processState) {
 
 	return new TieModelResult(tie.first, tie.second);
 }
+
+void ChangeModel::setDebug(bool debug) {
+	_debug = debug;
+}

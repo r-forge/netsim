@@ -13,7 +13,10 @@
 #include <vector>
 #include "../attribute/AttributeContainer.h"
 
-RcppExport SEXP create_attribute_container(SEXP list, SEXP min, SEXP max, SEXP by);
+RcppExport SEXP create_attribute_container(SEXP list);
+
+RcppExport SEXP create_scale_attribute_container(SEXP list, SEXP min,
+		SEXP max, SEXP by);
 
 RcppExport SEXP attribute_container_as_list(SEXP attributeContainer);
 

@@ -436,3 +436,47 @@ double SameXTransitivity::getEffectContribution(ProcessState* processState,
 std::string SameXTransitivity::getName() {
 	return "SameXTransitivity";
 }
+
+MultiplexNetworkEffect::MultiplexNetworkEffect(size_t networkIndex,
+		size_t secondNetworkIndex) : NetworkEffect(networkIndex){
+	_dyadicCovariateIndex = secondNetworkIndex;
+}
+
+DyadicCovariateXEffect::DyadicCovariateXEffect(size_t networkIndex,
+		size_t dyadicCovariateIndex, double meanCovariate) :
+				MultiplexNetworkEffect(networkIndex, dyadicCovariateIndex){
+	_meanCovariate = meanCovariate;
+}
+
+double DyadicCovariateXEffect::getEffectContribution(ProcessState* processState,
+		int actorIndex1, int actorIndex2) {
+
+	double tieValue = processState->getNetwork(_dyadicCovariateIndex)->
+			getTieValue(actorIndex1, actorIndex2);
+	return tieValue -_meanCovariate;
+}
+
+double DyadicCovariateXEffect::getEffect(ProcessState* processState,
+		int actorIndex) {
+
+	// over all outgoing ties sum the deviations from mean covariate
+	MemoryOneModeNetwork * network = dynamic_cast<MemoryOneModeNetwork*>(
+			processState->getNetwork(_networkIndex));
+	Network * dyadicCovariate = processState->getNetwork(_dyadicCovariateIndex);
+
+	std::set<int> neighbors = network->getOutgoingNeighbors(actorIndex);
+	std::set<int>::iterator itNeighbors = neighbors.begin();
+
+	double value = 0;
+
+	for(; itNeighbors != neighbors.end(); ++itNeighbors){
+		value += dyadicCovariate->getTieValue(actorIndex, *itNeighbors)
+				- _meanCovariate;
+	}
+
+	return value;
+}
+
+std::string DyadicCovariateXEffect::getName() {
+	return "";
+}

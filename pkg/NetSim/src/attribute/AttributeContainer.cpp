@@ -11,13 +11,12 @@
 AttributeContainer::AttributeContainer(std::vector<double> values) {
 	init(values, - DBL_MAX, DBL_MAX, 0, 0.0);
 }
-
 AttributeContainer::AttributeContainer(int n, double value) {
 	std::vector<double> v(n, value);
 	init(v, - DBL_MAX, DBL_MAX, 0, 0.0);
 }
 
-
+/*
 AttributeContainer::AttributeContainer(std::vector<double> values,
 		double min, double max, double by, double defaultValue) {
 	init(values, min, max, by, defaultValue);
@@ -29,7 +28,7 @@ AttributeContainer::AttributeContainer(int n, double value, double min,
 	std::vector<double> v(n, value);
 	init(v, min, max, by, defaultValue);
 }
-
+*/
 
 AttributeContainer::~AttributeContainer() {
 	// delete _actorValueMap;
@@ -111,7 +110,7 @@ AttributeContainerMemento* AttributeContainer::saveToMemento() {
 	return memento;
 }
 
-void AttributeContainer::restroreFromMemento(
+void AttributeContainer::restoreFromMemento(
 		AttributeContainerMemento* memento) {
 	_actorValueMap = memento->getActorValueMap();
 }
@@ -137,6 +136,18 @@ void AttributeContainer::addActor(size_t id) {
 
 void AttributeContainer::deleteActor(size_t id) {
 	_actorValueMap.erase(id);
+}
+
+void AttributeContainer::setMin(double min) {
+	_min = min;
+}
+
+void AttributeContainer::setMax(double max) {
+	_max = max;
+}
+
+void AttributeContainer::setBy(double by) {
+	_by = by;
 }
 
 void AttributeContainer::init(std::vector<double> values, double min,
@@ -174,3 +185,17 @@ void AttributeContainerMemento::setActorValueMap(
 std::map<int, double> AttributeContainerMemento::getActorValueMap() {
 	return _actorValueMap;
 }
+
+ScaleAttributeContainer::ScaleAttributeContainer(std::vector<double> values,
+		double min, double max, double by) : AttributeContainer(values) {
+	double defaultValue = min;
+	init(values, min, max, by, defaultValue);
+}
+
+ScaleAttributeContainer::ScaleAttributeContainer(int n, double value,
+		double min, double max, double by) : AttributeContainer(n, value){
+	std::vector<double> v(n, value);
+	double defaultValue = min;
+	init(v, min, max, by, defaultValue);
+}
+

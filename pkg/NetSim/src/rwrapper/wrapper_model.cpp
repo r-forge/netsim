@@ -78,10 +78,31 @@ SEXP create_poisson_model(SEXP param_) {
 	double param = Rcpp::as<double>(param_);
 	PoissonTimeModel * poissonModel = new PoissonTimeModel(param);
 
-	return Rcpp::XPtr<PoissonTimeModel>(poissonModel, false);
+	Rcpp::XPtr<PoissonTimeModel> pointer =
+			Rcpp::XPtr<PoissonTimeModel>(poissonModel, false);
+	pointer.attr("class") = "PoissonModel";
+
+	return pointer;
 
 	END_RCPP
 }
+
+SEXP create_attribute_poisson_model(SEXP attributeIndex_) {
+	BEGIN_RCPP
+
+	int attributeIndex = Rcpp::as<int>(attributeIndex_);
+
+	JointAttributePoissonTimeModel * poissonModel =
+			new JointAttributePoissonTimeModel(attributeIndex);
+
+	Rcpp::XPtr<JointAttributePoissonTimeModel> pointer =
+			Rcpp::XPtr<JointAttributePoissonTimeModel>(poissonModel, false);
+	pointer.attr("class") = "AttributePoissonModel";
+
+	return pointer;
+	END_RCPP
+}
+
 
 SEXP create_effect_container() {
 	BEGIN_RCPP
@@ -141,10 +162,42 @@ SEXP create_multinomial_choice_network_change_model(SEXP focalActor_,
 			effectManager->getEffectContainer(),
 			updateList);
 
-	return Rcpp::XPtr<MultinomialChoiceNetworkChangeModel>(saom, false);
+	Rcpp::XPtr<MultinomialChoiceNetworkChangeModel> pointer =
+			Rcpp::XPtr<MultinomialChoiceNetworkChangeModel>(saom, false);
+
+	pointer.attr("class") = "MultinomialChoiceNetworkChoiceChangeModel";
+
+	return pointer;
+
 
 	END_RCPP
 }
+
+
+SEXP create_attribute_multinomial_choice_network_change_model(SEXP networkIndex_,
+		SEXP poissonAttributeIndex_, SEXP updater_) {
+	BEGIN_RCPP
+
+	int networkIndex= Rcpp::as<int>(networkIndex_);
+	int poissonAttributeIndex = Rcpp::as<int>(poissonAttributeIndex_);
+	Updater * updater = Rcpp::XPtr<Updater>(updater_);
+
+	std::vector<Updater* > updateList = std::vector<Updater*>(1, updater);
+
+	AttributeMultinomialChoiceNetworkChangeModel * saom =
+			new AttributeMultinomialChoiceNetworkChangeModel(
+					networkIndex, poissonAttributeIndex, updateList);
+
+	Rcpp::XPtr<AttributeMultinomialChoiceNetworkChangeModel> pointer =
+			Rcpp::XPtr<AttributeMultinomialChoiceNetworkChangeModel>(saom, false);
+
+	pointer.attr("class") = "AttributeMultinomialChoiceNetworkChoiceChangeModel";
+
+	return pointer;
+
+	END_RCPP
+}
+
 
 SEXP create_tie_swap_updater(SEXP networkIndex_) {
 	BEGIN_RCPP
@@ -239,6 +292,28 @@ SEXP create_attribute_effect(SEXP name_, SEXP attributeIndex_) {
 
 }
 
+SEXP create_multiplex_network_effect(SEXP name_,
+		SEXP dependentNetworkIndex_,
+		SEXP secondNetworkIndex_) {
+	BEGIN_RCPP
+
+	std::string name = Rcpp::as<std::string>(name_);
+	int networkIndex = Rcpp::as<int>(dependentNetworkIndex_);
+	int secondNetworkIndex = Rcpp::as<int>(secondNetworkIndex_);
+
+	EffectFactory factor;
+	MultiplexNetworkEffect * multiplexEffect =
+			factor.getMultiplexNetworkEffect(name, networkIndex, secondNetworkIndex);
+
+	Rcpp::XPtr<MultiplexNetworkEffect> pointer(multiplexEffect, false);
+	pointer.attr("class") = "MultiplexNetworkEffect";
+
+	return pointer;
+
+	END_RCPP
+
+
+}
 SEXP create_multinomial_choice_behavior_change_model(SEXP focalActorIndex_, SEXP attributeIndex_,
 		SEXP effectContainer_) {
 	BEGIN_RCPP
@@ -379,7 +454,13 @@ SEXP add_effect_with_parameter(SEXP saom_, SEXP effect_, SEXP parameter_) {
 	saom->addEffectParameterPair(effect, parameter);
 
 
-	return Rcpp::XPtr<MultinomialChoiceNetworkChangeModel>(saom, false);
+	Rcpp::XPtr<MultinomialChoiceNetworkChangeModel> pointer =
+			Rcpp::XPtr<MultinomialChoiceNetworkChangeModel>(saom, false);
+
+	pointer.attr("class") = "MultinomialChoiceNetworkChangeModel";
+
+	return pointer;
+
 
 	END_RCPP
 }
@@ -388,13 +469,34 @@ SEXP add_effect_with_index(SEXP saom_, SEXP effect_, SEXP index_) {
 	BEGIN_RCPP
 
 	AttributeMultinomialChoiceNetworkChangeModel * saom =
-			Rcpp::XPtr<AttributeMultinomialChoiceNetworkChangeModel>(saom);
-	SaomEffect * effect = Rcpp::XPtr<SaomEffect>(effect);
+			Rcpp::XPtr<AttributeMultinomialChoiceNetworkChangeModel>(saom_);
+	SaomEffect * effect = Rcpp::XPtr<SaomEffect>(effect_);
 	int index = Rcpp::as<int>(index_);
 
 	saom->addEffectParameterIndexPair(effect, index);
 
-	return Rcpp::XPtr<AttributeMultinomialChoiceNetworkChangeModel>(saom, false);
+	Rcpp::XPtr<AttributeMultinomialChoiceNetworkChangeModel> pointer =
+			Rcpp::XPtr<AttributeMultinomialChoiceNetworkChangeModel>(saom, false);
+
+	pointer.attr("class") = "AttributeMultinomialChoiceNetworkChangeModel";
+
+	return pointer;
 
 	END_RCPP
 }
+
+SEXP create_set_attribute_of_newborn_actor_updater(SEXP attributeIndex_,
+		SEXP value_) {
+	BEGIN_RCPP
+
+	int attributeIndex = Rcpp::as<int>(attributeIndex_);
+	double value = Rcpp::as<double>(value_);
+
+	AddFixedAttributeToNewActorUpdater * updater =
+			new AddFixedAttributeToNewActorUpdater(attributeIndex, value);
+
+	return Rcpp::XPtr<AddFixedAttributeToNewActorUpdater>(updater, false);
+
+	END_RCPP
+}
+

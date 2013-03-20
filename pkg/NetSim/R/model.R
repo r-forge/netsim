@@ -37,6 +37,11 @@ create_poisson_model <- function(param = 1){
 	.Call("create_poisson_model", param, PACKAGE = "NetSim")
 }
 
+# RcppExport SEXP create_attribute_poisson_model(SEXP attributeIndex);
+create_attribute_poisson_model <- function(attributeIndex){
+	.Call("create_attribute_poisson_model", attributeIndex, PACKAGE = "NetSim")
+}
+
 # change models
 
 create_change_model <- function(type, ...){
@@ -119,6 +124,14 @@ create_add_ties_from_newborn_actor_updater <- function(
 			
 }
 
+# RcppExport SEXP create_set_attribute_of_newborn_actor_updater(
+# 		SEXP attributeIndex, SEXP value);
+create_set_attribute_of_newborn_actor_updater <- function(
+		attributeIndex, value){
+	.Call("create_set_attribute_of_newborn_actor_updater", 
+			attributeIndex, value, PACKAGE = "NetSim")
+}
+
 #RcppExport SEXP create_timer_updater(SEXP timerIndex);
 create_timer_updater <- function(timerIndex){
 	.Call("create_timer_updater", timerIndex, PACKAGE = "NetSim")
@@ -136,8 +149,12 @@ add_effect <- function(x, ...){
 	UseMethod("add_effect")
 }
 
-add_effect.externalptr <- function(x, ...){
-	# TODO make a proper case distinction	
+add_effect.AttributeMultinomialChoiceNetworkChoiceChangeModel <- function(x, ...){
+	add_effect_with_index(x, ...)	
+}
+
+add_effect.MultinomialChoiceNetworkChoiceChangeModel <- function(x, ...){
+	add_effect_with_parameter(x, ...)
 }
 
 #RcppExport SEXP add_effect_with_parameter(SEXP saom, SEXP effect, SEXP parameter);
@@ -175,6 +192,13 @@ create_effect.AttributeEffect <- function(type, name, attributeIndex){
 	.Call("create_attribute_effect", name, attributeIndex, PACKAGE = "NetSim")
 }
 
+create_effect.MultiplexNetworkEffect <- function(type, name, 
+		dependentNetworkIndex, 
+		independentNetworkIndex){
+	.Call("create_multiplex_network_effect", name, 
+			dependentNetworkIndex, independentNetworkIndex, PACKAGE = "NetSim")
+}
+
 
 ## error
 create_effect.UnknownType <- function(name, ...){
@@ -206,6 +230,13 @@ create_multinomial_choice_behavior_change_model <- function(
 			PACKAGE = "NetSim")
 }
 
+# RcppExport SEXP create_attribute_multinomial_choice_network_change_model(
+# 		SEXP networkIndex, SEXP poissonAttributeIndex, SEXP updater);
+create_attribute_multinomial_choice_network_change_model <- function(
+		networkIndex, poissonAttributeIndex, updater){
+	.Call("create_attribute_multinomial_choice_network_change_model",
+			networkIndex, poissonAttributeIndex, updater, PACKAGE = "NetSim")
+}
 
 create_siena_model_manager <- function(poissonParameter, dependentNetworkIndex, 
 		effectNames, effectInitParameters, effectParameters, nActors){

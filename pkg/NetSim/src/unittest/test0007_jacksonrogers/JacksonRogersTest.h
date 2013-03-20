@@ -65,7 +65,7 @@ void jacksonRogersParentSearchTest(){
 }
 
 void jacksonRogersNeighborsSearchTest(){
-	int nSimulations = 10000;
+	int nSimulations = 30000;
 	double allowedDeviation1 = 0.01;
 	double allowedDeviation2 = 0.01;
 

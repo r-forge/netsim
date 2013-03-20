@@ -40,6 +40,9 @@ public:
 	 *
 	 * It assumes that the effect can be reconstructed by iterating over
 	 * all ties (using hasTie) and then summing up the effect contributions.
+	 *
+	 * So this is the contribution to the utility function assuming that the
+	 * tie from actorIndex1 to actorIndex2 exists.
 	 */
 	virtual double getEffectContribution(ProcessState * processState,
 			int actorIndex1, int actorIndex2) = 0;
@@ -278,6 +281,37 @@ public:
 	double getEffect(ProcessState * processState, int actorIndex);
 
 	std::string getName();
+};
+
+class MultiplexNetworkEffect : public NetworkEffect{
+public:
+	MultiplexNetworkEffect(size_t networkIndex, size_t dyadicCovariateIndex);
+
+protected:
+	size_t _dyadicCovariateIndex;
+
+};
+
+class DyadicCovariateXEffect : public MultiplexNetworkEffect{
+public:
+	/**
+	 * The X effect is centered during initialization assuming that
+	 * the covariate network remains unchanged.
+	 * The related multiplex crprod effect is not centered and can be
+	 * created by initializing this effect with a mean of 0.
+	 */
+	DyadicCovariateXEffect(size_t networkIndex, size_t dyadicCovariateIndex,
+			double meanCovariate = 0);
+
+	double getEffect(ProcessState * processState, int actorIndex);
+
+	double getEffectContribution(ProcessState * processState,
+				int actorIndex1, int actorIndex2);
+
+	std::string getName();
+
+protected:
+	double _meanCovariate;
 };
 
 

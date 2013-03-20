@@ -213,7 +213,7 @@ void ProcessState::restoreFromMemento(ProcessStateMemento* memento) {
 	for (; itAttCont != _attributeContainers.end(); ++itAttCont){
 		AttributeContainerMemento * attMemento =
 				memento->getAttributeContainerMemento((*itAttCont).first);
-		(*itAttCont).second->restroreFromMemento(attMemento);
+		(*itAttCont).second->restoreFromMemento(attMemento);
 	}
 
 	// restore global attributes

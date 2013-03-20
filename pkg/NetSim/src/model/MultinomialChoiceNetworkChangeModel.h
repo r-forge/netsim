@@ -17,6 +17,7 @@
 #include "Updater.h"
 #include "ModelResult.h"
 #include "../utils/Random.h"
+#include <stdexcept>
 
 class MultinomialChoiceNetworkChangeModel : public ChangeModel{
 
@@ -87,13 +88,7 @@ public:
 
 	void addEffectParameterIndexPair(SaomEffect* effect, size_t index);
 
-	/**
-	 * If set, extra debug messages will be sent to the console
-	 */
-	void setDebugMode(bool debug = true);
-
 private:
-	bool _debug;
 	size_t _poissonAttributeIndex;// to determine focal actor
 	size_t _dependentNetworkIndex;
 	std::vector<SaomEffect*> _saomEffects;
@@ -109,6 +104,13 @@ public:
 
 	ModelResult * getChange(ProcessState * processState);
 
+};
+
+// TODO do we need this class? Where sould it be located?
+class MissSpecifiedModelException : public std::runtime_error{
+public:
+	MissSpecifiedModelException(const std::string& message)
+        : std::runtime_error(message) { };
 };
 
 

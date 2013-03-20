@@ -18,6 +18,11 @@ class ChangeModel{
 public:
 	virtual ~ChangeModel(){ }
 	virtual ModelResult * getChange(ProcessState * processState) = 0;
+
+	void setDebug(bool debug);
+
+protected:
+	bool _debug;
 };
 
 class NullChangeModel : public ChangeModel{

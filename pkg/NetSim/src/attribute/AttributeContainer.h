@@ -28,10 +28,10 @@ class AttributeContainer{
 public:
 	AttributeContainer(std::vector<double> values);
 	AttributeContainer(int n, double value);
-	AttributeContainer(std::vector<double> values,
-			double min, double max, double by, double defaultValue = 0.0);
-	AttributeContainer(int n, double value,
-				double min, double max, double by, double defaultValue = 0.0);
+	// AttributeContainer(std::vector<double> values,
+	// 		double min, double max, double by, double defaultValue = 0.0);
+	// AttributeContainer(int n, double value,
+	// 			double min, double max, double by, double defaultValue = 0.0);
 
 	virtual ~AttributeContainer();
 
@@ -107,6 +107,21 @@ public:
 	void setDefaultValue(double defaultValue);
 
 	/**
+	 * set minimum value if the container is a scale
+	 */
+	void setMin(double min);
+
+	/**
+	 * set maximum value if the container is a scale
+	 */
+	void setMax(double max);
+
+	/**
+	 * set by value for ordered scales
+	 */
+	void setBy(double by);
+
+	/**
 	 * add actor with a particular value
 	 */
 	void addActor(size_t id, double value);
@@ -129,11 +144,11 @@ public:
 	/**
 	 * restore from Memento
 	 */
-	void restroreFromMemento(AttributeContainerMemento * memento);
+	void restoreFromMemento(AttributeContainerMemento * memento);
 
 
 
-private:
+protected:
 	double _min;
 	double _max;
 	double _by;
@@ -145,6 +160,13 @@ private:
 	void init(std::vector<double> values,
 			double min = 0.0, double max = 1.0,
 			double by = 1.0, double defaultValue = 0.0);
+};
+
+class ScaleAttributeContainer : public AttributeContainer{
+public:
+	ScaleAttributeContainer(std::vector<double> values, double min, double max, double by);
+	ScaleAttributeContainer(int n, double value, double min, double max, double by);
+
 };
 
 class AttributeContainerMemento{

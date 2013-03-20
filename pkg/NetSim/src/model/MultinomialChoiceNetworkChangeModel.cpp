@@ -105,7 +105,7 @@ ModelResult* MultinomialChoiceNetworkChangeModel::getChange(
 		++effectIndex;
 	}
 
-	// denominator
+	// calculate denominator
 	for (size_t i = 0; i < objectiveFunctions.size(); i++) {
 		denominator += exp(objectiveFunctions[i]);
 		if (_debug)
@@ -118,6 +118,10 @@ ModelResult* MultinomialChoiceNetworkChangeModel::getChange(
 
 	if (_debug)
 		std::cout << "calculated denominator: " << denominator << std::endl;
+
+	if (denominator >= DBL_MAX)
+		throw MissSpecifiedModelException(
+				"Infinite denominator in SAOM. You probably misspecified your model.");
 
 	// draw random number
 	double randomNumber = Random::getInstance().getRandom();
@@ -296,8 +300,4 @@ void AttributeMultinomialChoiceNetworkChangeModel::addEffectParameterIndexPair(
 		SaomEffect* effect, size_t index) {
 	_saomEffects.push_back(effect);
 	_saomParameterIndexes.push_back(index);
-}
-
-void AttributeMultinomialChoiceNetworkChangeModel::setDebugMode(bool debug) {
-	_debug = debug;
 }

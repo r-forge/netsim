@@ -46,6 +46,10 @@ public:
 			std::string name,
 			size_t attributeIndex);
 
+	MultiplexNetworkEffect * getMultiplexNetworkEffect(
+			std::string name,
+			size_t networkIndex,
+			size_t secondNetworkIndex);
 
 
 };

@@ -7,7 +7,25 @@
 
 #include "rwrapper_attribute_container.h"
 
-SEXP create_attribute_container(SEXP list_, SEXP min_, SEXP max_, SEXP by_) {
+SEXP create_attribute_container(SEXP list_) {
+	BEGIN_RCPP
+
+	// transform numeric vector into double vector
+	Rcpp::NumericVector list(list_);
+	int vectorLength = list.size();
+	std::vector<double> valuesVector(vectorLength,0);
+	for (int i = 0; i< vectorLength; i++){
+		valuesVector[i] = list(i);
+	}
+
+	AttributeContainer * attributeContainer = new AttributeContainer(valuesVector);
+
+	return Rcpp::XPtr<AttributeContainer>(attributeContainer, false);
+
+	END_RCPP
+}
+
+SEXP create_scale_attribute_container(SEXP list_, SEXP min_, SEXP max_, SEXP by_) {
 	BEGIN_RCPP
 
 	// transform numeric vector into double vector
@@ -22,12 +40,14 @@ SEXP create_attribute_container(SEXP list_, SEXP min_, SEXP max_, SEXP by_) {
 	double max = Rcpp::as<double>(max_);
 	double by = Rcpp::as<double>(by_);
 
-	AttributeContainer * attributeContainer = new AttributeContainer(valuesVector, min, max, by);
+	AttributeContainer * attributeContainer = new ScaleAttributeContainer(
+			valuesVector, min, max, by);
 
 	return Rcpp::XPtr<AttributeContainer>(attributeContainer, false);
 
 	END_RCPP
 }
+
 
 SEXP attribute_container_as_list(SEXP attributeContainer_) {
 	BEGIN_RCPP
@@ -59,5 +79,4 @@ SEXP set_value(SEXP attributeContainer_, SEXP i_, SEXP value_) {
 
 	END_RCPP
 }
-
 
