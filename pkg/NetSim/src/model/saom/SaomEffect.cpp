@@ -451,9 +451,9 @@ DyadicCovariateXEffect::DyadicCovariateXEffect(size_t networkIndex,
 double DyadicCovariateXEffect::getEffectContribution(ProcessState* processState,
 		int actorIndex1, int actorIndex2) {
 
-	double tieValue = processState->getNetwork(_dyadicCovariateIndex)->
+	double covariateTieValue = processState->getNetwork(_dyadicCovariateIndex)->
 			getTieValue(actorIndex1, actorIndex2);
-	return tieValue -_meanCovariate;
+	return covariateTieValue -_meanCovariate;
 }
 
 double DyadicCovariateXEffect::getEffect(ProcessState* processState,
@@ -470,8 +470,8 @@ double DyadicCovariateXEffect::getEffect(ProcessState* processState,
 	double value = 0;
 
 	for(; itNeighbors != neighbors.end(); ++itNeighbors){
-		value += dyadicCovariate->getTieValue(actorIndex, *itNeighbors)
-				- _meanCovariate;
+		value += (dyadicCovariate->getTieValue(actorIndex, *itNeighbors)
+				- _meanCovariate);
 	}
 
 	return value;

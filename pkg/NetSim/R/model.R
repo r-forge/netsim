@@ -238,6 +238,7 @@ create_attribute_multinomial_choice_network_change_model <- function(
 			networkIndex, poissonAttributeIndex, updater, PACKAGE = "NetSim")
 }
 
+# only for OneModeNetworkEffects
 create_siena_model_manager <- function(poissonParameter, dependentNetworkIndex, 
 		effectNames, effectInitParameters, effectParameters, nActors){
 	

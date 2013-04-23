@@ -17,8 +17,6 @@
 /**
  * DO NOT USE, YET!
  * TODO:
- * - implement Memento
- * - define Memento interface?
  * - fix update of ties (see failing tie update unit tests)
  */
 class ValuedMemoryOneModeNetwork : public MemoryOneModeNetwork{
@@ -55,6 +53,9 @@ public:
 	 * in a tree structure
 	 */
 	void multiplyTieValues(double value);
+
+
+	double getTieValue(int i, int j);
 
 
 private:

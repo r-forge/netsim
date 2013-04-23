@@ -78,6 +78,8 @@ public:
 	/**
 	 * Get value of tie from i to j
 	 * Overrides graph lookup in OneModeNetwork
+	 * Independent of the real value this always returns 1.0
+	 * if the tie has a positive value and 0 otherwise
 	 */
 	double getTieValue(int i, int j);
 

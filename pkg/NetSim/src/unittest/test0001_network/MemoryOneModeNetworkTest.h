@@ -20,7 +20,7 @@
  * node. No reflexive ties are generated.
  * 0 -> ALL -> 1
  */
-ValuedMemoryOneModeNetwork * getTwoStarNetwork(int size){
+MemoryOneModeNetwork * getTwoStarNetwork(int size){
 	// at least two nodes are necessary
 	if (size<2) return NULL;
 
@@ -37,7 +37,7 @@ ValuedMemoryOneModeNetwork * getTwoStarNetwork(int size){
 		}
 	}
 
-	ValuedMemoryOneModeNetwork *net2 = new ValuedMemoryOneModeNetwork(graph);
+	MemoryOneModeNetwork *net2 = new MemoryOneModeNetwork(graph);
 	return net2;
 
 }
@@ -224,13 +224,15 @@ void overlappingNeighborsTest(){
 
 }
 
-void unspecificTieUpdateTest(){
+void unspecificValuedTieUpdateTest(){
 	int size = 5;
-	ValuedMemoryOneModeNetwork* net = getTwoStarNetwork(size);
+	ValuedMemoryOneModeNetwork* net = new ValuedMemoryOneModeNetwork(size);
+	net->addTie(0, 1);
+
 	// NetworkUtils utils;
 	// utils.dumpNetwork(net);
 
-	ASSERT(net->getTieValue(0,1) == 1);
+	ASSERT(net->getTieValue(0,1) == 1.0);
 
 	net->multiplyTieValues(1.1);
 	ASSERT(net->getTieValue(0,1) == 1.1);
@@ -246,7 +248,8 @@ void unspecificTieUpdateTest(){
 
 void thresholdValueTest(){
 	int size = 5;
-	ValuedMemoryOneModeNetwork* net = getTwoStarNetwork(size);
+	ValuedMemoryOneModeNetwork * net = new ValuedMemoryOneModeNetwork(size);
+	net->addTie(0, 1);
 	ASSERT_EQUAL(1, net->getTieValue(0,1));
 	ASSERT_EQUAL(1, net->getMinTieValueAbove(0.5));
 	ASSERT(net->getMaxTieValueBelow(0.5) == 0.0);
@@ -407,7 +410,7 @@ cute::suite getTestSuiteMemoryOneModeNetwork(){
 	s.push_back(CUTE(overlappingNeighborsTest));
 	s.push_back(CUTE(neighborSetTestWithMultipleChanges));
 	// DO not work with binary MemoryOneModeNetwork implementation
-	// s.push_back(CUTE(unspecificTieUpdateTest));
+	s.push_back(CUTE(unspecificValuedTieUpdateTest));
 	// s.push_back(CUTE(thresholdValueTest));
 	s.push_back(CUTE(testNetworkUtilsCountTiesAndDensity));
 	s.push_back(CUTE(testNetworkUtilsHammingDistance));

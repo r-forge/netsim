@@ -100,6 +100,13 @@ void ValuedMemoryOneModeNetwork::init() {
 
 }
 
+double ValuedMemoryOneModeNetwork::getTieValue(int i, int j) {
+	//double check whether the pair is deleted automatically
+	std::pair<int, int> pair = std::make_pair(i, j);
+	return _tieValueMap[pair];
+
+}
+
 void ValuedMemoryOneModeNetwork::updateInternalRepresentation(int i, int j,
 		double oldValue, double newValue) {
 
