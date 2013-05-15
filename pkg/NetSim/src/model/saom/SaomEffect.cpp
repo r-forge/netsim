@@ -382,7 +382,7 @@ double TotalSimilarityEffect::getEffectContribution(ProcessState* processState,
 
 	// similarity_ij - mean similarity scores
 	double sim = (range - abs(alterValue - egoValue)) / range;
-	return sim = _meanSimilarityScores;
+	return (sim - _meanSimilarityScores);
 }
 
 std::string TotalSimilarityEffect::getName() {

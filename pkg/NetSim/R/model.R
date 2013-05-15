@@ -82,8 +82,8 @@ create_change_model.jacksonRogersChangeModel <- function(
 	
 }
 
-create_jackson_rogers_change_model <- function(networkId, pLinkToParentNode, 
-		pLinkToNeigborNode, nParentNodes, nNeighborNodes){
+create_jackson_rogers_change_model <- function(networkId, pLinkToParentNode = 1.0, 
+		pLinkToNeigborNode = 1.0, nParentNodes = 1, nNeighborNodes = 1){
 	.Call("create_jackson_rogers_change_model", networkId, pLinkToParentNode, 
 			pLinkToNeigborNode, nParentNodes, nNeighborNodes, PACKAGE = "NetSim")
 	
@@ -149,7 +149,7 @@ add_effect <- function(x, ...){
 	UseMethod("add_effect")
 }
 
-add_effect.AttributeMultinomialChoiceNetworkChoiceChangeModel <- function(x, ...){
+add_effect.AttributeMultinomialChoiceNetworkChangeModel <- function(x, ...){
 	add_effect_with_index(x, ...)	
 }
 

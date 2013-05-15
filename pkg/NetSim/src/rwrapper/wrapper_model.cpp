@@ -191,7 +191,7 @@ SEXP create_attribute_multinomial_choice_network_change_model(SEXP networkIndex_
 	Rcpp::XPtr<AttributeMultinomialChoiceNetworkChangeModel> pointer =
 			Rcpp::XPtr<AttributeMultinomialChoiceNetworkChangeModel>(saom, false);
 
-	pointer.attr("class") = "AttributeMultinomialChoiceNetworkChoiceChangeModel";
+	pointer.attr("class") = "AttributeMultinomialChoiceNetworkChangeModel";
 
 	return pointer;
 
