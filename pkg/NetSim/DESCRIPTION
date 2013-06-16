@@ -1,11 +1,11 @@
 Package: NetSim
 Type: Package
-Title: Simulate social networks with a number of different mechanisms (e.g., SIENA)
-Version: 0.1
-Date: 2012-11-14
+Title: A Social Networks Simulation Tool in R
+Version: 0.9
+Date: 2013-06-13
 Author: Christoph Stadtfeld
 Maintainer: Christoph Stadtfeld <c.stadtfeld@rug.nl>
-Description: Simulate social networks based on the actor-oriented models implemented in the SIENA (RSIENA) software. More models are to be implemented.  
-License: t.b.d. (Link reference)
+Description: NetSim allows to combine and simulate a variety of micro-models to research their impact on the macro-features of social networks.  
+License: GPL-2
 Depends: Rcpp (>= 0.9.15)
 LinkingTo: Rcpp

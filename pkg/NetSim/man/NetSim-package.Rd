@@ -3,34 +3,42 @@
 \alias{NetSim}
 \docType{package}
 \title{
-What the package does (short line)
+NetSim: A Social Networks Simulation Tool in R.
 }
 \description{
-More about what it does (maybe more than one line)
-~~ A concise (1-5 lines) description of the package ~~
+NetSim allows to combine and simulate a variety of micro-models to 
+research their impact on the macro-features of social networks.
 }
 \details{
 \tabular{ll}{
 Package: \tab NetSim\cr
 Type: \tab Package\cr
-Version: \tab 1.0\cr
-Date: \tab 2012-11-14\cr
-License: \tab What license is it under?\cr
+Version: \tab 0.9\cr
+Date: \tab 2013-06-13\cr
+License: \tab GPL-2\cr
 }
-~~ An overview of how to use the package, including the most important ~~
-~~ functions ~~
+Simulation models in \pkg{NetSim} are based on model sequences including the following steps\cr
+1. Determine the time span until the next change occurs\cr
+2. Apply change models based on the time span determined\cr
+3. Determine changes based on the updated states\cr
+4. Apply these changes
+
+There may be several of such model chains running simultaneously. The comparison of 
+step 1 of the models returns which action chain is started. 
 }
 \author{
-Who wrote it
-
-Maintainer: Who to complain to <yourfault@somewhere.net>
+Christoph Stadtfeld\cr
+Maintainer: Christoph Stadtfeld <c.stadtfeld@rug.nl>
 }
 \references{
-~~ Literature or other references for background information ~~
+If you use NetSim for publications, please cite \cr
+Christoph Stadtfeld (20130): \strong{NetSim: A Social Networks Simulation Tool in R}
+URL: http://www.christoph-stadtfeld.com/netsim \cr
+(check the web site for updated references)
 }
 %%~~ Optionally other standard keywords, one per line, from file KEYWORDS in ~~
 %%~~ the R documentation directory ~~
-\keyword{ package }
+\keyword{Social Networks, Simulation, Markov process}
 \seealso{
 ~~ Optional links to other man pages, e.g. ~~
 ~~ \code{\link[<pkg>:<pkg>-package]{<pkg>}} ~~
