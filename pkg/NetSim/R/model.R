@@ -159,7 +159,7 @@ add_effect.MultinomialChoiceNetworkChoiceChangeModel <- function(x, ...){
 
 #RcppExport SEXP add_effect_with_parameter(SEXP saom, SEXP effect, SEXP parameter);
 add_effect_with_parameter <- function(saom, effect, parameter){
-	.Call("add_effect_with_parameter", saom, effect, paramter, PACKAGE = "NetSim")
+	.Call("add_effect_with_parameter", saom, effect, parameter, PACKAGE = "NetSim")
 }
 
 
@@ -269,7 +269,7 @@ create_siena_model_manager <- function(poissonParameter, dependentNetworkIndex,
 				effectContainer
 		)
 		#tie updater
-		tieSwapUpdater <- create_tie_swap_updater(networkIndex)
+		tieSwapUpdater <- create_tie_swap_updater(dependentNetworkIndex)
 		
 		modelManager <<- add_time_model(modelManager, poissonModel)
 		modelManager <<- add_change_model(modelManager, poissonModel, saomModel)

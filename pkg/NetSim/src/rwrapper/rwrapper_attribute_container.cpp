@@ -20,7 +20,9 @@ SEXP create_attribute_container(SEXP list_) {
 
 	AttributeContainer * attributeContainer = new AttributeContainer(valuesVector);
 
-	return Rcpp::XPtr<AttributeContainer>(attributeContainer, false);
+	Rcpp::XPtr<AttributeContainer> pointer(attributeContainer, false);
+	pointer.attr("class") = "NetSimAttributeContainer";
+	return pointer;
 
 	END_RCPP
 }
@@ -43,7 +45,9 @@ SEXP create_scale_attribute_container(SEXP list_, SEXP min_, SEXP max_, SEXP by_
 	AttributeContainer * attributeContainer = new ScaleAttributeContainer(
 			valuesVector, min, max, by);
 
-	return Rcpp::XPtr<AttributeContainer>(attributeContainer, false);
+	Rcpp::XPtr<AttributeContainer> pointer(attributeContainer, false);
+	pointer.attr("class") = "NetSimAttributeContainer";
+	return pointer;
 
 	END_RCPP
 }
@@ -75,7 +79,9 @@ SEXP set_value(SEXP attributeContainer_, SEXP i_, SEXP value_) {
 
 	attributeContainer->setValue(i, value);
 
-	return Rcpp::XPtr<AttributeContainer>(attributeContainer, false);
+	Rcpp::XPtr<AttributeContainer> pointer(attributeContainer, false);
+	pointer.attr("class") = "NetSimAttributeContainer";
+	return pointer;
 
 	END_RCPP
 }

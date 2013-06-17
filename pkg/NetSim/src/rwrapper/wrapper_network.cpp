@@ -37,6 +37,7 @@ SEXP create_network(SEXP matrix_, SEXP directed_, SEXP reflexive_) {
 			" ties could not be set." <<std::endl;
 
 	Rcpp::XPtr<MemoryOneModeNetwork> pointer(network, false);
+	pointer.attr("class") = "NetSimNetwork";
 	return pointer;
 
 
@@ -89,6 +90,7 @@ SEXP add_random_ties_to_network(SEXP network_, SEXP probability_) {
 		NetworkUtils::addRandomTiesToNetwork(network, probabilty);
 
 		Rcpp::XPtr<MemoryOneModeNetwork> pointer(network, false);
+		pointer.attr("class") = "NetSimNetwork";
 		return pointer;
 
 		END_RCPP
@@ -102,7 +104,9 @@ SEXP add_ring_lattice_to_network(SEXP network_, SEXP nReciprocalTies_) {
 
 	NetworkUtils::addRingLatticeTiesToNetwork(network, nReciprocalTies);
 
-	return Rcpp::XPtr<MemoryOneModeNetwork>(network, false);
+	Rcpp::XPtr<MemoryOneModeNetwork> pointer(network, false);
+	pointer.attr("class") = "NetSimNetwork";
+	return pointer;
 
 	END_RCPP
 }
