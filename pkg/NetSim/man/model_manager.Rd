@@ -23,11 +23,11 @@
 	add_updater(modelManager, changeModel, updater)	
 }
 \arguments{
-	\item{modelManager}{...}
-	\item{timeModel}{...}
-	\item{timeUpdater}{...}
-	\item{changeModel}{...}
-	\item{updater}{...}
+	\item{modelManager}{A model manager object}
+	\item{timeModel}{A time model object. See time model overview for examples.}
+	\item{timeUpdater}{A time updater object. See time updater overview for examples.}
+	\item{changeModel}{A change model object. See change model overview for examples.}
+	\item{updater}{An updater. See updater overview for examples.}
 }
 \seealso{
 	\code{\link{create_network}}
@@ -36,5 +36,6 @@
 	\code{\link{time_updater}}
 }
 \examples{
-
+# minimal code example model manager
+modelManager <- create_model_manager()
 }

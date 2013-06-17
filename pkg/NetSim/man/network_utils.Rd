@@ -1,5 +1,6 @@
 \name{network_utils}
-\alias{...}
+\alias{add_random_ties_to_network}
+\alias{add_ring_lattice_to_network}
 \docType{package}
 \title{
 	Utility functions for NetSim network objects

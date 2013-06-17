@@ -15,7 +15,7 @@
 	create_network(matrix, directed = TRUE, reflexive = FALSE)
 	set_tie(network, i, j, value)
 	network_as_matrix(network)
-	as.matrix(network)
+	as.matrix.NetSimNetwork(network)
 }
 \arguments{
 	\item{matrix}{A (squared) matrix object}

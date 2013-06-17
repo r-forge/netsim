@@ -32,16 +32,19 @@ Maintainer: Christoph Stadtfeld <c.stadtfeld@rug.nl>
 }
 \references{
 If you use NetSim for publications, please cite \cr
-Christoph Stadtfeld (20130): \strong{NetSim: A Social Networks Simulation Tool in R}
+Christoph Stadtfeld (2013): \strong{NetSim: A Social Networks Simulation Tool in R}
 URL: http://www.christoph-stadtfeld.com/netsim \cr
 (check the web site for updated references)
 }
 %%~~ Optionally other standard keywords, one per line, from file KEYWORDS in ~~
 %%~~ the R documentation directory ~~
-\keyword{Social Networks, Simulation, Markov process}
+\keyword{
+Social Network
+Simulation
+Markov process
+Social Science
+}
 \seealso{
-~~ Optional links to other man pages, e.g. ~~
-~~ \code{\link[<pkg>:<pkg>-package]{<pkg>}} ~~
 }
 \examples{
 %% ~~ simple examples of the most important functions ~~

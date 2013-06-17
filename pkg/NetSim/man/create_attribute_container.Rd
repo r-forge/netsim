@@ -1,6 +1,7 @@
 \name{create_attribute_container}
 \alias{create_attribute_container}
 \alias{create_scale_attribute_container}
+\alias{set_value}
 \alias{attribute_container_as_list}
 \alias{as.numeric.NetSimAttributeContainer}
 \docType{package}
@@ -22,7 +23,7 @@
 	create_scale_attribute_container(numericVector, min = 0, max = 1, by = 1)
 	set_value(attributeContainer, i, value)
 	attribute_container_as_list(attributeContainer)
-	as.numeric(attributeContainer)
+	as.numeric.NetSimAttributeContainer(attributeContainer)
 }
 \arguments{
 	\item{numericVector}{A numeric vector}
