@@ -215,13 +215,13 @@ add_to_effect_container<- function(effectContainer, effect, paramValue){
 }
 
 # by default implemented as using the tie swap updater
-create_multinomial_choice_network_change_model <- function(
-		focalActor, networkIndex, effectContainer){
-	updater <- create_tie_swap_updater(networkIndex);
-	.Call("create_multinomial_choice_network_change_model",
-			focalActor, networkIndex, effectContainer, updater,
-			PACKAGE = "NetSim")		
-}
+#create_multinomial_choice_network_change_model <- function(
+#		focalActorIndex, networkIndex, effectContainer){
+#	updater <- create_tie_swap_updater(networkIndex);
+#	.Call("create_multinomial_choice_network_change_model",
+#			focalActorIndex, networkIndex, effectContainer, updater,
+#			PACKAGE = "NetSim")		
+#}
 
 create_multinomial_choice_behavior_change_model <- function(
 		focalActorIndex, attributeIndex, effectContainer){
@@ -233,7 +233,7 @@ create_multinomial_choice_behavior_change_model <- function(
 # RcppExport SEXP create_attribute_multinomial_choice_network_change_model(
 # 		SEXP networkIndex, SEXP poissonAttributeIndex, SEXP updater);
 create_attribute_multinomial_choice_network_change_model <- function(
-		networkIndex, poissonAttributeIndex, updater){
+		networkIndex, poissonAttributeIndex, updater = create_tie_swap_updater(networkIndex)){
 	.Call("create_attribute_multinomial_choice_network_change_model",
 			networkIndex, poissonAttributeIndex, updater, PACKAGE = "NetSim")
 }

@@ -13,7 +13,7 @@
 	the third is a Poisson model for which parameters can be stored in an attribute container (changeable).
 }
 \usage{
-	create_round_based_time_model(timerIndex, intervallLength = 1.0, startTime = 0.0)
+	create_round_based_time_model(timerIndex, intervalLength = 1.0, startTime = 0.0)
 	create_poisson_model(param = 1)
 	create_attribute_poisson_model(attributeIndex)
 }

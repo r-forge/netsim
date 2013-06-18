@@ -46,7 +46,6 @@ get_global_attribute <- function(processState, name = "defaultGlobalAttribute"){
 	.Call("get_global_attribute", processState, name, PACKAGE = "NetSim")
 }
 
-# for testing
-print.processState <- function(x){
-	print(network_as_matrix(get_network("default")));
-}
+# a proper print function should print all objects mapped by the process state 
+#print.processState <- function(x){
+#}

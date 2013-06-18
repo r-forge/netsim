@@ -49,8 +49,9 @@ SEXP add_network(SEXP processStateManager_, SEXP network_, SEXP name_) {
 
 	processStateManager->addNetwork(network, name);
 
-	// is this exactly the same pointer or is there a chance that it has changed?
-	return Rcpp::XPtr<ProcessStateManager>(processStateManager, false);
+	Rcpp::XPtr<ProcessStateManager> pointer(processStateManager, false);
+	pointer.attr("class") = "processState";
+	return pointer;
 
 	END_RCPP
 }
@@ -78,6 +79,7 @@ SEXP get_network(SEXP processStateManager_, SEXP name_) {
 
 	Network * network = processStateManager->getNetwork(name);
 
+	// TODO: pointer is not properly typed
 	return Rcpp::XPtr<Network>(network, false);
 
 	END_RCPP
@@ -96,7 +98,10 @@ SEXP add_attribute_container(SEXP processStateManager_, SEXP attributeContainer_
 
 	processStateManager->addAttributeContainter(attributeContainer, name);
 
-	return Rcpp::XPtr<ProcessStateManager>(processStateManager, false);
+	Rcpp::XPtr<ProcessStateManager> pointer(processStateManager, false);
+	pointer.attr("class") = "processState";
+	return pointer;
+
 
 	END_RCPP
 }
@@ -124,6 +129,7 @@ SEXP get_attribute_container(SEXP processStateManager_, SEXP name_) {
 
 	AttributeContainer * attributeContainer = processStateManager->getAttributeContainer(name);
 
+	// TODO: pointer is not properly typed
 	return Rcpp::XPtr<AttributeContainer>(attributeContainer, false);
 
 	END_RCPP
