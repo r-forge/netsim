@@ -13,10 +13,9 @@
 #include <stdexcept>
 #include <iostream>
 #include <math.h>
-#include <boost/unordered_map.hpp>
 #include <float.h>
 
-// forward declation
+// forward declaration
 class AttributeContainerMemento;
 
 /**
