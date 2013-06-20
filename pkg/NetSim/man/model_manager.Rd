@@ -36,4 +36,16 @@
 \examples{
 # minimal code example model manager
 modelManager <- create_model_manager()
+
+processState <- create_process_state()
+processState <- add_global_attribute(processState, 0.0, name = "timer")
+timerIndex <- get_global_attribute_index(processState, name = "timer")
+
+myTimeModel <- create_round_based_time_model(timerIndex)
+
+modelManager <- add_time_model(modelManager, myTimeModel)
+
+simulator <- create_simulator(processState, modelManager, 20)
+simulate(simulator)
+
 }

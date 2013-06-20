@@ -98,7 +98,7 @@ effectContainerHomophily <- add_to_effect_container(
 		0.5),
 	1.0)
 	
-# effect container of the beavior change model
+# effect container of the behavior change model
 effectContainerInfluence <- create_effect_container()
 effectContainerInfluence <- add_to_effect_container(
 	effectContainerInfluence,

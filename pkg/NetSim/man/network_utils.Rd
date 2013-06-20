@@ -32,6 +32,7 @@
  # reset network to an empty network
  network <- create_network(matrix(0, nActors, nActors))
  add_ring_lattice_to_network(network, nReciprocalTies = 2)
+ \dontrun{
  add_ring_lattice_to_network(network, nReciprocalTies = 0) # throws an error message
-  
+  }
 }

@@ -26,5 +26,15 @@
 	
 	# create time updater based on the timer index
 	timeUpdater <- create_timer_updater(timerIndex)
+	
+	modelManager <- create_model_manager()
+	
+	myTimeModel <- create_round_based_time_model(timerIndex)
+	modelManager <- add_time_model(modelManager, myTimeModel)
+	
+	timeSpan <- 20
+	simulator <- create_simulator(processState, modelManager, timeSpan,
+	verbose = TRUE, debug = FALSE)
+	simulate(simulator)
 
 }
