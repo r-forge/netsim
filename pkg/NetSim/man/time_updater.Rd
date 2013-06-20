@@ -15,7 +15,7 @@
 	\item{timerIndex}{A pointer to a global attribute in the process state representing the timer}
 }
 \seealso{
-	\code{\link{model_manager}}
+	\code{\link{create_model_manager}}
 }
 \examples{
 	processState <- create_process_state()

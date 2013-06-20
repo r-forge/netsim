@@ -7,12 +7,12 @@ attribute_container_as_list <- function(attributeContainer){
 	.Call( "attribute_container_as_list", attributeContainer, PACKAGE = "NetSim" )
 }
 
-as.numeric.NetSimAttributeContainer <- function(attributeContainer){
-	return(attribute_container_as_list(attributeContainer))
+as.numeric.NetSimAttributeContainer <- function(x){
+	return(attribute_container_as_list(x))
 }
 
-as.double.NetSimAttributeContainer <- function(attributeContainer){
-	return(attribute_container_as_list(attributeContainer))
+as.double.NetSimAttributeContainer <- function(x){
+	return(attribute_container_as_list(x))
 }
 
 
@@ -29,8 +29,8 @@ set_value <- function(attributeContainer, i, value){
 	.Call("set_value", attributeContainer, i, value, PACKAGE = "NetSim")
 }
 
-print.NetSimAttributeContainer <- function(attributeContainer){
+print.NetSimAttributeContainer <- function(x){
 	print("Pointer to NetSim attribute container object:", quote = FALSE)
-	print(attribute_container_as_list(attributeContainer))
+	print(attribute_container_as_list(x))
 }
 

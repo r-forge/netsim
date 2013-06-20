@@ -16,9 +16,9 @@
 	generic four-step scheme sketched above. 
 }
 \usage{
-	create_model_manager(modelManager)
+	create_model_manager()
 	add_time_model(modelManager, timeModel)
-	add_time_updater(modelManager, timeModel, timeUpdater)
+	add_time_updater(modelManager, timeUpdater)
 	add_change_model(modelManager, timeModel, changeModel)
 	add_updater(modelManager, changeModel, updater)	
 }
@@ -32,8 +32,6 @@
 \seealso{
 	\code{\link{create_network}}
 	\code{\link{create_attribute_container}}
-	\code{\link{time_models}}
-	\code{\link{time_updater}}
 }
 \examples{
 # minimal code example model manager

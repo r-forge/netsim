@@ -2,10 +2,13 @@
 \alias{create_process_state}
 \alias{add_network}
 \alias{get_network_index}
+\alias{get_network}
 \alias{add_attribute_container} 
 \alias{get_attribute_container_index}
+\alias{get_attribute_container}
 \alias{add_global_attribute}
 \alias{get_global_attribute_index}
+\alias{get_global_attribute}
 \docType{package}
 \title{
 Manage the process state
@@ -16,13 +19,16 @@ The process state can be created and networks, attribute containers and global a
 The IDs of these objects can be requested and are necessary for some sub-sequent functions. 
 }
 \usage{
-create_process_state()
+create_process_state(name = "default")
 add_network(processState, network, name = "defaultNetwork")
 get_network_index(processState, name = "defaultNetwork")
+get_network(processState, name = "defaultNetwork")
 add_attribute_container(processState, attributeContainer, name = "defaultAttribute")
 get_attribute_container_index(processState, name = "defaultAttribute")
+get_attribute_container(processState, name = "defaultAttribute")
 add_global_attribute(processState, value = 0.0, name = "defaultGlobalAttribute")
 get_global_attribute_index(processState, name = "defaultGlobalAttribute")
+get_global_attribute(processState, name = "defaultGlobalAttribute")
 }
 \arguments{
 	\item{processState}{A process state object}

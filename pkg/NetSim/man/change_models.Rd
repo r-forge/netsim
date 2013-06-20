@@ -13,20 +13,25 @@
 	define stochastic actor-oriented models for network or behavior change. The third
 	defines a Jackson and Rogers node inclusion model, the fourth a Watts and Strogatz
 	'small world' model. 
+	
 	For the SAOM-related models additional model specifications are necessary.
 }
 \usage{
-	create_multinomial_choice_network_change_model(focalActor, networkIndex, effectContainer, updater = create_tie_swap_updater(networkIndex))
-	create_multinomial_choice_behavior_change_model(focalActor, attributeIndex, effectContainer)
+	create_multinomial_choice_network_change_model(focalActorIndex, networkIndex, effectContainer)
+	create_multinomial_choice_behavior_change_model(focalActorIndex, attributeIndex, effectContainer)
 	create_jackson_rogers_change_model(networkIndex, pLinkToParentNode = 1.0, pLinkToNeigborNode = 1.0, nParentNodes = 1, nNeighborNodes = 1)
 	create_watts_strogatz_change_model(networkIndex)
 	create_attribute_multinomial_choice_network_change_model(networkIndex, poissonAttributeIndex, updater = create_tie_swap_updater(networkIndex))
 }
 \arguments{
-	\item{focalActor}{Focal actor of the multinomial (network or behavior) change model}
+	\item{focalActorIndex}{Index of focal actor of the multinomial (network or behavior) change model}
 	\item{networkIndex}{Index of the network that is subject to change (dependent network)}
 	\item{effectContainer}{Container object storing effects as defined in the SIENA manual}
 	\item{attributeIndex}{Index of the attribute container that is subject to change (dependent attribute)}
+	\item{pLinkToParentNode}{Probability to link to a 'parent node'. See Jackson \& Rogers (2007), p.894}
+	\item{pLinkToNeigborNode}{Probability to link to a selected neighbor of a parent. See Jackson \& Rogers (2007), p.894}
+	\item{nParentNodes}{Number of 'parent node'. See Jackson \& Rogers (2007), p.894}
+	\item{nNeighborNodes}{Number of neighbors considered of parent node. See Jackson \& Rogers (2007), p.894}
 	\item{updater}{Defines a change that is considered by the focal actor after choosing a particular tie. By default, this is a tie swap updater.}
 	\item{poissonAttributeIndex}{Index of a attribute container containing a number of concurring Poisson parameters}
 }
@@ -36,11 +41,16 @@
 	\code{\link{create_effect_container}}
 	\code{\link{add_to_effect_container}}
 	\code{\link{create_effect}}
+	\code{\link{add_effect}}
 }
 \references{
 Ripley, R. M.; Snijders, T. A. B. & Preciado Lopez, P.: Manual for SIENA 4.0. (2012), 
 Oxford: University of Oxford, Department of Statistics; Nuffield College. 
 URL: http://www.stats.ox.ac.uk/~snijders/siena/RSiena_Manual.pdf
+
+Jackson, M. O. & Rogers, B. W. Meeting strangers and friends of friends: How random are social networks? American Economic Review, 2007, 97, 890-915
+
+Watts, D. J. & Strogatz, S. H. Collective dynamics of 'small-world' networks Nature, 1998, 393, 440-442
 }
 \examples{
 ## The following example is taken from section 4.1 and 4.2 in package vignette
@@ -50,9 +60,7 @@ URL: http://www.stats.ox.ac.uk/~snijders/siena/RSiena_Manual.pdf
 # construct process state
 nActors <- 21
 mat <- matrix(0, nActors, nActors)
-att <- c(rep(0, nActors/3),
-rep(1, nActors/3),
-rep(2, nActors/3))
+att <- c(rep(0, nActors/3),rep(1, nActors/3),rep(2, nActors/3))
 network <- create_network(mat)
 attributeContainer <- create_scale_attribute_container(att,
 min=0, max=3, by = 1)

@@ -44,59 +44,61 @@ create_attribute_poisson_model <- function(attributeIndex){
 
 # change models
 
-create_change_model <- function(type, ...){
-	UseMethod("create_change_model")
-}
+# generic function is commented out.. re-activate in later versions?
+
+#create_change_model <- function(type, ...){
+#	UseMethod("create_change_model")
+#}
 
 # simple model factory
-create_change_model.character <- function(name, ...){
-	
-	# TODO make this working for all change models
-	# and make factories also for time models and all updaters
-	
-	if (name == "jacksonRogers"){
-		type <- structure(name, class="jacksonRogersChangeModel")
-	}
-	else if (name == "netSaom"){
-		type <- structure(name, class="networkMChoice")
-	}
-	else{
-		stop(paste("Unknown change model: ", name, sep=""))
-	}
-	create_change_model(type, ...)
-}
+#create_change_model.character <- function(name, ...){
+#	
+#	# TODO make this working for all change models
+#	# and make factories also for time models and all updaters
+#	
+#	if (name == "jacksonRogers"){
+#		type <- structure(name, class="jacksonRogersChangeModel")
+#	}
+#	else if (name == "netSaom"){
+#		type <- structure(name, class="networkMChoice")
+#	}
+#	else{
+#		stop(paste("Unknown change model: ", name, sep=""))
+#	}
+#	create_change_model(type, ...)
+#}
 
 #RcppExport SEXP create_jackson_rogers_change_model(
 #		SEXP networkName, SEXP pLinkToParentNode, SEXP pLinkToNeighborNode,
 #		SEXP nParentNodes, SEXP nNeighborNodes);
 #
-create_change_model.jacksonRogersChangeModel <- function(
-		type,
-		networkId,
-		pLinkToParentNode = 1.0,
-		pLinkToNeigborNode = 1.0,
-		nParentNodes = 1,
-		nNeighborNodes = 1){
-	.Call("create_jackson_rogers_change_model", networkId, pLinkToParentNode, 
-			pLinkToNeigborNode, nParentNodes, nNeighborNodes, PACKAGE = "NetSim")
-	
-}
+#create_change_model.jacksonRogersChangeModel <- function(
+#		type,
+#		networkId,
+#		pLinkToParentNode = 1.0,
+#		pLinkToNeigborNode = 1.0,
+#		nParentNodes = 1,
+#		nNeighborNodes = 1){
+#	.Call("create_jackson_rogers_change_model", networkId, pLinkToParentNode, 
+#			pLinkToNeigborNode, nParentNodes, nNeighborNodes, PACKAGE = "NetSim")
+#	
+#}
 
-create_jackson_rogers_change_model <- function(networkId, pLinkToParentNode = 1.0, 
+create_jackson_rogers_change_model <- function(networkIndex, pLinkToParentNode = 1.0, 
 		pLinkToNeigborNode = 1.0, nParentNodes = 1, nNeighborNodes = 1){
-	.Call("create_jackson_rogers_change_model", networkId, pLinkToParentNode, 
+	.Call("create_jackson_rogers_change_model", networkIndex, pLinkToParentNode, 
 			pLinkToNeigborNode, nParentNodes, nNeighborNodes, PACKAGE = "NetSim")
 	
 }
 
 # RcppExport SEXP create_watts_strogatz_change_model(SEXP networkId);
-create_watts_strogatz_change_model <- function(networkId){
-	.Call("create_watts_strogatz_change_model", networkId, PACKAGE = "NetSim")
+create_watts_strogatz_change_model <- function(networkIndex){
+	.Call("create_watts_strogatz_change_model", networkIndex, PACKAGE = "NetSim")
 }
 
 # RcppExport SEXP create_rewire_tie_updater(SEXP networkId_)
-create_rewire_tie_updater <- function(networkId){
-	.Call("create_rewire_tie_updater", networkId, PACKAGE = "NetSim");
+create_rewire_tie_updater <- function(networkIndex){
+	.Call("create_rewire_tie_updater", networkIndex, PACKAGE = "NetSim");
 }
 
 #RcppExport SEXP create_round_based_time_model(
@@ -141,10 +143,6 @@ create_effect_container <- function(){
 	.Call("create_effect_container", PACKAGE = "NetSim")
 }
 
-create_effect <- function(x, ...){
-	UseMethod("create_effect")
-}
-
 add_effect <- function(x, ...){
 	UseMethod("add_effect")
 }
@@ -168,35 +166,39 @@ add_effect_with_index <- function(saom, effect, index){
 	.Call("add_effect_with_index", saom, effect, index, PACKAGE = "NetSim")
 }
 
+# Generic function to create effects
+create_effect <- function(name, ...){
+	UseMethod("create_effect")
+}
 
 create_effect.character <- function(name, ...){
 	typedName = get_effect_type(name);
-	create_effect(typedName, name, ...)
+	create_effect(typedName, ...)
 	
 }
 
-create_effect.OneModeNetworkEffect <- function(type, name, networkIndex){
+create_effect.OneModeNetworkEffect <- function(name, networkIndex){
 	.Call("create_one_mode_effect", name, networkIndex, PACKAGE = "NetSim")
 }
 
 
-create_effect.AttributeOneModeNetworkEffect <- function(type, name, attributeIndex, networkIndex){
+create_effect.AttributeOneModeNetworkEffect <- function(name, attributeIndex, networkIndex){
 	.Call("create_attribute_one_mode_effect", name, attributeIndex, networkIndex, PACKAGE = "NetSim")
 }
 
-create_effect.SimilarityAttributeOneModeNetworkEffect <- function(type, name, attributeIndex, networkIndex, meanSimilarityScores){
+create_effect.SimilarityAttributeOneModeNetworkEffect <- function(name, attributeIndex, networkIndex, meanSimilarityScores){
 	.Call("create_similarity_attribute_one_mode_effect", name, attributeIndex, networkIndex, meanSimilarityScores, PACKAGE = "NetSim")
 }
 
-create_effect.AttributeEffect <- function(type, name, attributeIndex){
+create_effect.AttributeEffect <- function(name, attributeIndex){
 	.Call("create_attribute_effect", name, attributeIndex, PACKAGE = "NetSim")
 }
 
-create_effect.MultiplexNetworkEffect <- function(type, name, 
-		dependentNetworkIndex, 
-		independentNetworkIndex){
+create_effect.MultiplexNetworkEffect <- function(name, 
+		networkIndex1, 
+		networkIndex2){
 	.Call("create_multiplex_network_effect", name, 
-			dependentNetworkIndex, independentNetworkIndex, PACKAGE = "NetSim")
+			networkIndex1, networkIndex2, PACKAGE = "NetSim")
 }
 
 
@@ -210,18 +212,18 @@ get_effect_type <- function(name){
 	structure(name, class=type)
 }
 
-add_to_effect_container<- function(effectContainer, effect, paramValue){
-	.Call("add_to_effect_container", effectContainer, effect, paramValue, PACKAGE = "NetSim")
+add_to_effect_container<- function(effectContainer, effect, parameter){
+	.Call("add_to_effect_container", effectContainer, effect, parameter, PACKAGE = "NetSim")
 }
 
 # by default implemented as using the tie swap updater
-#create_multinomial_choice_network_change_model <- function(
-#		focalActorIndex, networkIndex, effectContainer){
-#	updater <- create_tie_swap_updater(networkIndex);
-#	.Call("create_multinomial_choice_network_change_model",
-#			focalActorIndex, networkIndex, effectContainer, updater,
-#			PACKAGE = "NetSim")		
-#}
+create_multinomial_choice_network_change_model <- function(
+		focalActorIndex, networkIndex, effectContainer){
+	updater <- create_tie_swap_updater(networkIndex);
+	.Call("create_multinomial_choice_network_change_model",
+			focalActorIndex, networkIndex, effectContainer, updater,
+			PACKAGE = "NetSim")		
+}
 
 create_multinomial_choice_behavior_change_model <- function(
 		focalActorIndex, attributeIndex, effectContainer){

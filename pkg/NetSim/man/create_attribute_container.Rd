@@ -23,7 +23,9 @@
 	create_scale_attribute_container(numericVector, min = 0, max = 1, by = 1)
 	set_value(attributeContainer, i, value)
 	attribute_container_as_list(attributeContainer)
-	as.numeric.NetSimAttributeContainer(attributeContainer)
+	\method{as.numeric}{NetSimAttributeContainer}(attributeContainer)
+	\method{as.double}{NetSimAttributeContainer}(attributeContainer)
+	\method{print}{NetSimAttributeContainer}(attributeContainer)
 }
 \arguments{
 	\item{numericVector}{A numeric vector}
@@ -35,7 +37,7 @@
 	\item{attributeContainer}{A \pkg{NetSim} attribute container object}
 }
 \seealso{
-	\code{\link{process_state}}, \code{\link{create_network}}
+	\code{\link{create_process_state}}, \code{\link{create_network}}
 }
 \examples{
 nActors <- 5

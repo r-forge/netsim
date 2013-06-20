@@ -15,7 +15,8 @@
 	create_network(matrix, directed = TRUE, reflexive = FALSE)
 	set_tie(network, i, j, value)
 	network_as_matrix(network)
-	as.matrix.NetSimNetwork(network)
+	\method{as.matrix}{NetSimNetwork}(network)
+	\method{print}{NetSimNetwork}(network)
 }
 \arguments{
 	\item{matrix}{A (squared) matrix object}
@@ -26,9 +27,10 @@
 	\item{value}{A value a tie is set to (1 or 0 in binary networks)}
 }
 \seealso{
-	\code{\link{process_state}}
+	\code{\link{create_process_state}}
 	\code{\link{create_attribute_container}}
-	\code{\link{network_utils}}
+	\code{\link{add_random_ties_to_network}}
+	\code{\link{add_ring_lattice_to_network}}
 }
 \examples{
 nActors <- 5

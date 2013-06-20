@@ -4,6 +4,6 @@
 ###############################################################################
 
 
-test_call_main <- function(){
-	.Call("main", PACKAGE = "NetSim")
-} 
+#test_call_main <- function(){
+#	.Call("main", PACKAGE = "NetSim")
+#} 

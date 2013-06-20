@@ -44,8 +44,8 @@ Simulation
 Markov process
 Social Science
 }
-\seealso{
-}
-\examples{
+%\seealso{
+%}
+%\examples{
 %% ~~ simple examples of the most important functions ~~
-}
+%}

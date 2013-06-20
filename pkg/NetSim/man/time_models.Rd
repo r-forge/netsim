@@ -25,7 +25,7 @@
 	\item{attributeIndex}{A pointer to an attribute container giving a vector of concurring Poisson parameters}
 }
 \seealso{
-	\code{\link{model_manager}}
+	\code{\link{create_model_manager}}
 }
 \examples{
 	processState <- create_process_state()

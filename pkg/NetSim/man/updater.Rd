@@ -26,11 +26,10 @@
 	\item{networkIndex}{Index of the focal network}
 	\item{attributeIndex}{Index of the focal attribute container}
 	\item{actorIndex}{Index of the focal actor}
-	\item{networkIndex}{A value to set the attribute of the newborn actor to}
+	\item{value}{Value of the attribute}
 }
 \seealso{
-	\code{\link{create_updater}}
-	\code{\link{create_change_model}}
+	\code{\link{create_model_manager}}
 }
 \examples{
 	## Extensive examples can be found in section 4 of the package vignette

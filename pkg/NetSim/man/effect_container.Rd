@@ -12,9 +12,8 @@
 	Overview of functions to specify stochastic actor-oriented models. The naming of
 	effects is in line with the RSiena manual (see reference below). 
 	
-		The following effects are implemented in SAOMs for NetSim so far (to be extended, see RSiena manual for an explanation):\cr
+		The following effects are implemented in SAOMs for NetSim so far (to be extended, see RSiena manual for detailed explanations):\cr
 	\emph{OneModeNetworkEffect} \cr
-	(initialized with paraeter: networkIndex)\cr
 	- density \cr
 	- recip \cr
 	- transTrip \cr
@@ -23,39 +22,46 @@
 	- inPop \cr
 	- outPop \cr
 	\emph{AttributeOneModeNetworkEffect} \cr
-	(initialized with parameters attributeIndex, networkIndex)\cr
 	- altX \cr
 	- egoX \cr
 	\emph{SimilarityAttributeOneModeNetworkEffect} \cr
-	(initialized with parameters attributeIndex, networkIndex, meanSimilarityScore) \cr
 	- simX \cr
 	- totSim \cr
 	\emph{AttributeEffect} \cr
-	(initialized with parameter attributeIndex)
 	- linear \cr
 	- quad \cr
 	\emph{MultiplexNetworkEffect}
-	(initialized with parameters networkIndex, networkIndex1, networkIndex2) \cr
 	- crprod	
 }
 \usage{
 	create_effect_container()
 	add_to_effect_container(effectContainer, effect, parameter)
-	create_effect(effectName, ...)
-	add_effect(changeModel, effect, attributeIndex)
-	get_effect_type(effectName)
+	create_effect(name, ...)
+	\method{create_effect}{OneModeNetworkEffect}(name, networkIndex)
+	\method{create_effect}{AttributeOneModeNetworkEffect}(name, attributeIndex, networkIndex)
+	\method{create_effect}{SimilarityAttributeOneModeNetworkEffect}(name, attributeIndex, networkIndex, meanSimilarityScore)
+	\method{create_effect}{AttributeEffect}(name, attributeIndex)
+	\method{create_effect}{MultiplexNetworkEffect}(name, networkIndex1, networkIndex2)
+	\method{add_effect}{AttributeMultinomialChoiceNetworkChangeModel}(changeModel, effect, attributeIndex)
+	get_effect_type(name)
 }
 \arguments{
 	\item{effectContainer}{An effect container object}
 	\item{effect}{An effect object created with create_effects function}
 	\item{parameter}{Parameter of the effect specified}
-	\item{effectName}{String name of the effect according to the SIENA manual}
+	\item{name}{String name of the effect according to the SIENA manual}
 	\item{changeModel}{A SAOM change model}
 	\item{...}{Additional parameters depending on the type of the effect (see description above)}
 	\item{attributeIndex}{Index of an attribute containing the (changeable) parameter}
+	\item{meanSimilarityScore}{mean similarity score according to effect definitions in the SIENA manual}
+	\item{networkIndex}{Index of a network}
+	\item{networkIndex1}{Index of a network}
+	\item{networkIndex2}{Index of a network}
 }
 \seealso{
-	\code{\link{change_models}}
+	\code{\link{create_multinomial_choice_network_change_model}}
+	\code{\link{create_multinomial_choice_behavior_change_model}}
+	\code{\link{create_attribute_multinomial_choice_network_change_model}}
 	\code{\link{create_tie_swap_updater}}
 }
 \references{
