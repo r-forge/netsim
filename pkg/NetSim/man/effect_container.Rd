@@ -2,7 +2,13 @@
 \alias{create_effect_container}
 \alias{add_to_effect_container}
 \alias{create_effect}
+\alias{create_effect.OneModeNetworkEffect}
+\alias{create_effect.AttributeOneModeNetworkEffect}
+\alias{create_effect.SimilarityAttributeOneModeNetworkEffect}
+\alias{create_effect.AttributeEffect}
+\alias{create_effect.MultiplexNetworkEffect}
 \alias{add_effect}
+\alias{add_effect.AttributeMultinomialChoiceNetworkChangeModel}
 \alias{get_effect_type}
 \docType{package}
 \title{
@@ -37,12 +43,12 @@
 	create_effect_container()
 	add_to_effect_container(effectContainer, effect, parameter)
 	create_effect(name, ...)
-	\method{create_effect}{OneModeNetworkEffect}(name, networkIndex)
-	\method{create_effect}{AttributeOneModeNetworkEffect}(name, attributeIndex, networkIndex)
-	\method{create_effect}{SimilarityAttributeOneModeNetworkEffect}(name, attributeIndex, networkIndex, meanSimilarityScore)
-	\method{create_effect}{AttributeEffect}(name, attributeIndex)
-	\method{create_effect}{MultiplexNetworkEffect}(name, networkIndex1, networkIndex2)
-	\method{add_effect}{AttributeMultinomialChoiceNetworkChangeModel}(changeModel, effect, attributeIndex)
+	\method{create_effect}{OneModeNetworkEffect}(name, networkIndex, ...)
+	\method{create_effect}{AttributeOneModeNetworkEffect}(name, attributeIndex, networkIndex, ...)
+	\method{create_effect}{SimilarityAttributeOneModeNetworkEffect}(name, attributeIndex, networkIndex, meanSimilarityScore, ...)
+	\method{create_effect}{AttributeEffect}(name, attributeIndex, ...)
+	\method{create_effect}{MultiplexNetworkEffect}(name, networkIndex1, networkIndex2, ...)
+	\method{add_effect}{AttributeMultinomialChoiceNetworkChangeModel}(changeModel, effect, attributeIndex, ...)
 	get_effect_type(name)
 }
 \arguments{

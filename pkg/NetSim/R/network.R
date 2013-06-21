@@ -7,7 +7,7 @@ network_as_matrix <- function(network){
 	.Call( "network_as_matrix", network, PACKAGE = "NetSim" )
 }
 
-as.matrix.NetSimNetwork <- function(x){
+as.matrix.NetSimNetwork <- function(x, ...){
 	return(network_as_matrix(x))
 }
 
@@ -30,7 +30,7 @@ add_ring_lattice_to_network <- function(network, nReciprocalTies = 2){
 	.Call("add_ring_lattice_to_network", network, nReciprocalTies, PACKAGE = "NetSim")
 }
 
-print.NetSimNetwork <- function(x){
+print.NetSimNetwork <- function(x, ...){
 	print("Pointer to NetSim network object:", quote = FALSE)
 	print(network_as_matrix(x))
 }

@@ -3,6 +3,7 @@
 \alias{set_tie}
 \alias{network_as_matrix}
 \alias{as.matrix.NetSimNetwork}
+\alias{print.NetSimNetwork}
 \docType{package}
 \title{
 	Create an network object and maintain it
@@ -15,8 +16,8 @@
 	create_network(matrix, directed = TRUE, reflexive = FALSE)
 	set_tie(network, i, j, value)
 	network_as_matrix(network)
-	\method{as.matrix}{NetSimNetwork}(network)
-	\method{print}{NetSimNetwork}(network)
+	\method{as.matrix}{NetSimNetwork}(x, ...)
+	\method{print}{NetSimNetwork}(x, ...)
 }
 \arguments{
 	\item{matrix}{A (squared) matrix object}
@@ -25,6 +26,7 @@
 	\item{network}{A \pkg{NetSim} network object}
 	\item{i,j}{index of one particular tie. The index starts counting from 0.}
 	\item{value}{A value a tie is set to (1 or 0 in binary networks)}
+	\item{x}{A \pkg{NetSim} network object}
 }
 \seealso{
 	\code{\link{create_process_state}}

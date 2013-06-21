@@ -4,6 +4,7 @@
 \alias{set_value}
 \alias{attribute_container_as_list}
 \alias{as.numeric.NetSimAttributeContainer}
+\alias{as.double.NetSimAttributeContainer}
 \docType{package}
 \title{
 	Create an attribute container object and maintain it
@@ -23,9 +24,9 @@
 	create_scale_attribute_container(numericVector, min = 0, max = 1, by = 1)
 	set_value(attributeContainer, i, value)
 	attribute_container_as_list(attributeContainer)
-	\method{as.numeric}{NetSimAttributeContainer}(attributeContainer)
-	\method{as.double}{NetSimAttributeContainer}(attributeContainer)
-	\method{print}{NetSimAttributeContainer}(attributeContainer)
+	\method{as.numeric}{NetSimAttributeContainer}(x, ...)
+	\method{as.double}{NetSimAttributeContainer}(x, ...)
+	\method{print}{NetSimAttributeContainer}(x, ...)
 }
 \arguments{
 	\item{numericVector}{A numeric vector}
@@ -35,6 +36,7 @@
 	\item{i}{Index of the attribute to be changed. Starts counting from 0, not 1.}
 	\item{value}{Set attribute to this value}
 	\item{attributeContainer}{A \pkg{NetSim} attribute container object}
+	\item{x}{A \pkg{NetSim} attribute container object}
 }
 \seealso{
 	\code{\link{create_process_state}}, \code{\link{create_network}}

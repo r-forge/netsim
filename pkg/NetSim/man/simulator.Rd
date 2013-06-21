@@ -16,7 +16,6 @@
 	simulate(simulator)
 	get_iteration_steps(simulator)
 }
-}
 \arguments{
 	\item{processState}{A process state object}
 	\item{modelManager}{A model manager object}

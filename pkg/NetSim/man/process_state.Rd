@@ -52,10 +52,13 @@ processState <- add_network(processState, network, name = "friendship")
 get_network_index(processState, name = "friendship")
 
 # create attribute container and add to process state
-attribute <- create_attribute_container(c(rep(0, nActors\%/\%2), rep(1, nActors - nActors\%/\%2)))
-processState <- add_attribute_container(processState, attribute, name = "gender")
-attribute_container_as_list(attribute)
+attribute1 <- create_attribute_container(c(rep(0, nActors\%/\%2), rep(1, nActors - nActors\%/\%2)))
+attribute2 <- create_attribute_container(c(rep(0, nActors\%/\%2), rep(1, nActors - nActors\%/\%2)))
+processState <- add_attribute_container(processState, attribute1, name = "gender")
+processState <- add_attribute_container(processState, attribute2, name = "age")
+as.numeric(attribute1)
 get_attribute_container_index(processState, name="gender")
+get_attribute_container_index(processState, name="age")
 
 # add a global variable to the process state
 processState <- add_global_attribute(processState, value = 1, name = "timer")

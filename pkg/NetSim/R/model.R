@@ -143,16 +143,16 @@ create_effect_container <- function(){
 	.Call("create_effect_container", PACKAGE = "NetSim")
 }
 
-add_effect <- function(x, ...){
+add_effect <- function(changeModel, ...){
 	UseMethod("add_effect")
 }
 
-add_effect.AttributeMultinomialChoiceNetworkChangeModel <- function(x, ...){
-	add_effect_with_index(x, ...)	
+add_effect.AttributeMultinomialChoiceNetworkChangeModel <- function(changeModel, effect, attributeIndex, ...){
+	add_effect_with_index(changeModel, effect, attributeIndex, )	
 }
 
-add_effect.MultinomialChoiceNetworkChoiceChangeModel <- function(x, ...){
-	add_effect_with_parameter(x, ...)
+add_effect.MultinomialChoiceNetworkChoiceChangeModel <- function(changeModel, ...){
+	add_effect_with_parameter(changeModel, ...)
 }
 
 #RcppExport SEXP add_effect_with_parameter(SEXP saom, SEXP effect, SEXP parameter);
@@ -162,7 +162,7 @@ add_effect_with_parameter <- function(saom, effect, parameter){
 
 
 #RcppExport SEXP add_effect_with_index(SEXP saom, SEXP effect, SEXP index);
-add_effect_with_index <- function(saom, effect, index){
+add_effect_with_index <- function(saom, effect, attributeIndex){
 	.Call("add_effect_with_index", saom, effect, index, PACKAGE = "NetSim")
 }
 
@@ -177,26 +177,26 @@ create_effect.character <- function(name, ...){
 	
 }
 
-create_effect.OneModeNetworkEffect <- function(name, networkIndex){
+create_effect.OneModeNetworkEffect <- function(name, networkIndex, ...){
 	.Call("create_one_mode_effect", name, networkIndex, PACKAGE = "NetSim")
 }
 
 
-create_effect.AttributeOneModeNetworkEffect <- function(name, attributeIndex, networkIndex){
+create_effect.AttributeOneModeNetworkEffect <- function(name, attributeIndex, networkIndex, ...){
 	.Call("create_attribute_one_mode_effect", name, attributeIndex, networkIndex, PACKAGE = "NetSim")
 }
 
-create_effect.SimilarityAttributeOneModeNetworkEffect <- function(name, attributeIndex, networkIndex, meanSimilarityScores){
-	.Call("create_similarity_attribute_one_mode_effect", name, attributeIndex, networkIndex, meanSimilarityScores, PACKAGE = "NetSim")
+create_effect.SimilarityAttributeOneModeNetworkEffect <- function(name, attributeIndex, networkIndex, meanSimilarityScore, ...){
+	.Call("create_similarity_attribute_one_mode_effect", name, attributeIndex, networkIndex, meanSimilarityScore, PACKAGE = "NetSim")
 }
 
-create_effect.AttributeEffect <- function(name, attributeIndex){
+create_effect.AttributeEffect <- function(name, attributeIndex, ...){
 	.Call("create_attribute_effect", name, attributeIndex, PACKAGE = "NetSim")
 }
 
 create_effect.MultiplexNetworkEffect <- function(name, 
 		networkIndex1, 
-		networkIndex2){
+		networkIndex2, ...){
 	.Call("create_multiplex_network_effect", name, 
 			networkIndex1, networkIndex2, PACKAGE = "NetSim")
 }
