@@ -7,7 +7,7 @@ SOURCES = $(wildcard rwrapper/*.cpp)
 OBJECTS = *.o $(SOURCES:.cpp=.o)
 
 # added because of r-forge compilation problem
-# CPICFLAGS = -fPIC 
+PKG_CPPFLAGS= -fPIC
 
 ## As an alternative, one can also add this code in a file 'configure'
 ##
