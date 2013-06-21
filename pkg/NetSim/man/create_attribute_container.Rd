@@ -5,6 +5,7 @@
 \alias{attribute_container_as_list}
 \alias{as.numeric.NetSimAttributeContainer}
 \alias{as.double.NetSimAttributeContainer}
+\alias{print.NetSimAttributeContainer}
 \docType{package}
 \title{
 	Create an attribute container object and maintain it
@@ -37,6 +38,7 @@
 	\item{value}{Set attribute to this value}
 	\item{attributeContainer}{A \pkg{NetSim} attribute container object}
 	\item{x}{A \pkg{NetSim} attribute container object}
+	\item{...}{Potential additional arguments}
 }
 \seealso{
 	\code{\link{create_process_state}}, \code{\link{create_network}}

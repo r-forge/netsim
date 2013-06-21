@@ -163,7 +163,7 @@ add_effect_with_parameter <- function(saom, effect, parameter){
 
 #RcppExport SEXP add_effect_with_index(SEXP saom, SEXP effect, SEXP index);
 add_effect_with_index <- function(saom, effect, attributeIndex){
-	.Call("add_effect_with_index", saom, effect, index, PACKAGE = "NetSim")
+	.Call("add_effect_with_index", saom, effect, attributeIndex, PACKAGE = "NetSim")
 }
 
 # Generic function to create effects

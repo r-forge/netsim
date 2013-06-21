@@ -6,6 +6,9 @@ PKG_LIBS = `$(R_HOME)/bin/Rscript -e "Rcpp:::LdFlags()"` $(wildcard attribute/*.
 SOURCES = $(wildcard rwrapper/*.cpp)
 OBJECTS = *.o $(SOURCES:.cpp=.o)
 
+# added because of r-forge compilation problem
+# CPICFLAGS = -fPIC 
+
 ## As an alternative, one can also add this code in a file 'configure'
 ##
 ##    PKG_LIBS=`${R_HOME}/bin/Rscript -e "Rcpp:::LdFlags()"`
