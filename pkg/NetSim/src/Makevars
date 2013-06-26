@@ -1,13 +1,19 @@
 ## Use the R_HOME indirection to support installations of multiple R version
 
 ## inspired by RSiena Makevars file
-PKG_LIBS = `$(R_HOME)/bin/Rscript -e "Rcpp:::LdFlags()"` $(wildcard attribute/*.cpp model/*.cpp model/*/*.cpp network/*.cpp processstate/*.cpp simulator/*.cpp utils/Random.cpp)
+PKG_LIBS = `$(R_HOME)/bin/Rscript -e "Rcpp:::LdFlags()"`
 ## RInstanceFactory is not included in packages
-SOURCES = $(wildcard rwrapper/*.cpp)
+SOURCES = $(wildcard rwrapper/*.cpp attribute/*.cpp model/*.cpp model/*/*.cpp network/*.cpp processstate/*.cpp simulator/*.cpp utils/Random.cpp)
 OBJECTS = *.o $(SOURCES:.cpp=.o)
 
 # added because of r-forge compilation problem
-PKG_CPPFLAGS= -fPIC
+# PKG_CPPFLAGS= -fPIC
+
+# copied from RSiena
+all: $(SHLIB)
+
+clean:
+	@rm -f $(OBJECTS)
 
 ## As an alternative, one can also add this code in a file 'configure'
 ##
