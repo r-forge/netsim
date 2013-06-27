@@ -10,10 +10,10 @@ OBJECTS = *.o $(SOURCES:.cpp=.o)
 # PKG_CPPFLAGS= -fPIC
 
 # copied from RSiena
-all: $(SHLIB)
+#all: $(SHLIB)
 
-clean:
-	@rm -f $(OBJECTS)
+#clean:
+#	@rm -f $(OBJECTS)
 
 ## As an alternative, one can also add this code in a file 'configure'
 ##
