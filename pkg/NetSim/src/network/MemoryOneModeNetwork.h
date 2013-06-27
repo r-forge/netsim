@@ -12,10 +12,11 @@
 
 #include <map>
 #include <set>
-#include <boost/unordered_map.hpp>
-#include <boost/bimap.hpp> // bi-directional linking of elements
-#include <boost/bimap/set_of.hpp>
-#include <boost/bimap/multiset_of.hpp>
+#include <algorithm> // for set_intersection
+//#include <boost/unordered_map.hpp>
+//#include <boost/bimap.hpp> // bi-directional linking of elements
+//#include <boost/bimap/set_of.hpp>
+//#include <boost/bimap/multiset_of.hpp>
 
 
 // forward declaration
