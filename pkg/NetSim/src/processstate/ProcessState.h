@@ -9,7 +9,7 @@
 #define PROCESSSTATE_H_
 
 #include <map>
-#include <boost/lexical_cast.hpp>
+//#include <boost/lexical_cast.hpp>
 #include <stdexcept>
 #include "../network/Network.h"
 #include "../attribute/AttributeContainer.h"

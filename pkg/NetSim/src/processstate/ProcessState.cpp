@@ -64,14 +64,18 @@ void ProcessState::setGlobalAttribute(size_t index, double attribute) {
 Network* ProcessState::getNetwork(size_t index) {
 	if ((index >= _nNetworks))
 		throw std::invalid_argument("Network index does not exist: "
-				+ boost::lexical_cast<std::string>(index));
+				// TODO add a proper error string
+				// (removed because of problems with g++ boost headers in Windows)
+		//		+ boost::lexical_cast<std::string>(index)
+				);
 	return _networks[index];
 }
 
 AttributeContainer* ProcessState::getAttributeContainer(size_t index) {
 	if ((index >= _nAttributeContainers))
 		throw std::invalid_argument("Attribute container index does not exist: "
-				+ boost::lexical_cast<std::string>(index));
+		//		+ boost::lexical_cast<std::string>(index)
+				);
 	return _attributeContainers[index];
 }
 
@@ -79,7 +83,8 @@ AttributeContainer* ProcessState::getAttributeContainer(size_t index) {
 double ProcessState::getGlobalAttribute(size_t index) {
 	if ((index >= _nGlobalAttributes))
 		throw std::invalid_argument("Global attribute index does not exist: "
-				+ boost::lexical_cast<std::string>(index));
+		//		+ boost::lexical_cast<std::string>(index)
+				);
 	return _globalAttributes[index];
 }
 
