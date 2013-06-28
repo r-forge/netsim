@@ -15,6 +15,7 @@
 #include <cstdio>
 #include <set>
 #include <utility>
+#include <stdexcept>
 
 class NetworkUtils{
 

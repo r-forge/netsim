@@ -16,7 +16,7 @@ Random& Random::getInstance(int seed) {
 }
 
 double Random::getRandom() {
-	double randomNumber = ( (double)rand() / (double)RAND_MAX );
+	double randomNumber = ( (double)std::rand() / (double)RAND_MAX );
 	return randomNumber;
 }
 
@@ -26,7 +26,7 @@ size_t Random::getRandMax() {
 
 Random::Random(int seed) {
 	//TODO: Is the generator REALLY only initialized once?
-    srand(seed);
+    std::srand(seed);
     _seed = seed;
 }
 

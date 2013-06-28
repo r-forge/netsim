@@ -8,7 +8,8 @@
 #ifndef RANDOM_H_
 #define RANDOM_H_
 
-#include <boost/random.hpp>
+#include <cstdlib>
+#include <iostream>
 
 /**
  * Provides a random number generator with for
