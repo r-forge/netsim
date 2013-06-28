@@ -65,7 +65,9 @@ SEXP get_network_index(SEXP processStateManager_, SEXP name_) {
 
 	size_t index = processStateManager->getNetworkIndex(name);
 
-	return Rcpp::wrap(index);
+	// wrapping size_t values is not supported by Rcpp
+	int intIndex = (int) index;
+	return Rcpp::wrap(intIndex);
 
 	END_RCPP
 }
@@ -115,7 +117,10 @@ SEXP get_attribute_container_index(SEXP processStateManager_, SEXP name_) {
 
 	size_t index = processStateManager->getAttributeContainerIndex(name);
 
-	return Rcpp::wrap(index);
+	// wrapping size_t values is not supported by Rcpp
+	int intIndex = (int) index;
+	return Rcpp::wrap(intIndex);
+
 
 	END_RCPP
 }
