@@ -10,6 +10,7 @@
 
 #include <cstdlib>
 #include <iostream>
+#include <ctime>
 
 /**
  * Provides a random number generator with for
