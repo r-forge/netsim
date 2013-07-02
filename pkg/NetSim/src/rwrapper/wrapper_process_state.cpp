@@ -163,7 +163,11 @@ SEXP get_global_attribute_index(SEXP processStateManager_, SEXP name_) {
 			Rcpp::XPtr<ProcessStateManager>(processStateManager_);
 	std::string name = Rcpp::as<std::string>(name_);
 
-	return Rcpp::wrap(processStateManager->getGlobalAttributeIndex(name));
+	// wrapping size_t values is not supported by Rcpp
+	size_t index = processStateManager->getGlobalAttributeIndex(name);
+	int intIndex = (int) index;
+	return Rcpp::wrap(intIndex);
+
 
 	END_RCPP
 }
