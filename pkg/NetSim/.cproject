@@ -34,7 +34,6 @@
 									<listOptionValue builtIn="false" value="/usr/share/R/include"/>
 									<listOptionValue builtIn="false" value="/home/cws/R/i686-pc-linux-gnu-library/2.15/Rcpp/lib"/>
 									<listOptionValue builtIn="false" value="/home/cws/R/i686-pc-linux-gnu-library/2.15/Rcpp/include"/>
-									<listOptionValue builtIn="false" value="/home/cws/R/i686-pc-linux-gnu-library/2.15/Rcpp/include/Rcpp"/>
 									<listOptionValue builtIn="false" value="/home/cws/R/i686-pc-linux-gnu-library/2.15/RInside/include"/>
 									<listOptionValue builtIn="false" value="/home/cws/cute1_7_0/cute_lib"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/attribute}&quot;"/>

@@ -85,4 +85,3 @@ SEXP set_value(SEXP attributeContainer_, SEXP i_, SEXP value_) {
 
 	END_RCPP
 }
-
