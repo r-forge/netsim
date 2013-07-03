@@ -148,7 +148,7 @@ add_effect <- function(changeModel, ...){
 }
 
 add_effect.AttributeMultinomialChoiceNetworkChangeModel <- function(changeModel, effect, attributeIndex, ...){
-	add_effect_with_index(changeModel, effect, attributeIndex, )	
+	add_effect_with_index(changeModel, effect, attributeIndex, ...)	
 }
 
 add_effect.MultinomialChoiceNetworkChoiceChangeModel <- function(changeModel, ...){
