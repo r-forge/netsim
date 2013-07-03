@@ -9,6 +9,7 @@
 #define RWRAPPER_ATTRIBUTE_CONTAINER_H_
 
 #include <Rcpp.h>
+#include <string>
 #include <stdexcept>
 #include <vector>
 #include "../attribute/AttributeContainer.h"

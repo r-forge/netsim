@@ -9,6 +9,7 @@
 #define CREATE_PROCESS_STATE_H_
 
 #include <Rcpp.h>
+#include <string>
 #include "../processstate/ProcessState.h"
 #include "../processstate/ProcessStateManager.h"
 #include "../network/MemoryOneModeNetwork.h"

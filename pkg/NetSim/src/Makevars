@@ -7,7 +7,8 @@ SOURCES = $(wildcard rwrapper/*.cpp attribute/*.cpp model/*.cpp model/*/*.cpp ne
 OBJECTS = *.o $(SOURCES:.cpp=.o)
 
 # added because of r-forge compilation problem
-#PKG_CPPFLAGS= -idirafter
+# PKG_CPPFLAGS= -idirafter`$(R_HOME)/bin/Rscript -e "Rcpp:::LdFlags()"`
+PKG_CPPFLAGS= -I${R_HOME}/include -I.
 
 # copied from RSiena
 #all: $(SHLIB)
