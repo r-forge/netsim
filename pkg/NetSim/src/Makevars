@@ -3,7 +3,7 @@
 ## inspired by RSiena Makevars file
 PKG_LIBS = `$(R_HOME)/bin/Rscript -e "Rcpp:::LdFlags()"`
 ## RInstanceFactory is not included in packages
-SOURCES = $(wildcard attribute/*.cpp model/*.cpp model/*/*.cpp network/*.cpp processstate/*.cpp simulator/*.cpp utils/Random.cpp rwrapper/*.cpp)
+SOURCES = $(wildcard attribute/*.cpp model/*.cpp model/*/*.cpp network/*.cpp processstate/*.cpp simulator/*.cpp utils/Random.cpp rwrapper/rwrapper_s*.cpp rwrapper/wrapper_m*.cpp rwrapper/wrapper_n*.cpp rwrapper/wrapper_p*.cpp rwrapper/rwrapper_a*.cpp)
 OBJECTS = *.o $(SOURCES:.cpp=.o)
 
 # added because of r-forge compilation problem
