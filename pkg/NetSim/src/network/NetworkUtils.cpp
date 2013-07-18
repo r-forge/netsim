@@ -234,6 +234,7 @@ void NetworkUtils::addRingLatticeTiesToNetwork(MemoryOneModeNetwork * network,
 
 }
 
+// WARNING: deprecated. do not use.
 int NetworkUtils::countTies(MemoryOneModeNetwork * network,
 		bool reciprocal) {
 

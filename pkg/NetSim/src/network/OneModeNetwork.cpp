@@ -123,8 +123,8 @@ double OneModeNetwork::getTieValue(int i, int j) {
 	return _graph[getInternalIndex(i,j)];
 }
 
-OneModeNetworkMemento* OneModeNetwork::saveToMemento() {
-}
+//OneModeNetworkMemento* OneModeNetwork::saveToMemento() {
+//}
 
 void OneModeNetwork::restoreFromMemento(NetworkMemento* memento) {
 }

@@ -272,7 +272,7 @@ double AltXEffect::getEffect(ProcessState* processState, int actorIndex) {
 	MemoryOneModeNetwork * network =
 			dynamic_cast<MemoryOneModeNetwork *>(processState->getNetwork(_networkIndex));
 
-	double value;
+	double value = 0;
 	std::set<int> neighbors = network->getOutgoingNeighbors(actorIndex);
 	std::set<int>::iterator it = neighbors.begin();
 	for (; it != neighbors.end(); ++it){

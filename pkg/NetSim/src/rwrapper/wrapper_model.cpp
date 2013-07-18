@@ -448,7 +448,7 @@ SEXP add_effect_with_parameter(SEXP saom_, SEXP effect_, SEXP parameter_) {
 
 	MultinomialChoiceNetworkChangeModel * saom =
 			Rcpp::XPtr<MultinomialChoiceNetworkChangeModel>(saom_);
-	SaomEffect * effect = Rcpp::XPtr<SaomEffect>(effect);
+	SaomEffect * effect = Rcpp::XPtr<SaomEffect>(effect_);
 	double parameter = Rcpp::as<double>(parameter_);
 
 	saom->addEffectParameterPair(effect, parameter);
