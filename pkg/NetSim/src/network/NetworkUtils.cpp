@@ -234,7 +234,9 @@ void NetworkUtils::addRingLatticeTiesToNetwork(MemoryOneModeNetwork * network,
 
 }
 
-// WARNING: deprecated. do not use.
+// WARNING: Was earlier marked as deprecated but seems fine.
+// ignores reflexive ties
+// reciprocal ties are counted "twice"
 int NetworkUtils::countTies(MemoryOneModeNetwork * network,
 		bool reciprocal) {
 
@@ -243,18 +245,15 @@ int NetworkUtils::countTies(MemoryOneModeNetwork * network,
 	int nReciprocalTies = 0;
 	std::set<int> actorIDs = network->getActorIDs();
 
-	// TODO: This is DEPRECATED as IDs are unique OVER TIME;
-	// nodes may get born and may die (and even get reborn)
-	// or: I keep this and change the network internally
 	std::set<int>::iterator itActorI = actorIDs.begin();
 	for (; itActorI != actorIDs.end(); ++itActorI){
 		int i = *itActorI;
 		std::set<int>::iterator itActorJ = actorIDs.begin();
 		for (; itActorJ != actorIDs.end(); ++itActorJ){
 			int j = *itActorJ;
-			if ( !network->isReflexive() && (i < j) ){
+			if ( i < j ){
 				if (network->hasTie(i,j))
-					nTies++; // TODO: wrong count for reflexive networks
+					nTies++;
 				if (network->hasTie(j,i))
 					nTies++;
 				if (network->hasTie(i,j) && network->hasTie(j,i))
