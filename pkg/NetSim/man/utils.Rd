@@ -8,7 +8,7 @@
 \description{
 	General utility functions to read and manipulate the random number generator 
 	by setting and reading the random seed.
-	This assures replicability of simulation results.
+	This assures reproducibility of simulation results.
 }
 \usage{
 	reset_random_seed(seed)
