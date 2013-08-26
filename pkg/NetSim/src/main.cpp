@@ -30,6 +30,24 @@ using namespace Rcpp;
 
 int main(int argc, char *argv[]){
 
+	int seed = Random::getInstance().getSeed();
+	std::cout << "Seed: " << seed << "\n";
+
+	Random::getInstance().resetSeed(seed);
+    double randA = Random::getInstance().getRandom();
+	double randB = Random::getInstance().getRandom(); // not the same
+
+	Random::getInstance().resetSeed(seed);
+	double randC = Random::getInstance().getRandom();
+	double randD = Random::getInstance(2).getRandom();
+
+	std::cout << randA << "\n"
+			<< randB << "\n"
+			<< randC << "\n"
+			<< randD << "\n";
+
+
+
 	/*
 	// define the process state
 	ProcessState myProcessState;

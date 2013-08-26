@@ -47,4 +47,5 @@
 	
 	# a change of the attribute container changes time model 3
 	set_value(attribute, 0, 0.5)
+	
 }

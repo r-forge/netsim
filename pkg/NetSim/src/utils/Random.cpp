@@ -24,8 +24,20 @@ size_t Random::getRandMax() {
 	return RAND_MAX;
 }
 
+void Random::resetSeed(int seed) {
+	// std::cout << "Resetting seed with value " << seed << "\n";
+    std::srand(seed);
+    _seed = seed;
+
+}
+
+int Random::getSeed() {
+	return _seed;
+}
+
 Random::Random(int seed) {
 	//TODO: Is the generator REALLY only initialized once?
+	// std::cout << "Initializing random number generator with seed " << seed << "\n";
     std::srand(seed);
     _seed = seed;
 }

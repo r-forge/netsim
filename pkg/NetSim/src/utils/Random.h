@@ -13,7 +13,7 @@
 #include <ctime>
 
 /**
- * Provides a random number generator with for
+ * Provides a random number generator for
  * uniformly distributed random number in (0, 1).
  * The class is implemented as a Singleton to avoid
  * multiple seeds.
@@ -36,6 +36,15 @@ public:
 	 * For testing purposes.
 	 */
 	size_t getRandMax();
+
+	/**
+	 * Explicitly creates a new instance with a particular seed
+	 * contradicts the Singleton idea as the creation of a new instance is enforced.
+	 * May be used to reproduce results or for testing.
+	 */
+	void resetSeed(int seed);
+
+	int getSeed();
 
 private:
     /**
