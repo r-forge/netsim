@@ -12,3 +12,8 @@ reset_random_seed <- function(seed){
 get_random_seed <- function(){
 	.Call("get_random_seed", PACKAGE = "NetSim")
 }
+
+as.igraph.NetSimNetwork <- function(x, mode = c("directed", "undirected"), ...){
+	iGraph <- graph.adjacency(as.matrix(x), mode = mode[1], diag = FALSE)
+	return(iGraph)
+}
