@@ -17,8 +17,6 @@
 \arguments{
 	\item{seed}{Random number seed, a positive integer}
 }
-\seealso{
-}
 \examples{
 	reset_random_seed(12)
 	get_random_seed()

@@ -43,6 +43,6 @@ Random::Random(int seed) {
 }
 
 Random::Random(){
-	std::cerr << "Random() should have not been called";
+	// std::cerr << "Random() should have not been called";
 	_seed = -1; // should never be called
 }
