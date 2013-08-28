@@ -240,7 +240,6 @@ void NetworkUtils::addRingLatticeTiesToNetwork(MemoryOneModeNetwork * network,
 int NetworkUtils::countTies(MemoryOneModeNetwork * network,
 		bool reciprocal) {
 
-	int nActors = network->getSize();
 	int nTies = 0;
 	int nReciprocalTies = 0;
 	std::set<int> actorIDs = network->getActorIDs();

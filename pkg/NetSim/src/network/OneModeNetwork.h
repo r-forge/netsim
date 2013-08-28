@@ -92,9 +92,6 @@ public:
 
 private:
 
-	// a binary network is the default network
-	static const double DefaultTieValue = 1.0;
-
 	/*
 	 * checks whether an index i is in the range [0, size-1]
 	 */

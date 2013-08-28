@@ -34,8 +34,8 @@ bool OneModeNetwork::addTie(int i, int j) {
 	// check validity
 	if (!isIndexesValid(i, j)) return false;
 
-	// set tie value
-	return setTie(i, j, DefaultTieValue);
+	// set tie value to default value of 1.0
+	return setTie(i, j, 1.0);
 }
 
 
