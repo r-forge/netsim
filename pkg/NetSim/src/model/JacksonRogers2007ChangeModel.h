@@ -11,6 +11,7 @@
 #include "ModelResult.h"
 #include "ChangeModel.h"
 #include "../network/NetworkUtils.h"
+#include "../io/Output.h"
 
 /**
  * Implementation of the change model from

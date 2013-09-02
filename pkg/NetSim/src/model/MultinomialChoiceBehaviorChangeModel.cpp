@@ -78,7 +78,7 @@ ModelResult* MultinomialChoiceBehaviorChangeModel::getChange(
 	}
 
 	// Should never be reached except if an error occurs
-	std::cout << "Should not be here MultinomialBehaviorChoiceModel wrong return type";
+	Output() << "Should not be here MultinomialBehaviorChoiceModel wrong return type";
 	return new ValueModelResult(-1);
 
 

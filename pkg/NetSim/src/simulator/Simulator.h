@@ -14,6 +14,7 @@
 #include <utility>  // pair
 #include <stdio.h>
 #include <list>
+#include "../io/Output.h"
 
 /**
  * Logs all changes in the simulation process

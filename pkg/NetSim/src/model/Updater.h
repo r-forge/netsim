@@ -18,6 +18,7 @@
 #include "../network/MemoryOneModeNetwork.h"
 #include "../network/ValuedMemoryOneModeNetwork.h"
 #include "../model/TimeModel.h"
+#include "../io/Output.h"
 
 class Updater{
 public:
@@ -111,7 +112,7 @@ public:
 	virtual void update(ProcessState* processState, double timeSpan) = 0;
 	// TODO implement with a proper exception
 	void undoUpdate(ProcessState* processState, double timeSpan){
-		std::cout << "Undo not implemented for TimeUpdaters.";
+		Output() << "Undo not implemented for TimeUpdaters.";
 	}
 
 };

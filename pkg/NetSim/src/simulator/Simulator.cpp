@@ -23,8 +23,9 @@ Simulator::Simulator(ProcessState * processState, ModelManager * modelManager,
 
 void Simulator::simulate() {
 
-	if(_verbose)
-		std::cout << "Starting simulation. Length = " << _periodLength << ", Time = " << _time <<std::endl;
+	if(_verbose){
+		Output() << "Starting simulation. Length = " << _periodLength << ", Time = " << _time << "\n";
+	}
 	clock_t timeStart = clock();
 
 	double nextPercentageToPrint = 0;
@@ -34,11 +35,20 @@ void Simulator::simulate() {
 
 		//simple progress bar
 		if (nextPercentageToPrint <= (_time / _periodLength)){
-			if (nextPercentageToPrint == 0 && _verbose) std::cout << "Progress (in 10%) [";
+			if (nextPercentageToPrint == 0 && _verbose){
+				Output() << "Progress (in 10%) [";
+			}
 
-			if (_verbose & !_debug) std::cout << "=" << std::flush;
-			if (_debug) std::cout << std::endl << nextPercentageToPrint *100 <<
-					" % reached." << std::endl;
+			if (_verbose & !_debug){
+				// std::cout << "=" << std::flush;
+				Output() << "=";
+				Output().flush();
+			}
+			if (_debug){
+				Output().endl();
+				Output() << nextPercentageToPrint *100 << " % reached.";
+				Output().endl();
+			}
 
 			nextPercentageToPrint += 0.1;
 		}
@@ -49,7 +59,10 @@ void Simulator::simulate() {
 		_nextTimeModels.clear();
 		// maximum time span
 		double timeSpan = (_periodLength - _time);
-		if (_debug) std::cout << "Remaining time = " << timeSpan << std::endl;
+		if (_debug){
+			Output() << "Remaining time = " << timeSpan;
+			Output().endl();
+		}
 
 		for (std::vector<TimeModel*>::iterator it = timeModels->begin();
 				it != timeModels->end(); ++it){
@@ -65,8 +78,11 @@ void Simulator::simulate() {
 		}
 		_time += timeSpan;
 
-		if (_debug) std::cout << _nextTimeModels.size() <<
-				" TimeModel(s) chosen with timespan " << timeSpan << std::endl;
+		if (_debug){
+			Output() << _nextTimeModels.size() <<
+					" TimeModel(s) chosen with timespan " << timeSpan;
+			Output().endl();
+		}
 
 		// TIME UPDATES
 		std::vector<TimeUpdater *> * timeUpdaters = _modelManager->getTimeUpdater();
@@ -74,7 +90,10 @@ void Simulator::simulate() {
 				it != timeUpdaters->end(); ++it){
 			(*it)->update(_processState, timeSpan);
 		}
-		if (_debug) std::cout << "Time updates done." << std::endl;
+		if (_debug){
+			Output() << "Time updates done.";
+			Output().endl();
+		}
 
 
 		// CHANGE MODELS
@@ -99,7 +118,10 @@ void Simulator::simulate() {
 
 		}
 
-		if (_debug) std::cout << "Change models done." << std::endl;
+		if (_debug) {
+			Output() << "Change models done.";
+			Output().endl();
+		}
 
 
 		// UPDATES
@@ -115,7 +137,10 @@ void Simulator::simulate() {
 			}
 		}
 
-		if (_debug) std::cout << "Change updates done." << std::endl;
+		if (_debug){
+			Output() << "Change updates done.";
+			Output().endl();
+		}
 
 		// delete result pointers
 		// TODO maybe replace with boost::ptr_vector
@@ -127,15 +152,26 @@ void Simulator::simulate() {
 		++_iterationSteps;
 	} // while loop
 
-	if (_verbose) std::cout << "] done." << std::endl;
+	if (_verbose) {
+		Output() << "] done.";
+		Output().endl();
+	}
 
 
 	// report time and iteration steps
 	if(_verbose){
 		double duration = (double)(clock() - timeStart)/CLOCKS_PER_SEC;
+		double durationRounded = ( round( duration * 100 ) ) / 100;
+		double timePerIteration = duration / ((double) _iterationSteps);
+		double timePerIterarionRounded = ( round( timePerIteration * 100 ) ) / 100;
+		/* commented out as incompatible with CRAN
 		printf("Iteration steps: %d\n", _iterationSteps);
 		printf("Simulation time: %.2fs\n", duration);
 		printf("Time per iteration: %.6fs\n", duration / ((double) _iterationSteps));
+		*/
+		Output() << "Iteration steps: " << _iterationSteps << "\n";
+		Output() << "Simulation time: " << durationRounded << "s\n";
+		Output() << "Time per iteration: " << timePerIterarionRounded << "s\n";
 	}
 
 	// reset simulator

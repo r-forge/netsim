@@ -21,7 +21,7 @@ void TieUpdater::update(ProcessState* processState, ModelResult* result) {
 	// also: check whether conversion works
 	TieModelResult* tieResult = dynamic_cast<TieModelResult*>(result);
 	if (tieResult != 0) updateTie(processState, tieResult);
-			else std::cout << "problem with type conversion in TieUpdater.tieResult";
+			else Output() << "problem with type conversion in TieUpdater.tieResult";
 }
 
 TieUpdater::TieUpdater() : Updater(){
@@ -202,14 +202,14 @@ void AddTiesFromNewbornActorUpdater::update(ProcessState* processState,
 
 	std::set<int>::iterator itNodes = neighborsSet.begin();
 	for (; itNodes != neighborsSet.end(); ++itNodes){
-		if (_debug) std::cout << "Adding tie from " << focalActor << " to " <<
-				*itNodes << std::endl;
+		if (_debug) Output() << "Adding tie from " << focalActor << " to " <<
+				*itNodes << "\n";
 
 		network->addTie(focalActor, (*itNodes));
 	}
 
-	if (_debug) std::cout << "Added " << actorSetModelResult->getActorSet().size() <<
-			" ties." << std::endl;
+	if (_debug) Output() << "Added " << actorSetModelResult->getActorSet().size() <<
+			" ties." << "\n";
 
 
 }
@@ -238,7 +238,7 @@ void AddActorUpdater::update(ProcessState* processState,
 	// ignore result
 	int id = processState->addActor();
 
-	if (_debug) std::cout << "Added actor " << id << std::endl;
+	if (_debug) Output() << "Added actor " << id << "\n";
 }
 
 void AddActorUpdater::undoUpdate(ProcessState* processState,

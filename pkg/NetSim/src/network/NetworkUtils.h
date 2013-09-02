@@ -16,6 +16,8 @@
 #include <set>
 #include <utility>
 #include <stdexcept>
+#include "../io/Output.h"
+#include <math.h>
 
 class NetworkUtils{
 

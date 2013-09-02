@@ -26,7 +26,7 @@ ModelResult * JacksonRogers2007ChangeModel::getChange(ProcessState * processStat
 	std::set<int> nodes;
 
 	if(_debug){
-		std::cout << "---- D E B U G --------------------" << std::endl;
+		Output() << "---- D E B U G --------------------" << "\n";
 	}
 
 	// choose parent nodes and whether to connect to them
@@ -42,10 +42,10 @@ ModelResult * JacksonRogers2007ChangeModel::getChange(ProcessState * processStat
 
 	if(_debug){
 		itNodes = nodes.begin();
-		std::cout << "Parents: ";
+		Output() << "Parents: ";
 		for (; itNodes != nodes.end(); ++itNodes)
-			std::cout << *itNodes << ", ";
-		std::cout << std::endl;
+			Output() << *itNodes << ", ";
+		Output().endl();
 	}
 
 
@@ -62,8 +62,8 @@ ModelResult * JacksonRogers2007ChangeModel::getChange(ProcessState * processStat
 
 		// TODO remove
 		if (_debug){
-			std::cout << "Number of neighbors of " << *itNodes << " = " <<
-					neighbors.size() << std::endl;
+			Output() << "Number of neighbors of " << *itNodes << " = " <<
+					neighbors.size() << "\n";
 		}
 
 		networkSearchableNodes.insert(
@@ -72,16 +72,16 @@ ModelResult * JacksonRogers2007ChangeModel::getChange(ProcessState * processStat
 
 		// TODO remove
 		if (_debug){
-		std::cout << "New size of network searchable nodes = " <<
-				networkSearchableNodes.size() << std::endl;
+		Output() << "New size of network searchable nodes = " <<
+				networkSearchableNodes.size() << "\n";
 		}
 
 	}
 
 	// assuming there are exactly two, TODO remove
 	if (_debug){
-	std::cout << "Size of network searchable nodes inc. potential parents " <<
-			networkSearchableNodes.size() << std:: endl;
+	Output() << "Size of network searchable nodes inc. potential parents " <<
+			networkSearchableNodes.size() << "\n";
 	}
 
 	// J&R, page 894: These nodes are
@@ -92,19 +92,19 @@ ModelResult * JacksonRogers2007ChangeModel::getChange(ProcessState * processStat
 	for (itNodes = parentNodes.begin(); itNodes != parentNodes.end(); ++itNodes){
 		// TODO remove, and: why did this not work with the one-liner
 		if (_debug){
-			std::cout << "Erasing node " << *itNodes << std::endl;
+			Output() << "Erasing node " << *itNodes << "\n";
 		}
 		networkSearchableNodes.erase(*itNodes);
 	}
 
 	// TODO remove
 	if (_debug){
-		std::cout << "Size of network searchable nodes without potential parents " <<
+		Output() << "Size of network searchable nodes without potential parents " <<
 				networkSearchableNodes.size() << " : ";
 		for (itNodes = networkSearchableNodes.begin();
 				itNodes != networkSearchableNodes.end(); ++itNodes)
-			std::cout << *itNodes << ", ";
-		std::cout << std:: endl;
+			Output() << *itNodes << ", ";
+		Output().endl();
 	}
 
 
@@ -134,13 +134,13 @@ ModelResult * JacksonRogers2007ChangeModel::getChange(ProcessState * processStat
 
 		// TODO remove
 		if (_debug){
-			std::cout << "PROBABILISTIC neighbor choice as there are " <<
-					networkSearchableNodes.size() << " neighbor options" << std::endl <<
+			Output() << "PROBABILISTIC neighbor choice as there are " <<
+					networkSearchableNodes.size() << " neighbor options" << "\n" <<
 					"Nodes: ";
 			for (itNodes = nodes.begin(); itNodes != nodes.end(); ++itNodes){
-				std::cout << *itNodes << ", ";
+				Output() << *itNodes << ", ";
 			}
-			std::cout << std::endl;
+			Output().endl();
 		}
 
 	}
@@ -163,10 +163,10 @@ ModelResult * JacksonRogers2007ChangeModel::getChange(ProcessState * processStat
 	nodes.insert(networkSearchableNodes.begin(), networkSearchableNodes.end());
 
 	if (_debug){
-		std::cout << "Final nodes: ";
+		Output() << "Final nodes: ";
 		for (itNodes = nodes.begin(); itNodes != nodes.end(); ++itNodes)
-			std::cout << *itNodes << ", ";
-		std::cout << std::endl;
+			Output()  << *itNodes << ", ";
+		Output().endl();
 	}
 
 	return new ActorSetModelResult(nodes);

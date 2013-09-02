@@ -25,7 +25,8 @@ double MultinomialChoiceUtils::getValueObjectiveFunction(
 				double effectValue = (*itEffects)->first->getEffect(processState, focalActor);
 				double parameter = (*itEffects)->second;
 
-				if(debug) std::cout << "  param=" << parameter << " value=" << effectValue << std::endl;
+				if(debug) Output() << "  param=" << parameter
+						<< " value=" << effectValue << "\n";
 
 				valueObjectiveFunction += ( effectValue * parameter );
 			}

@@ -14,6 +14,7 @@
 #include "../utils/Random.h"
 #include "../network/NetworkUtils.h"
 #include <stdexcept>
+#include "../io/Output.h"
 
 class WattsStrogatzRandomRewiringChangeModel : public ChangeModel{
 

@@ -12,6 +12,7 @@
 #include <RInside.h>
 #include <Rcpp.h>
 #include "../../utils/RInstanceFactory.h"
+#include "../io/Output.h"
 
 // to be only called once
 static RInside * createRInstance(){
@@ -44,6 +45,11 @@ void matrixToNetworkRWrapperTest(){
 
 }
 
+void rOutTest(){
+
+	Output() << "Output in R";
+}
+
 cute::suite getRWrapperTestSuite(){
 
 //	createRInstance();
@@ -51,6 +57,7 @@ cute::suite getRWrapperTestSuite(){
 	cute::suite s;
 
 	s.push_back(CUTE(matrixToNetworkRWrapperTest));
+	s.push_back(CUTE(rOutTest));
 
 	return s;
 }

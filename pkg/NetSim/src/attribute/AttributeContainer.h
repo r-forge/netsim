@@ -14,6 +14,7 @@
 #include <iostream>
 #include <math.h>
 #include <float.h>
+#include "../io/Output.h"
 
 // forward declaration
 class AttributeContainerMemento;

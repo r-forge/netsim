@@ -11,20 +11,21 @@
 /**
  *
  */
-void NetworkUtils::dumpNetwork(MemoryOneModeNetwork* network, int round) {
+void NetworkUtils::dumpNetwork(MemoryOneModeNetwork* network, int _round) {
 	std::vector<std::vector<double> > graph = network->getGraph();
 	int size = network->getSize();
 
 	// print
-	std::cout << "MemoryOneModeNetwork, " << size << " nodes" << std::endl;
+	Output() << "MemoryOneModeNetwork, " << size << " nodes" << "\n";
 	for (int i = 0; i < size; i++){
 		for (int j = 0; j < size; j++){
-			printf("%.2lf", graph[i][j]);
-			// double digit = round( graph[i][j] * (1 + round * 10) ) / (1 + round * 10);
-			// std::cout << digit;
+			double factor = (_round >= 0) ? pow(10, _round) : 100;
+			double tieValueRounded = round(graph[i][j] * factor) /factor;
+			Output() << tieValueRounded;
+			// was: printf("%.2lf", graph[i][j]);
 			if (j == (size - 1)) // last element in a row
-				std::cout << std::endl;
-			else std::cout << " ";
+				Output().endl();
+			else Output() << " ";
 		}
 	}
 }
@@ -78,49 +79,49 @@ int NetworkUtils::getHammingDistance(MemoryOneModeNetwork* network1,
 
 void NetworkUtils::dumpInternalObjects(MemoryOneModeNetwork* network) {
 
-	std::cout << "-------------------" << std::endl;
-	std::cout << "Dumping internal objects of a MemoryOneModeNetwork:" << std::endl;
-	std::cout << "Size: " << network->_size << std::endl;
-	std::cout << "Directed: " << network->_directed << std::endl;
-	std::cout << "Reflexive: " << network->_reflexive << std::endl;
+	Output() << "-------------------" << "\n";
+	Output() << "Dumping internal objects of a MemoryOneModeNetwork:" << "\n";
+	Output() << "Size: " << network->_size << "\n";
+	Output() << "Directed: " << network->_directed << "\n";
+	Output() << "Reflexive: " << network->_reflexive << "\n";
 
-	std::cout << "Node : in-degree" << std::endl;
+	Output() << "Node : in-degree" << "\n";
 	std::map<int, int>::iterator itInDeg = network->_inDegreeMap.begin();
 	for (; itInDeg != network->_inDegreeMap.end(); ++itInDeg){
-		std::cout << (*itInDeg).first << " : " << (*itInDeg).second << std::endl;
+		Output() << (*itInDeg).first << " : " << (*itInDeg).second << "\n";
 	}
-	std::cout << "Node : out-degree" << std::endl;
+	Output() << "Node : out-degree" << "\n";
 	std::map<int, int>::iterator itOutDeg = network->_outDegreeMap.begin();
 	for (; itOutDeg != network->_outDegreeMap.end(); ++itOutDeg){
-		std::cout << (*itOutDeg).first << " : " << (*itOutDeg).second << std::endl;
+		Output() << (*itOutDeg).first << " : " << (*itOutDeg).second << "\n";
 	}
 
-	std::cout << "Node : incoming neighbors" << std::endl;
+	Output() << "Node : incoming neighbors" << "\n";
 	std::map<int,std::set<int>* >::iterator itIncNeigh =
 			network->_incomingNeighborsMap.begin();
 	for (; itIncNeigh != network->_incomingNeighborsMap.end(); ++itIncNeigh){
-		std::cout << (*itIncNeigh).first << " : ";
+		Output() << (*itIncNeigh).first << " : ";
 		std::set<int>::iterator itNeighbors =  (*itIncNeigh).second->begin();
 		for(; itNeighbors !=  (*itIncNeigh).second->end(); ++itNeighbors){
-			std::cout << (*itNeighbors) << ", ";
+			Output() << (*itNeighbors) << ", ";
 		}
-		std::cout << std::endl;
+		Output() << "\n";
 	}
 
-	std::cout << "Node : outgoing neighbors" << std::endl;
+	Output() << "Node : outgoing neighbors" << "\n";
 	std::map<int,std::set<int>* >::iterator itOutNeigh =
 			network->_outgoingNeighborsMap.begin();
 	for (; itOutNeigh != network->_outgoingNeighborsMap.end(); ++itOutNeigh){
-		std::cout << (*itOutNeigh).first << " : ";
+		Output() << (*itOutNeigh).first << " : ";
 		std::set<int>::iterator itNeighbors =  (*itOutNeigh).second->begin();
 		for(; itNeighbors !=  (*itOutNeigh).second->end(); ++itNeighbors){
-			std::cout << (*itNeighbors) << ", ";
+			Output() << (*itNeighbors) << ", ";
 		}
-		std::cout << std::endl;
+		Output() << "\n";
 	}
 
 
-	std::cout << "-------------------" << std::endl;
+	Output() << "-------------------" << "\n";
 }
 
 std::set<int> NetworkUtils::getNRandomNodes(Network* network, int n) {

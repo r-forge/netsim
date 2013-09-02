@@ -18,6 +18,7 @@
 #include "ModelResult.h"
 #include "../utils/Random.h"
 #include <stdexcept>
+#include "../io/Output.h"
 
 class MultinomialChoiceNetworkChangeModel : public ChangeModel{
 

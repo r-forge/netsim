@@ -11,6 +11,7 @@
 #include <utility>
 #include <set>
 #include "saom/SaomEffect.h"
+#include "../io/Output.h"
 
 class MultinomialChoiceUtils{
 

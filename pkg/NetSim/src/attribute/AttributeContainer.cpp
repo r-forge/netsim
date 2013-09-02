@@ -54,7 +54,7 @@ bool AttributeContainer::setValue(int i, double value) {
 		checkedValue = (round((value - _min) / _by) * _by) + _min;
 
 	if (value != checkedValue)
-		std::cout << "Incorrect attribute value: " << value << std::endl;
+		Output() << "Incorrect attribute value: " << value << "\n";
 
 	if ( (value >= _min) & (value <= _max) ){
 		_actorValueMap[i] = value;

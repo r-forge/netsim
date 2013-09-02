@@ -80,17 +80,17 @@ ModelResult* MultinomialChoiceNetworkChangeModel::getChange(
 				statisticsWithoutTieContribution[actorIndex][effectIndex] =
 						statistic - contribution;
 				if (_debug)
-					std::cout << "Tie removal from " << i << " to " << j
-							<< " contributes " << contribution << std::endl;
+					Output() << "Tie removal from " << i << " to " << j
+							<< " contributes " << contribution << "\n";
 			} else {
 				// i->j does not exist or i == j
 				if (i != j) {
 					statisticsWithoutTieContribution[actorIndex][effectIndex] =
 							statistic + contribution;
 					if (_debug)
-						std::cout << "Tie insertion from " << i << " to "
+						Output() << "Tie insertion from " << i << " to "
 								<< j << " contributes " << contribution
-								<< std::endl;
+								<< "\n";
 				} else // choosing oneself means changing nothing
 				{
 					statisticsWithoutTieContribution[actorIndex][effectIndex] =
@@ -109,15 +109,15 @@ ModelResult* MultinomialChoiceNetworkChangeModel::getChange(
 	for (size_t i = 0; i < objectiveFunctions.size(); i++) {
 		denominator += exp(objectiveFunctions[i]);
 		if (_debug)
-			std::cout << "o.f. of actor choice " << i << ": "
-					<< objectiveFunctions[i] << std::endl;
+			Output() << "o.f. of actor choice " << i << ": "
+					<< objectiveFunctions[i] << "\n";
 	}
 
 	if (_debug)
-		std::cout << "Active actor: " << _actorIndex << std::endl;
+		Output() << "Active actor: " << _actorIndex << "\n";
 
 	if (_debug)
-		std::cout << "calculated denominator: " << denominator << std::endl;
+		Output() << "calculated denominator: " << denominator << "\n";
 
 	if (denominator >= DBL_MAX)
 		throw MissSpecifiedModelException(
@@ -139,8 +139,7 @@ ModelResult* MultinomialChoiceNetworkChangeModel::getChange(
 		}
 	}
 	// Should never be reached except an error occurs
-	std::cout
-			<< "Should not be here MultinomialChoiceModel wrong return type";
+	Output() << "Should not be here MultinomialChoiceModel wrong return type";
 	return new TieModelResult(-1, -1);
 }
 
@@ -259,7 +258,7 @@ ModelResult* AttributeMultinomialChoiceNetworkChangeModel::getChange(
 		}
 	}
 
-	if (_debug) std::cout << "Actor " << focalActor << " chosen." << std::endl;
+	if (_debug) Output() << "Actor " << focalActor << " chosen." << "\n";
 
 
 	// prepare parameters for saom constructor

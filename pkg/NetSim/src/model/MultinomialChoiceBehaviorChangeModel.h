@@ -16,6 +16,7 @@
 #include <utility>
 #include <set>
 #include <vector>
+#include "../io/Output.h"
 
 
 class MultinomialChoiceBehaviorChangeModel : public ChangeModel{

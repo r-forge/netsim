@@ -35,8 +35,8 @@ ModelResult* WattsStrogatzRandomRewiringChangeModel::getChange(
 
 	// no rewiring of that actor possible (already connected to every other node)
 	if (network->getOutDegree(actor1) == (network->getSize() - 1)){
-		if (_debug) std::cout << "Node " << actor1 <<
-				" is connected with all other nodes" << std::endl;
+		if (_debug) Output() << "Node " << actor1 <<
+				" is connected with all other nodes" << "\n";
 		return new TwoTiesModelResult(actor1,
 				actor2,
 				actor1,
@@ -49,9 +49,9 @@ ModelResult* WattsStrogatzRandomRewiringChangeModel::getChange(
 	int actorNumber = 0;
 
 
-	if (_debug) std::cout << "nNotConnected = " << nNotConnectedNodes <<
-			"; rand = " << randConnect << std::endl;
-	if (_debug) std::cout << "Choose actor number " << chosenActorNumber << std::endl;
+	if (_debug) Output() << "nNotConnected = " << nNotConnectedNodes <<
+			"; rand = " << randConnect << "\n";
+	if (_debug) Output() << "Choose actor number " << chosenActorNumber << "\n";
 
 	std::set<int>::iterator itActor = actorIDs.begin();
 	for(; itActor != actorIDs.end(); ++itActor){

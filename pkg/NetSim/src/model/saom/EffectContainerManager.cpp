@@ -23,8 +23,8 @@ void EffectContainerManager::addToEffectContainer(
 	for (; it != _effectContainer.end(); ++it){
 		if ( (*it)->first->getName() == effect->getName()){
 			_effectContainer.erase(*it);
-			std::cout << "Replacing effect " << effect->getName() <<
-					". New value: " << parameter << std::endl;
+			Output() << "Replacing effect " << effect->getName() <<
+					". New value: " << parameter << "\n";
 		}
 	}
 
