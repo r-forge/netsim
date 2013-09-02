@@ -7,4 +7,5 @@ SOURCES = $(wildcard attribute/*.cpp model/*.cpp model/*/*.cpp network/*.cpp pro
 OBJECTS = $(SOURCES:.cpp=.o)
 
 ## options suggested by Brian Ripley
-PKG_CPPFLAGS = -pedantic -Wall
+## commented out for CRAN submission
+# PKG_CPPFLAGS = -pedantic -Wall

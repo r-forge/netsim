@@ -9,6 +9,7 @@
 \alias{add_global_attribute}
 \alias{get_global_attribute_index}
 \alias{get_global_attribute}
+\alias{get_process_state_name}
 \docType{package}
 \title{
 Manage the process state
@@ -29,6 +30,7 @@ get_attribute_container(processState, name = "defaultAttribute")
 add_global_attribute(processState, value = 0.0, name = "defaultGlobalAttribute")
 get_global_attribute_index(processState, name = "defaultGlobalAttribute")
 get_global_attribute(processState, name = "defaultGlobalAttribute")
+get_process_state_name(processState)
 }
 \arguments{
 	\item{processState}{A process state object}

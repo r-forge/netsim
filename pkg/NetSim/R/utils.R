@@ -16,6 +16,6 @@ get_random_seed <- function(){
 as.igraph.NetSimNetwork <- function(x, mode = c("directed", "undirected"), ...){
 	if (!require(igraph))
 		stop("Library igraph needs to be installed. Try 'install.packages(\"igraph\")'")
-	iGraph <- graph.adjacency(as.matrix(x), mode = mode[1], diag = FALSE)
+	iGraph <- igraph::graph.adjacency(as.matrix(x), mode = mode[1], diag = FALSE)
 	return(iGraph)
 }

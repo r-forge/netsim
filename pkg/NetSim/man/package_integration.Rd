@@ -15,6 +15,7 @@
 	\item{x}{A Netsim network object}
 	\item{mode}{Character scalar, specifies whether igraph should interpret the graph
 	as directed or undirected. More options are not supported, yet.}
+	\item{...}{Additional arguments}
 }
 \references{
 Csardi G, Nepusz T: The igraph software package for complex network research, InterJournal, Complex Systems 1695. 2006. 

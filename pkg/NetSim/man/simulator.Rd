@@ -12,7 +12,8 @@
 	After the simulation the number of simulation steps can be returned.
 }
 \usage{
-	create_simulator(processState, modelManager, periodLength = 1, verbose = TRUE, debug = FALSE)
+	create_simulator(processState, modelManager, periodLength = 1, 
+				verbose = TRUE, debug = FALSE)
 	simulate(simulator)
 	get_iteration_steps(simulator)
 }

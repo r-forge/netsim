@@ -17,11 +17,17 @@
 	For the SAOM-related models additional model specifications are necessary.
 }
 \usage{
-	create_multinomial_choice_network_change_model(focalActorIndex, networkIndex, effectContainer)
-	create_multinomial_choice_behavior_change_model(focalActorIndex, attributeIndex, effectContainer)
-	create_jackson_rogers_change_model(networkIndex, pLinkToParentNode = 1.0, pLinkToNeigborNode = 1.0, nParentNodes = 1, nNeighborNodes = 1)
+	create_multinomial_choice_network_change_model(
+				focalActorIndex, networkIndex, effectContainer)
+	create_multinomial_choice_behavior_change_model(
+				focalActorIndex, attributeIndex, effectContainer)
+	create_jackson_rogers_change_model(
+				networkIndex, pLinkToParentNode = 1.0, pLinkToNeigborNode = 1.0, 
+				nParentNodes = 1, nNeighborNodes = 1)
 	create_watts_strogatz_change_model(networkIndex)
-	create_attribute_multinomial_choice_network_change_model(networkIndex, poissonAttributeIndex, updater = create_tie_swap_updater(networkIndex))
+	create_attribute_multinomial_choice_network_change_model(
+				networkIndex, poissonAttributeIndex, 
+				updater = create_tie_swap_updater(networkIndex))
 }
 \arguments{
 	\item{focalActorIndex}{Index of focal actor of the multinomial (network or behavior) change model}

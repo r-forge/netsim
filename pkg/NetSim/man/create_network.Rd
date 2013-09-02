@@ -27,7 +27,7 @@
 	\item{i,j}{index of one particular tie. The index starts counting from 0.}
 	\item{value}{A value a tie is set to (1 or 0 in binary networks)}
 	\item{x}{A \pkg{NetSim} network object}
-	\item{...}{Potential additional arguments}
+	\item{...}{Additional arguments}
 }
 \seealso{
 	\code{\link{create_process_state}}

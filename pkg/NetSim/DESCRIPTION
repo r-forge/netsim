@@ -9,3 +9,4 @@ Description: NetSim allows to combine and simulate a variety of micro-models to 
 License: GPL-2
 Depends: Rcpp (>= 0.9.15)
 LinkingTo: Rcpp
+Suggests: igraph
