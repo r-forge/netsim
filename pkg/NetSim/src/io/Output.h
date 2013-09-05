@@ -10,7 +10,7 @@
 
 #include <Rcpp.h>
 #include <iostream>
-#include "../utils/RInstanceFactory.h"
+// #include "../utils/RInstanceFactory.h"
 
 /**
  * Output class that takes care of providing the right output formats
@@ -35,6 +35,8 @@ public:
 	//	static void err(std::string str);
 
 	Output();
+
+	~Output(){ }
 
 
 private:

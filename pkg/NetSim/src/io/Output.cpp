@@ -20,5 +20,5 @@ void Output::endl() {
 }
 
 Output::Output() {
-	RInstanceFactory::getInstance();
+	//RInstanceFactory::getInstance();	// careful: this is not part of the R package!
 }
