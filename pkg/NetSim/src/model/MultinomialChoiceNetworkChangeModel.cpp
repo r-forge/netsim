@@ -61,6 +61,11 @@ ModelResult* MultinomialChoiceNetworkChangeModel::getChange(
 		statisticsAndParametersWithoutChange[effectIndex].second =
 				parameter;
 
+		if (_debug){
+			Output() << "Effect "<< (*itEffects)->first->getName()
+					<< " for actor " << i << "\n";
+		}
+
 		// iterate over all actors
 		itActors = actorIDs.begin();
 		int actorIndex = 0; // the internal array index pointing to  the actor ID
@@ -89,10 +94,9 @@ ModelResult* MultinomialChoiceNetworkChangeModel::getChange(
 							statistic + contribution;
 					if (_debug)
 						Output() << "Tie insertion from " << i << " to "
-								<< j << " contributes " << contribution
+								<< j << " contributes " << -contribution
 								<< "\n";
-				} else // choosing oneself means changing nothing
-				{
+				} else {	// choosing oneself means changing nothing
 					statisticsWithoutTieContribution[actorIndex][effectIndex] =
 							statistic;
 				}
@@ -139,7 +143,9 @@ ModelResult* MultinomialChoiceNetworkChangeModel::getChange(
 		}
 	}
 	// Should never be reached except an error occurs
-	Output() << "Should not be here MultinomialChoiceModel wrong return type";
+	throw MissSpecifiedModelException(
+					"No actor could be chosen in MultinomialChoiceModel. "
+					"There are probably problems with one of the effects.");
 	return new TieModelResult(-1, -1);
 }
 
@@ -183,9 +189,9 @@ void MultinomialChoiceNetworkChangeModel::calculateTieContributionsWithMemento(
 */
 }
 
-void MultinomialChoiceNetworkChangeModel::setDebugMode(bool verbose) {
-	_debug = verbose;
-}
+//void MultinomialChoiceNetworkChangeModel::setDebugMode(bool verbose) {
+//	_debug = verbose;
+//}
 
 void MultinomialChoiceNetworkChangeModel::init(int actorIndex,
 		size_t dependentNetworkIndex,
@@ -280,7 +286,7 @@ ModelResult* AttributeMultinomialChoiceNetworkChangeModel::getChange(
 			new MultinomialChoiceNetworkChangeModel(
 					focalActor, _dependentNetworkIndex,
 					&effectParameterPairs, &_updaters);
-	saom->setDebugMode(_debug);
+	saom->setDebug(_debug);
 
 	// run get change function in new saom
 

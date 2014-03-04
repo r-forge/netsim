@@ -49,7 +49,7 @@ public:
 	/**
 	 * If set, extra debug messages will be sent to the console
 	 */
-	void setDebugMode(bool verbose = true);
+	//void setDebugMode(bool verbose = true);
 
 	void addEffectParameterPair(SaomEffect* effect, double parameter);
 
@@ -59,7 +59,7 @@ private:
 	size_t _dependentNetworkIndex;
 	std::set<std::pair<SaomEffect*, double> *> * _effectParameterPairs;
 	std::vector<Updater*> * _updaters;
-	bool _debug;
+	//bool _debug;
 
 	void init(int actorIndex,
 			size_t dependentNetworkIndex,
@@ -70,6 +70,11 @@ private:
 			ProcessState* processState);
 };
 
+/**
+ * Multinomial choice network change model
+ * in which the parameters are not fixed as part of the model
+ * but taken from attribute vectors.
+ */
 class AttributeMultinomialChoiceNetworkChangeModel : public ChangeModel{
 
 public:

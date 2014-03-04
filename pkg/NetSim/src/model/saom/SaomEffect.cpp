@@ -357,6 +357,8 @@ double TotalSimilarityEffect::getEffect(ProcessState* processState,
 	double egoValue = attributeContainer->getValue(actorIndex);
 	double range = maxAttributeValue - minAttributeValue;
 
+	if (range == 0) return value;
+
 	std::set<int> neighbors = network->getOutgoingNeighbors(actorIndex);
 	std::set<int>::iterator it = neighbors.begin();
 
@@ -380,13 +382,17 @@ double TotalSimilarityEffect::getEffectContribution(ProcessState* processState,
 	double alterValue = attributeContainer->getValue(actorIndex2);
 	double range = maxAttributeValue - minAttributeValue;
 
+	if (range == 0) return 0;
+
 	// similarity_ij - mean similarity scores
 	double sim = (range - abs(alterValue - egoValue)) / range;
 	return (sim - _meanSimilarityScores);
 }
 
 std::string TotalSimilarityEffect::getName() {
-	return "Total similarity";
+	std::stringstream sstm;
+	sstm << "Total similarity #" << _attributeIndex;
+	return sstm.str();
 }
 
 SameXTransitivity::SameXTransitivity(size_t attributeIndex, size_t networkIndex) :

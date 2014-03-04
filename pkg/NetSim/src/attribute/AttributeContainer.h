@@ -22,6 +22,7 @@ class AttributeContainerMemento;
 /**
  * Represents a container for valued attributes,
  * e.g., a value measured on a discrete scale
+ * or a weighted actor covariate
  */
 class AttributeContainer{
 

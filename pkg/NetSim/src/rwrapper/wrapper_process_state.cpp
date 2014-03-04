@@ -79,10 +79,12 @@ SEXP get_network(SEXP processStateManager_, SEXP name_) {
 			Rcpp::XPtr<ProcessStateManager>(processStateManager_);
 	std::string name = Rcpp::as<std::string>(name_);
 
-	Network * network = processStateManager->getNetwork(name);
+	Network * n = processStateManager->getNetwork(name);
+	MemoryOneModeNetwork * network = dynamic_cast<MemoryOneModeNetwork*>(n);
 
-	// TODO: pointer is not properly typed
-	return Rcpp::XPtr<Network>(network, false);
+	Rcpp::XPtr<MemoryOneModeNetwork> pointer(network, false);
+	pointer.attr("class") = "NetSimNetwork";
+	return pointer;
 
 	END_RCPP
 }
@@ -134,8 +136,9 @@ SEXP get_attribute_container(SEXP processStateManager_, SEXP name_) {
 
 	AttributeContainer * attributeContainer = processStateManager->getAttributeContainer(name);
 
-	// TODO: pointer is not properly typed
-	return Rcpp::XPtr<AttributeContainer>(attributeContainer, false);
+	Rcpp::XPtr<AttributeContainer> pointer(attributeContainer, false);
+	pointer.attr("class") = "NetSimAttributeContainer";
+	return pointer;
 
 	END_RCPP
 }

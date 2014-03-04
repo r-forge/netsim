@@ -47,7 +47,6 @@ public:
 	virtual double getEffectContribution(ProcessState * processState,
 			int actorIndex1, int actorIndex2) = 0;
 
-
 	std::string getClassName();
 
 protected:

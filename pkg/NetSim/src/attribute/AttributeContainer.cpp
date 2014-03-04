@@ -92,6 +92,9 @@ bool AttributeContainer::setAsMin(int i) {
 	return setValue(i, _min);
 }
 
+/**
+ * get the current or theoretical minimum value
+ */
 double AttributeContainer::getMin() {
 	return _min;
 }
