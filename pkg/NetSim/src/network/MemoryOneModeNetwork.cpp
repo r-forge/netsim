@@ -158,8 +158,8 @@ bool MemoryOneModeNetwork::addTie(int i, int j) {
 
 bool MemoryOneModeNetwork::setTie(int i, int j, double newValue) {
 	// check validity of index
-	// if (!isIndexValid(i)) return false;
-	// if (!isIndexValid(j)) return false;
+	if (!isIndexValid(i)) return false;
+	if (!isIndexValid(j)) return false;
 
 	double oldValue = getTieValue(i, j);
 
