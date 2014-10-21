@@ -500,3 +500,29 @@ SEXP create_set_attribute_of_newborn_actor_updater(SEXP attributeIndex_,
 	END_RCPP
 }
 
+SEXP get_value_objective_function(
+		SEXP processState_,
+		SEXP actorID_,
+		SEXP effectContainer_,
+		SEXP debug_) {
+	BEGIN_RCPP
+
+	EffectContainerManager * effectManager =
+			Rcpp::XPtr<EffectContainerManager>(effectContainer_);
+	ProcessState * processState =
+			Rcpp::XPtr<ProcessState>(processState_);
+	int actorIndex = Rcpp::as<int>(actorID_);
+	bool debug = Rcpp::as<bool>(debug_);
+	std::set<std::pair<SaomEffect*, double> *>* container = effectManager->getEffectContainer();
+
+
+	double value = MultinomialChoiceUtils::getValueObjectiveFunction(
+			processState,
+			actorIndex,
+			container,
+			debug);
+
+	return Rcpp::wrap(value);
+
+	END_RCPP
+}

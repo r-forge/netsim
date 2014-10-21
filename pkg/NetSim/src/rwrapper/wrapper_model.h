@@ -21,6 +21,8 @@
 #include "../model/saom/EffectFactory.h"
 #include "../model/JacksonRogers2007ChangeModel.h"
 #include "../model/WattsStrogatzRandomRewiringChangeModel.h"
+#include "../model/MultinomialChoiceUtils.h"
+
 
 RcppExport SEXP create_model_manager();
 
@@ -105,6 +107,15 @@ RcppExport SEXP create_set_attribute_of_newborn_actor_updater(
 		SEXP attributeIndex, SEXP value);
 
 RcppExport SEXP create_timer_updater(SEXP timerIndex);
+
+// Multiomial choice utils
+RcppExport SEXP get_value_objective_function(
+		SEXP processState,
+		SEXP actorID,
+		SEXP effectContainer,
+		SEXP debug);
+
+
 
 
 #endif /* WRAPPER_MODEL_H_ */

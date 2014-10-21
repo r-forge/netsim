@@ -292,3 +292,13 @@ create_tie_swap_updater <- function(networkIndex){
 create_actor_attribute_set_updater <- function(attributeIndex, actorIndex){
 	.Call("create_actor_attribute_set_updater", attributeIndex, actorIndex, PACKAGE = "NetSim")
 }
+
+# utils
+
+get_value_objective_function <- function(
+		processState,
+		actorID,
+		effectContainer,
+		debug){
+	.Call("get_value_objective_function", processState, actorID, effectContainer, debug)
+}

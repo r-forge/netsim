@@ -22,6 +22,7 @@ double MultinomialChoiceUtils::getValueObjectiveFunction(
 			std::set<std::pair<SaomEffect*, double> *>::iterator itEffects = effectParameterPairs->begin();
 
 			for (; itEffects != effectParameterPairs->end(); ++itEffects){
+
 				double effectValue = (*itEffects)->first->getEffect(processState, focalActor);
 				double parameter = (*itEffects)->second;
 

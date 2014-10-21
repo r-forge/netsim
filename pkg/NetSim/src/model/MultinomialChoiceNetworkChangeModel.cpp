@@ -44,18 +44,21 @@ ModelResult* MultinomialChoiceNetworkChangeModel::getChange(
 			nEffects, std::pair<double, double>(0, 0));
 	std::vector<std::vector<double> > statisticsWithoutTieContribution(
 			nActors, std::vector<double>(nEffects, 0));
+
 	// calculate statistics
 	int effectIndex = 0;
 	std::set<std::pair<SaomEffect*, double> *>::iterator itEffects =
 			_effectParameterPairs->begin();
 	for (; itEffects != _effectParameterPairs->end(); ++itEffects) {
 		int i = _actorIndex;
+
 		// calculate effects without changes
 		// save effect statistic
 		double statistic = (*itEffects)->first->getEffect(processState,
 				_actorIndex);
 		statisticsAndParametersWithoutChange[effectIndex].first +=
 				statistic;
+
 		// save effect parameter (beta)
 		double parameter = (*itEffects)->second;
 		statisticsAndParametersWithoutChange[effectIndex].second =

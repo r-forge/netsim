@@ -34,7 +34,7 @@ public:
 
 	/**
 	 * create a multinomial choice model in which the choice
-	 * dependes on a process state without changes
+	 * depends on a process state without changes
 	 */
 	MultinomialChoiceNetworkChangeModel(int actorIndex,
 			size_t dependentNetworkIndex,

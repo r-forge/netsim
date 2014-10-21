@@ -18,6 +18,7 @@
 #include "../../model/TimeModel.h"
 #include "../../processstate/ProcessState.h"
 #include "../../simulator/Simulator.h"
+#include "../../model/MultinomialChoiceUtils.h"
 
 
 
@@ -102,7 +103,7 @@ void densityChoiceTest(){
 			&effects,
 			new std::vector<Updater*>(1,new TieSwapUpdater(networkIndex)));
 
-	saom.setDebugMode(false);
+	saom.setDebug(false);
 
 	for (int iSim = 0; iSim < nSimulations; iSim++){
 
@@ -187,7 +188,7 @@ void transitivityChoiceTest(){
 		ProcessState processState;
 		processState.addNetwork(&network);
 
-		saom.setDebugMode(false);
+		saom.setDebug(false);
 
 		ModelResult * result = saom.getChange(&processState);
 
@@ -683,6 +684,30 @@ void attributeMultinomialChoiceNetworkChangeModelTest(){
 }
 
 
+void objectiveFunctionUtilityTest(){
+	MemoryOneModeNetwork network(5);
+	network.addTie(0,1);
+	network.addTie(0,2);
+	network.addTie(0,3);
+	ProcessState processState;
+	processState.addNetwork(&network);
+
+	std::set<std::pair<SaomEffect*, double> *> effects;
+	double densityParameter = -1;
+	effects.insert(new std::pair<SaomEffect*, double>(
+			new DensityEffect(0), densityParameter));
+
+	int focalActor = 0;
+
+	double value = MultinomialChoiceUtils::getValueObjectiveFunction(
+			&processState,
+			focalActor,
+			&effects, FALSE);
+	ASSERT(value == (3 * densityParameter));
+}
+
+
+
 
 cute::suite getTestSaomSuite(){
 	cute::suite s;
@@ -695,7 +720,7 @@ cute::suite getTestSaomSuite(){
 	s.push_back(CUTE(steglichParameterTest1));
 	// s.push_back(CUTE(steglichParameterTest2));
 	s.push_back(CUTE(attributeMultinomialChoiceNetworkChangeModelTest));
-
+	s.push_back(CUTE(objectiveFunctionUtilityTest));
 
 	return s;
 }
